@@ -48,10 +48,10 @@ I_RunOps('periodic') = 'USE_PERIODIC'; % 'NONE', 'USE_PERIODIC'; must be set to 
                                        % if periodic boundary conditions should be used
                                        
 I_RunOps('order') = 4;
-%I_RunOps('testcase') = 'induction_equation';
-I_RunOps('testcase') = 'induction_equation_hall';
+I_RunOps('conservation_laws') = 'induction_equation';
+I_RunOps('testcase') = 'hall_periodic';
 
-I_RunOps('plot_numerical_solution') = '';
+I_RunOps('plot_numerical_solution') = 'z';
 %% Initialize variables
 [field_u1, field_u2] = BalanceLaws.initialize();
 

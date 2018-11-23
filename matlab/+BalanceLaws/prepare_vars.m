@@ -39,8 +39,8 @@ function [] = prepare_vars()
     valueSet = {0 '' ''};
     I_Tech = containers.Map(keySet, valueSet,'UniformValues',false);
 
-    keySet = {'order', 'operator_form', 'testcase', 'periodic', 'plot_numerical_solution'};
-    valueSet = {0 'classical' '' '' ''};
+    keySet = {'order', 'operator_form','conservation_laws', 'testcase', 'periodic', 'plot_numerical_solution'};
+    valueSet = {0 'classical' '' '' '' ''};
     I_RunOps = containers.Map(keySet, valueSet,'UniformValues',false);
     
 

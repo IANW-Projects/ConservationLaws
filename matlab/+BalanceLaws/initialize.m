@@ -61,10 +61,11 @@ function [field_u1, field_u2] = initialize()
     else
         fprintf('Specify order \n')
     end
-    kernel_path_list = [kernel_path_list, {sprintf('../include_defines/%s_defines.h', I_RunOps('testcase'))}];
+    kernel_path_list = [kernel_path_list, {sprintf('../include_defines/%s_defines.h', I_RunOps('conservation_laws'))}];
     kernel_path_list = [kernel_path_list, {'../include/utils.h'}];
     kernel_path_list = [kernel_path_list, {'../kernel/SBP_operator.cl'}];
-    kernel_path_list = [kernel_path_list, {sprintf('../include_physics/%s.h', I_RunOps('testcase'))}];
+    kernel_path_list = [kernel_path_list, {sprintf('../include_testcases/%s_%s.h', I_RunOps('conservation_laws'), I_RunOps('testcase'))}];
+    kernel_path_list = [kernel_path_list, {sprintf('../include_physics/%s.h', I_RunOps('conservation_laws'))}];
     kernel_path_list = [kernel_path_list, {'../kernel/kernel_init.cl'}];
     
     settings_tech = generate_settings(I_Tech, {'REAL'; 'REAL4'; 'optimizations'});
@@ -102,10 +103,11 @@ function [field_u1, field_u2] = initialize()
     else
         fprintf('Specify order \n')
     end
-    kernel_path_list = [kernel_path_list, {sprintf('../include_defines/%s_defines.h', I_RunOps('testcase'))}];
+    kernel_path_list = [kernel_path_list, {sprintf('../include_defines/%s_defines.h', I_RunOps('conservation_laws'))}];
     kernel_path_list = [kernel_path_list, {'../include/utils.h'}];
     kernel_path_list = [kernel_path_list, {'../kernel/SBP_operator.cl'}];
-    kernel_path_list = [kernel_path_list, {sprintf('../include_physics/%s.h', I_RunOps('testcase'))}];
+    kernel_path_list = [kernel_path_list, {sprintf('../include_testcases/%s_%s.h', I_RunOps('conservation_laws'), I_RunOps('testcase'))}];
+    kernel_path_list = [kernel_path_list, {sprintf('../include_physics/%s.h', I_RunOps('conservation_laws'))}];
     kernel_path_list = [kernel_path_list, {'../kernel/kernel_time_integrator.cl'}];
 
     settings_tech = generate_settings(I_Tech, {'REAL'; 'REAL4'; 'optimizations'});
