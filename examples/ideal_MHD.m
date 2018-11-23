@@ -47,7 +47,8 @@ I_RunOps('periodic') = 'USE_PERIODIC'; % 'NONE', 'USE_PERIODIC'; must be set to 
                                        % if periodic boundary conditions should be used
 
 I_RunOps('order') = 4;
-I_RunOps('testcase') = 'ideal_MHD';
+I_RunOps('conservation_laws') = 'ideal_MHD';
+I_RunOps('testcase') = 'alfven_periodic';
 
 I_RunOps('plot_numerical_solution') = 'z';
 %% Initialize variables
@@ -64,5 +65,5 @@ field_u1_reshaped = reshape(field_u1, [I_BalanceLaws('NUM_TOTAL_VARS'), I_Mesh('
 %Optional plots
 if ismember(lower(char(I_RunOps('plot_numerical_solution'))),{'x','y','z','xy', 'xz', 'yz', 'xyz'})
     plot_2D(field_u1_reshaped, I_RunOps('plot_numerical_solution'),...
-        I_Mesh('NODES_X'), I_Mesh('NODES_Y'), I_Mesh('NODES_Z'), 'Numerical Solution', 5, 5);
+        I_Mesh('NODES_X'), I_Mesh('NODES_Y'), I_Mesh('NODES_Z'), 'Numerical Solution', 6, 8);
 end

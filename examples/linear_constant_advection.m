@@ -47,7 +47,8 @@ end
 I_RunOps('periodic') = 'USE_PERIODIC'; % 'NONE', 'USE_PERIODIC'; must be set to 'USE_PERIODIC'
                                        % if periodic boundary conditions should be used
 I_RunOps('order') = 4;
-I_RunOps('testcase') = 'linear_constant_advection';
+I_RunOps('conservation_laws') = 'linear_constant_advection';
+I_RunOps('testcase') = 'donut';
 I_RunOps('plot_numerical_solution') = 'z';
 
 %% Initialize
