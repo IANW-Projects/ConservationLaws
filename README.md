@@ -4,7 +4,7 @@
 
 This is a set of tools for numerically solving different kinds of hyperbolic conservation laws with OpenCL. Currently implemented are linear transport with constant and variable coefficients, the nonlinear magnetic induction equation and ideal MHD. The code is generalised in a form that allows 
 to easily implement and switch between different hyperbolic systems of conservation laws. All numerical aspects are encapsulated in OpenCL kernels. The OpenCL host side is abstracted with the help of [MatCL](https://github.com/MuMPlaCL/MatCL), an OpenCL interface for MathWorks Matlab. This provides
-the user with an intuitive and easy way of handling and processing input and output data without any intricate knowledge of OpenCL and allows for interactive development.
+the user with an intuitive and easy way of handling and processing input and output data without any intricate knowledge of OpenCL and allows for interactive development. Usage of the OpenCL kernels is not limited to Matlab.
 
 Exemplary testcases can be found in the `examples` folder. Additional comments are provided in the source files.
 
