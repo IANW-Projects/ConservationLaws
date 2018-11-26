@@ -39,11 +39,11 @@ function [] = prepare_vars()
     valueSet = {0 '' '' 0 0 0 0 0};
     I_Tech = containers.Map(keySet, valueSet,'UniformValues',false);
 
-    keySet = {'order', 'operator_form','conservation_laws', 'testcase', 'periodic', 'plot_numerical_solution', 'save_fields', 'save_integrals_over_time'};
-    valueSet = {0 'classical' '' '' '' '' false false};
+    keySet = {'order', 'operator_form','conservation_laws', 'testcase', 'periodic', 'plot_numerical_solution', 'save_fields', 'save_integrals_over_time', 'norm'};
+    valueSet = {0 'classical' '' '' '' '' false false 'L2'};
     I_RunOps = containers.Map(keySet, valueSet,'UniformValues',false);
     
-    keySet = {'abs_err', 'rel_err', 'field_u', 'runtime', 'kernel_runtime' 'L2error_over_time' 'time'};
+    keySet = {'abs_err', 'rel_err', 'field_u', 'runtime', 'kernel_runtime' 'error_over_time' 'time'};
     valueSet = {0 0 0 0 0 0 0};
     I_Results = containers.Map(keySet, valueSet,'UniformValues',false);
     

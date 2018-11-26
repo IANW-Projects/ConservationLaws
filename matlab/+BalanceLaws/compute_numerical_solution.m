@@ -10,12 +10,12 @@ if strcmp(I_Tech('REAL'),'float')
     current_time = single(zeros(2));
     components = single(zeros(2));
     norm2_output = single(zeros(1, I_Tech('num_groups')));
-    L2error = single(zeros(I_BalanceLaws('NUM_CONSERVED_VARS'), I_TI('num_steps')+1));
+    error = single(zeros(I_BalanceLaws('NUM_CONSERVED_VARS'), I_TI('num_steps')+1));
 else
     current_time = double(zeros(2));
     components = double(zeros(2));
     norm2_output = double(zeros(1, I_Tech('num_groups')));
-    L2error = double(zeros(I_BalanceLaws('NUM_CONSERVED_VARS'), I_TI('num_steps')+1));
+    error = double(zeros(I_BalanceLaws('NUM_CONSERVED_VARS'), I_TI('num_steps')+1));
 end
 
 switch I_TI('time_integrator')
@@ -139,7 +139,11 @@ switch time_integrator_num_fields
                     cl_run_kernel(I_Tech('device'), 'analytical_u', I_BalanceLaws('g_range'), I_BalanceLaws('l_range'), field_u2, current_time, 0);
                     norm2_output(:) = 0;
                     cl_run_kernel(I_Tech('device'), 'norm2_diff', I_Tech('g_range'), I_Tech('l_range'), field_u1, field_u2, norm2_output, components, 0);
-                    L2error(comp + 1, step) = sqrt(sum(norm2_output));
+                    if strcmp(I_RunOps('norm'),'L2')
+                        error(comp + 1, step) = sqrt(sum(norm2_output));
+                    elseif strcmp(I_RunOps('norm'),'Linf')
+                        error(comp + 1, step) = max(sqrt(norm2_output));
+                    end
                 end
 
                 t = cl_run_kernel(I_Tech('device'), RK_Step, I_BalanceLaws('g_range'), I_BalanceLaws('l_range'), ...
@@ -180,7 +184,11 @@ switch time_integrator_num_fields
                     cl_run_kernel(I_Tech('device'), 'analytical_u', I_BalanceLaws('g_range'), I_BalanceLaws('l_range'), field_u2, current_time, 0);
                     norm2_output(:) = 0;
                     cl_run_kernel(I_Tech('device'), 'norm2_diff', I_Tech('g_range'), I_Tech('l_range'), field_u1, field_u2, norm2_output, components, 0);
-                    L2error(comp + 1, step) = sqrt(sum(norm2_output));
+                    if strcmp(I_RunOps('norm'),'L2')
+                        error(comp + 1, step) = sqrt(sum(norm2_output));
+                    elseif strcmp(I_RunOps('norm'),'LInf')
+                        error(comp + 1, step) = max(sqrt(norm2_output));
+                    end
                 end
 
                 t = cl_run_kernel(I_Tech('device'), RK_Step, I_BalanceLaws('g_range'), I_BalanceLaws('l_range'), ...
@@ -224,7 +232,11 @@ for comp=0:I_BalanceLaws('NUM_CONSERVED_VARS')-1
 	components(1) = comp;
     norm2_output(:) = 0;
     cl_run_kernel(I_Tech('device'), 'norm2_diff', I_Tech('g_range'), I_Tech('l_range'), field_u1, field_u2, norm2_output, components, 0);
-    abs_err(comp + 1) = sqrt(sum(norm2_output));
+    if strcmp(I_RunOps('norm'),'L2')
+        abs_err(comp + 1) = sqrt(sum(norm2_output));
+    elseif strcmp(I_RunOps('norm'),'LInf')
+        abs_err(comp + 1) = max(sqrt(norm2_output));
+    end
     norm2_output(:) = 0;
     cl_run_kernel(I_Tech('device'), 'norm2', I_Tech('g_range'), I_Tech('l_range'), field_u2, norm2_output, components, 0);
     rel_err(comp + 1) = abs_err(comp + 1) / sqrt(sum(norm2_output));
@@ -235,8 +247,8 @@ I_Results('rel_err') = rel_err;
 
 if I_RunOps('save_integrals_over_time')
     L2error(I_TI('num_steps')+1) = I_Results('abs_err');
-    I_Results('L2error_over_time') = L2error;
-    I_Results('time') = linspace(0, I_TI('final_time'), length(L2error));
+    I_Results('error_over_time') = error;
+    I_Results('time') = linspace(0, I_TI('final_time'), length(error));
 end
 
 end

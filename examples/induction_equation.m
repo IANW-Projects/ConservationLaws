@@ -50,8 +50,10 @@ I_RunOps('periodic') = 'USE_PERIODIC'; % 'NONE', 'USE_PERIODIC'; must be set to 
 I_RunOps('order') = 4;
 I_RunOps('conservation_laws') = 'induction_equation';
 I_RunOps('testcase') = 'hall_periodic';
-
 I_RunOps('plot_numerical_solution') = 'z';
+I_RunOps('save_integrals_over_time') = false;
+% Choose between L2 and LInfinity norm for error calculation
+I_RunOps('norm') = 'LInf';
 %% Initialize variables
 [field_u1, field_u2] = BalanceLaws.initialize();
 

@@ -50,7 +50,9 @@ I_RunOps('order') = 4;
 I_RunOps('conservation_laws') = 'linear_variable_advection';
 I_RunOps('testcase') = 'rotation_2D';
 I_RunOps('plot_numerical_solution') = 'z';
-I_RunOps('save_integrals_over_time') = true;
+I_RunOps('save_integrals_over_time') = false;
+% Choose between L2 and LInfinity norm for error calculation
+I_RunOps('norm') = 'LInf';
 
 %% Initialize
 [field_u1, field_u2] = BalanceLaws.initialize();

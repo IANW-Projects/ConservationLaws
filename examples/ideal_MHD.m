@@ -1,4 +1,4 @@
-clc
+%clc
 clear
 close all
 
@@ -49,8 +49,10 @@ I_RunOps('periodic') = 'USE_PERIODIC'; % 'NONE', 'USE_PERIODIC'; must be set to 
 I_RunOps('order') = 4;
 I_RunOps('conservation_laws') = 'ideal_MHD';
 I_RunOps('testcase') = 'alfven_periodic';
-
 I_RunOps('plot_numerical_solution') = 'z';
+I_RunOps('save_integrals_over_time') = false;
+% Choose between L2 and LInfinity norm for error calculation
+I_RunOps('norm') = 'L2';
 %% Initialize variables
 [field_u1, field_u2] = BalanceLaws.initialize();
 
