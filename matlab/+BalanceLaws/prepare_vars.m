@@ -21,7 +21,7 @@ function [] = prepare_vars()
     %in capital letters the program define will be set to the corresponding
     %value of the key.
 
-    global I_Mesh I_TI I_BalanceLaws I_Tech I_RunOps 
+    global I_Mesh I_TI I_BalanceLaws I_Tech I_RunOps I_Results
 
     keySet = {'NODES_X', 'NODES_Y', 'NODES_Z', 'DX', 'DY', 'DZ', 'XMIN','YMIN', 'ZMIN', 'XMAX', 'YMAX','ZMAX'};
     valueSet = {uint16(0) uint16(0) uint16(0) 0 0 0 0 0 0 0 0 0};
@@ -35,13 +35,17 @@ function [] = prepare_vars()
     valueSet = {'' 0 0 0 0 0};
     I_BalanceLaws = containers.Map(keySet, valueSet,'UniformValues',false);
 
-    keySet = {'device', 'REAL', 'optimizations'};
-    valueSet = {0 '' ''};
+    keySet = {'device', 'REAL', 'optimizations', 'num_nodes_pad', 'num_groups','W_SIZE', 'g_range', 'l_range'};
+    valueSet = {0 '' '' 0 0 0 0 0};
     I_Tech = containers.Map(keySet, valueSet,'UniformValues',false);
 
-    keySet = {'order', 'operator_form','conservation_laws', 'testcase', 'periodic', 'plot_numerical_solution'};
-    valueSet = {0 'classical' '' '' '' ''};
+    keySet = {'order', 'operator_form','conservation_laws', 'testcase', 'periodic', 'plot_numerical_solution', 'save_fields', 'save_integrals_over_time'};
+    valueSet = {0 'classical' '' '' '' '' false false};
     I_RunOps = containers.Map(keySet, valueSet,'UniformValues',false);
+    
+    keySet = {'abs_err', 'rel_err', 'field_u', 'runtime', 'kernel_runtime' 'L2error_over_time' 'time'};
+    valueSet = {0 0 0 0 0 0 0};
+    I_Results = containers.Map(keySet, valueSet,'UniformValues',false);
     
 
 end

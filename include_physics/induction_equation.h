@@ -349,5 +349,17 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
     }
 #endif
 
+//--------------------------------------------------------------------------------------------------
+// Computation of analytical solution for all conserved variables
+//---------------------------------------------------------------------------------------------------
+
+inline void analytical_solution(uint ix, uint iy, uint iz, global REAL *u, REAL time) {
+
+	REAL4 B =  b_analytical(ix, iy, iz, time);
+
+	set_field_component(ix, iy, iz, Field_Bx, u, B.x);
+	set_field_component(ix, iy, iz, Field_By, u, B.y);
+	set_field_component(ix, iy, iz, Field_Bz, u, B.z);
+}
 
 #endif // INDUCTION_EQUATION_H

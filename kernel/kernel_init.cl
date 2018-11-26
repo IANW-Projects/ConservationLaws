@@ -9,3 +9,4 @@ kernel void init(global REAL *u) {
    init_fields(ix, iy, iz, u);
 
 }
+

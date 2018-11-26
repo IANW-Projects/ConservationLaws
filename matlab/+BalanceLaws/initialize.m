@@ -25,16 +25,43 @@ function [field_u1, field_u2] = initialize()
     I_BalanceLaws('l_range') = uint32([0]);
 
     num_nodes = I_Mesh('NODES_X')*I_Mesh('NODES_Y')*I_Mesh('NODES_Z');
-    
-    if strcmp(I_Tech('REAL'),'float')
-        field_u1 = single(zeros(1, num_nodes*I_BalanceLaws('NUM_TOTAL_VARS')));
-        field_u2 = single(zeros(1, num_nodes*I_BalanceLaws('NUM_TOTAL_VARS')));
+%%    
+    % Depending on the device type choose the local work group size. If the
+    % device is a GPU the highest availble work group size is selected.
+    % For CPUs the optimal work group size was determined
+    % through testing. Especially for high-end Intel CPUs a higher value can decrease runtime.
+    [~, dev_type, ~, ~, lw_size, ~] = cl_get_devices;
+    type = dev_type(I_Tech('device'));
+    if (strcmp(type{1},'CPU'))
+        group_size = 16;
     else
-        field_u1 = double(zeros(1, num_nodes*I_BalanceLaws('NUM_TOTAL_VARS')));
-        field_u2 = double(zeros(1, num_nodes*I_BalanceLaws('NUM_TOTAL_VARS')));
+        if (num_nodes > lw_size(I_Tech('device')))
+            group_size = lw_size(I_Tech('device'));
+        else
+            group_size = 2^floor(log(num_nodes) / log(2));
+        end
+    end
+    group_size = double(group_size);
+    num_nodes_pad = ceil(double(num_nodes)/group_size)*group_size;
+    num_groups = ceil(num_nodes_pad/group_size);
+
+    I_Tech('num_nodes_pad') = num_nodes_pad;
+    I_Tech('num_groups') = num_groups;
+    I_Tech('W_SIZE') = uint16(group_size);
+    
+    % Global and local range for dot product and norm
+    I_Tech('g_range') = uint32([I_Tech('num_nodes_pad'), 1, 1]);
+    I_Tech('l_range') = uint32([I_Tech('W_SIZE'), 1, 1]);
+%%    
+    if strcmp(I_Tech('REAL'),'float')
+        field_u1 = single(zeros(1, num_nodes_pad*I_BalanceLaws('NUM_TOTAL_VARS')));
+        field_u2 = single(zeros(1, num_nodes_pad*I_BalanceLaws('NUM_TOTAL_VARS')));
+    else
+        field_u1 = double(zeros(1, num_nodes_pad*I_BalanceLaws('NUM_TOTAL_VARS')));
+        field_u2 = double(zeros(1, num_nodes_pad*I_BalanceLaws('NUM_TOTAL_VARS')));
     end
         
-
+%%
     x = linspace(I_Mesh('XMIN'), I_Mesh('XMAX'), I_Mesh('NODES_X'));
     y = linspace(I_Mesh('YMIN'), I_Mesh('YMAX'), I_Mesh('NODES_Y'));
     z = linspace(I_Mesh('ZMIN'), I_Mesh('ZMAX'), I_Mesh('NODES_Z'));
@@ -79,7 +106,7 @@ function [field_u1, field_u2] = initialize()
     [~] = cl_run_kernel(I_Tech('device'), kernel_path_list, settings);
     
     cl_run_kernel(I_Tech('device'), 'init', I_BalanceLaws('g_range'), I_BalanceLaws('l_range'), field_u1, 0);
-
+%%
     kernel_path_list = {};
     % Include header file containing the coefficients of the respective order
     if I_RunOps('order') == 2
@@ -109,8 +136,9 @@ function [field_u1, field_u2] = initialize()
     kernel_path_list = [kernel_path_list, {sprintf('../include_testcases/%s_%s.h', I_RunOps('conservation_laws'), I_RunOps('testcase'))}];
     kernel_path_list = [kernel_path_list, {sprintf('../include_physics/%s.h', I_RunOps('conservation_laws'))}];
     kernel_path_list = [kernel_path_list, {'../kernel/kernel_time_integrator.cl'}];
+    kernel_path_list = [kernel_path_list, {'../kernel/kernel_norm.cl'}];
 
-    settings_tech = generate_settings(I_Tech, {'REAL'; 'REAL4'; 'optimizations'});
+    settings_tech = generate_settings(I_Tech, {'REAL'; 'REAL4'; 'W_SIZE'; 'optimizations'});
     settings_mesh = generate_settings(I_Mesh, {'DX'; 'DY'; 'DZ';...
                                                'NODES_X'; 'NODES_Y'; 'NODES_Z';...
                                                'XMIN'; 'XMAX'; 'YMIN'; 'YMAX'; 'ZMAX'; 'ZMIN'});

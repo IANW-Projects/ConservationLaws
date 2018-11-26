@@ -5,7 +5,7 @@ close all
 addpath('../matlab')
 
 BalanceLaws.prepare_vars();
-global I_Mesh I_TI I_BalanceLaws I_Tech I_RunOps 
+global I_Mesh I_TI I_BalanceLaws I_Tech I_RunOps I_Results
 
 N = uint32(40);
 I_Mesh('NODES_X') = N; I_Mesh('NODES_Y') = N; I_Mesh('NODES_Z') = N;
@@ -55,10 +55,15 @@ I_RunOps('plot_numerical_solution') = 'z';
 %% Initialize variables
 [field_u1, field_u2] = BalanceLaws.initialize();
 
-fprintf('Testcase: %s \nOrder: %d \nTime integrator: %s\nDT: %.16e   N_STEPS: %5d   FINAL_TIME: %.16e\nDX: %.16e   NODES_X: %5d\nDY: %.16e   NODES_Y: %5d\nDZ: %.16e   NODES_Z: %5d \nREAL: %s\n',...
+fprintf('Testcase: %s \nOrder: %d \nTime integrator: %s\nDT: %.16e   N_STEPS: %5d   FINAL_TIME: %.16e\nDX: %.16e   NODES_X: %5d\nDY: %.16e   NODES_Y: %5d\nDZ: %.16e   NODES_Z: %5d \nREAL: %s\n\n',...
         I_RunOps('testcase'), I_RunOps('order'), I_TI('time_integrator'), I_TI('DT'), I_TI('num_steps'), I_TI('final_time'), I_Mesh('DX'), I_Mesh('NODES_X'), I_Mesh('DY'), I_Mesh('NODES_Y'), I_Mesh('DZ'), I_Mesh('NODES_Z'), I_Tech('REAL'));
 %% Compute numerical solution
 BalanceLaws.compute_numerical_solution(field_u1, field_u2);
+
+rel_err = I_Results('rel_err');
+for comp=0:I_BalanceLaws('NUM_CONSERVED_VARS') - 1
+    fprintf('Relative Error of Field Component %d: %.15f %%\n', comp, 100*rel_err(comp + 1))
+end
 
 %% Plot numerical solution
 field_u1_reshaped = reshape(field_u1, [I_BalanceLaws('NUM_TOTAL_VARS'), I_Mesh('NODES_X')*I_Mesh('NODES_Y')*I_Mesh('NODES_Z')]);
