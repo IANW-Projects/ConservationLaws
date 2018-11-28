@@ -68,7 +68,7 @@ for comp=0:I_BalanceLaws('NUM_CONSERVED_VARS') - 1
 end
 
 %% Plot numerical solution
-field_u1_reshaped = reshape(field_u1, [I_BalanceLaws('NUM_TOTAL_VARS'), I_Mesh('NODES_X')*I_Mesh('NODES_Y')*I_Mesh('NODES_Z')]);
+field_u1_reshaped = reshape(field_u1, [I_BalanceLaws('NUM_TOTAL_VARS'), I_Tech('num_nodes_pad')]);
 
 %Optional plots
 if ismember(lower(char(I_RunOps('plot_numerical_solution'))),{'x','y','z','xy', 'xz', 'yz', 'xyz'})

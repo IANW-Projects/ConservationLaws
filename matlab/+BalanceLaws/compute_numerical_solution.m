@@ -230,21 +230,24 @@ cl_run_kernel(I_Tech('device'), 'analytical_u', I_BalanceLaws('g_range'), I_Bala
 abs_err = zeros(I_BalanceLaws('NUM_CONSERVED_VARS'),1);
 rel_err = zeros(I_BalanceLaws('NUM_CONSERVED_VARS'),1);
 
-field_u1_reshaped = reshape(field_u1, [I_BalanceLaws('NUM_TOTAL_VARS'), I_Mesh('NODES_X')*I_Mesh('NODES_Y')*I_Mesh('NODES_Z')]);
-
 for comp=0:I_BalanceLaws('NUM_CONSERVED_VARS')-1
 	components(1) = comp;
     norm_output(:) = 0;
     if strcmp(I_RunOps('norm'),'L2')
         cl_run_kernel(I_Tech('device'), 'norm2_diff', I_Tech('g_range'), I_Tech('l_range'), field_u1, field_u2, norm_output, components, 0);
         abs_err(comp + 1) = sqrt(sum(norm_output));
+        
+        norm_output(:) = 0;
+        cl_run_kernel(I_Tech('device'), 'norm2', I_Tech('g_range'), I_Tech('l_range'), field_u2, norm_output, components, 0);
+        rel_err(comp + 1) = abs_err(comp + 1) / sqrt(sum(norm_output));
     elseif strcmp(I_RunOps('norm'),'LInf')
         cl_run_kernel(I_Tech('device'), 'norm_infty_diff', I_Tech('g_range'), I_Tech('l_range'), field_u1, field_u2, norm_output, components, 0);
         abs_err(comp + 1) = max(norm_output);
+        
+        norm_output(:) = 0;
+        cl_run_kernel(I_Tech('device'), 'norm_infty', I_Tech('g_range'), I_Tech('l_range'), field_u2, norm_output, components, 0);
+        rel_err(comp + 1) = abs_err(comp + 1) / max(norm_output);
     end
-    norm_output(:) = 0;
-    cl_run_kernel(I_Tech('device'), 'norm2', I_Tech('g_range'), I_Tech('l_range'), field_u2, norm_output, components, 0);
-    rel_err(comp + 1) = abs_err(comp + 1) / sqrt(sum(norm_output));
 end
 
 I_Results('abs_err') = abs_err;

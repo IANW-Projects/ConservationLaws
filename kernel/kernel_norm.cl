@@ -117,10 +117,10 @@ kernel void norm_infty_diff(global REAL * u1, global REAL *u2, global REAL *outp
            * ((REAL)DY / M_INV[NUM_BOUNDS + bound_y])
            * ((REAL)DZ / M_INV[NUM_BOUNDS + bound_z]);
 
-  REAL pmax = fac * fabs(get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u1) - get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u2));;
+  REAL pmax = fabs(get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u1) - get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u2));;
 
   if (lid == 0) {
-    local_max[0] = 0.0;
+    local_max[0] = (REAL)(0);
   }
 
   for (uint i = 0; i < group_size; i++) {
@@ -158,10 +158,10 @@ kernel void norm_infty(global REAL *u, global REAL *output, global REAL* comp) {
            * ((REAL)DY / M_INV[NUM_BOUNDS + bound_y])
            * ((REAL)DZ / M_INV[NUM_BOUNDS + bound_z]);
 
-  REAL pmax = fac * fabs(get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u));
+  REAL pmax = fabs(get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u));
 
   if (lid == 0) {
-    local_max[0] = 0.0;
+    local_max[0] = (REAL)(0);
   }
 
   for (uint i = 0; i < group_size; i++) {
