@@ -1,4 +1,4 @@
-%clc
+clc
 clear
 close all
 
@@ -52,7 +52,7 @@ I_RunOps('testcase') = 'alfven_periodic';
 I_RunOps('plot_numerical_solution') = 'z';
 I_RunOps('save_integrals_over_time') = false;
 % Choose between L2 and LInfinity norm for error calculation
-I_RunOps('norm') = 'L2';
+I_RunOps('norm') = 'LInf'; % L2, LInf
 %% Initialize variables
 [field_u1, field_u2] = BalanceLaws.initialize();
 
