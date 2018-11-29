@@ -76,3 +76,4 @@ inline REAL4 b_boundary(uint ix, uint iy, uint iz, REAL time) {
 	// TODO: Something else?
 	return (REAL4) {0, 0, 0, 0};
 }
+

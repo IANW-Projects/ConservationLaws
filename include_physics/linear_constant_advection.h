@@ -59,7 +59,17 @@ inline void compute_auxiliary_variables(REAL time, uint ix, uint iy, uint iz, gl
   return;
 }
 
+//--------------------------------------------------------------------------------------------------
+// Computation of analytical solution for all conserved variables
+//---------------------------------------------------------------------------------------------------
 
+inline void analytical_solution(uint ix, uint iy, uint iz, global REAL *u, REAL time) {
+
+	REAL u_ana =  u_analytical(ix, iy, iz, time);
+
+	set_field_component(ix, iy, iz, Field_u, u, u_ana);
+	
+}
 
 
 #endif // LINEAR_CONSTANT_ADVECTION_H

@@ -428,6 +428,29 @@ inline void compute_auxiliary_variables(REAL time, uint ix, uint iy, uint iz, gl
   set_field_component(ix, iy, iz, Field_p, u, p);
 }
 
+//--------------------------------------------------------------------------------------------------
+// Computation of analytical solution for all conserved variables
+//---------------------------------------------------------------------------------------------------
 
+inline void analytical_solution(uint ix, uint iy, uint iz, global REAL *u, REAL time) {
+
+  REAL rho = (REAL)(1);
+  REAL p = (REAL)(1);
+  REAL4 B =  b_analytical(ix, iy, iz, time);
+  REAL4 v =  u_analytical(ix, iy, iz, time);
+  REAL E = compute_energy(p, rho, v.x, v.y, v.z, B.x, B.y, B.z);
+
+  set_field_component(ix, iy, iz, Field_rho, u, rho);
+
+	set_field_component(ix, iy, iz, Field_rho_ux, u, rho*v.x);
+	set_field_component(ix, iy, iz, Field_rho_uy, u, rho*v.y);
+	set_field_component(ix, iy, iz, Field_rho_uz, u, rho*v.z);
+
+  set_field_component(ix, iy, iz, Field_E, u, E);
+
+  set_field_component(ix, iy, iz, Field_Bx, u, B.x);
+	set_field_component(ix, iy, iz, Field_By, u, B.y);
+	set_field_component(ix, iy, iz, Field_Bz, u, B.z);
+}
 
 #endif // IDEAL_MHD
