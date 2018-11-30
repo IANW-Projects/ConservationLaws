@@ -15,10 +15,11 @@ I_Mesh('YMIN') = 0; I_Mesh('YMAX') = 4*pi/3;
 I_Mesh('ZMIN') = 0; I_Mesh('ZMAX') = 4*pi/3;
 
 I_TI('final_time') = 1;
-I_TI('cfl') = 2/double(N);
+I_TI('cfl') = 0.95/double(N); %nonperiodic boundaries: 0.95/double(N)
+                              %periodic boundaries: 2/double(N)
 
 %Set dt
-dt = 2.1367521367521370e-03;
+dt = 1.0405827263267431e-03; %periodic:2.1367521367521370e-03 ; nonperiodic: 1.0405827263267431e-03
 num_steps = ceil(I_TI('final_time')/dt);
 dt = I_TI('final_time') / num_steps;
 
@@ -44,7 +45,7 @@ else
     I_Tech('optimizations') = ' -cl-mad-enable -cl-no-signed-zeros -cl-finite-math-only';
 end
 
-I_RunOps('periodic') = 'USE_PERIODIC'; % 'NONE', 'USE_PERIODIC'; must be set to 'USE_PERIODIC'
+I_RunOps('periodic') = 'NONE'; % 'NONE', 'USE_PERIODIC'; must be set to 'USE_PERIODIC'
                                        % if periodic boundary conditions should be used
                                        
 I_RunOps('order') = 4;
@@ -62,9 +63,11 @@ fprintf('Testcase: %s \nOrder: %d \nTime integrator: %s\nDT: %.16e   N_STEPS: %5
 %% Compute numerical solution
 BalanceLaws.compute_numerical_solution(field_u1, field_u2);
 
-rel_err = I_Results('rel_err');
-for comp=0:I_BalanceLaws('NUM_CONSERVED_VARS') - 1
-    fprintf('Relative Error of Field Component %d: %.15f %%\n', comp, 100*rel_err(comp + 1))
+if strcmp(I_RunOps('periodic'), 'USE_PERIODIC')
+    rel_err = I_Results('rel_err');
+    for comp=0:I_BalanceLaws('NUM_CONSERVED_VARS') - 1
+        fprintf('Relative Error of Field Component %d: %.15f %%\n', comp, 100*rel_err(comp + 1))
+    end
 end
 
 %% Plot numerical solution

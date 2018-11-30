@@ -278,36 +278,141 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 
 inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL *u, REAL *du_dt) {
 
-  REAL um[NUM_TOTAL_VARS] = {0.0};;
+  REAL um[NUM_TOTAL_VARS] = {0.0};
   get_field(ix, iy, iz, 0, 0, 0, u, um);
 
 // For periodic boundary conditions and a single block, no surface term has to be used.
 #ifndef USE_PERIODIC
-	REAL4 b_bound = b_boundary(ix, iy, iz, time);
+  #ifndef USE_HALL
+    REAL4 b_bound = b_boundary(ix, iy, iz, time);
 
-  du_dt[Field_Bx] = du_dt[Field_Bx] 
-                  + (REAL)(M_INV[0]/DX) * 
-                  ((check_bound_l(ix,1) * (um[Field_ux] > 0)) * (REAL)(-1) + (check_bound_xr(ix,1) * (um[Field_ux] < 0)) * (REAL)(1)) * um[Field_ux] * (um[Field_Bx] - b_bound.x)
-                  + (REAL)(M_INV[0]/DY) * 
-                  ((check_bound_l(iy,1) * (um[Field_uy] > 0)) * (REAL)(-1) + (check_bound_yr(iy,1) * (um[Field_uy] < 0)) * (REAL)(1)) * um[Field_uy] * (um[Field_Bx] - b_bound.x)
-                  + (REAL)(M_INV[0]/DZ) * 
-                  ((check_bound_l(iz,1) * (um[Field_uz] > 0)) * (REAL)(-1) + (check_bound_zr(iz,1) * (um[Field_uz] < 0)) * (REAL)(1)) * um[Field_uz] * (um[Field_Bx] - b_bound.x);
+    du_dt[Field_Bx] += 
+                    + (REAL)(M_INV[0]/DX) * 
+                    ((check_bound_l(ix,1) * (um[Field_ux] > 0)) * (REAL)(-1) + (check_bound_xr(ix,1) * (um[Field_ux] < 0)) * (REAL)(1)) * um[Field_ux] * (um[Field_Bx] - b_bound.x)
+                    + (REAL)(M_INV[0]/DY) * 
+                    ((check_bound_l(iy,1) * (um[Field_uy] > 0)) * (REAL)(-1) + (check_bound_yr(iy,1) * (um[Field_uy] < 0)) * (REAL)(1)) * um[Field_uy] * (um[Field_Bx] - b_bound.x)
+                    + (REAL)(M_INV[0]/DZ) * 
+                    ((check_bound_l(iz,1) * (um[Field_uz] > 0)) * (REAL)(-1) + (check_bound_zr(iz,1) * (um[Field_uz] < 0)) * (REAL)(1)) * um[Field_uz] * (um[Field_Bx] - b_bound.x);
 
-  du_dt[Field_By] = du_dt[Field_By] 
-                  + (REAL)(M_INV[0]/DX) * 
-                  ((check_bound_l(ix,1) * (um[Field_ux] > 0)) * (REAL)(-1) + (check_bound_xr(ix,1) * (um[Field_ux] < 0)) * (REAL)(1)) * um[Field_ux] * (um[Field_By] - b_bound.y)
-                  + (REAL)(M_INV[0]/DY) * 
-                  ((check_bound_l(iy,1) * (um[Field_uy] > 0)) * (REAL)(-1) + (check_bound_yr(iy,1) * (um[Field_uy] < 0)) * (REAL)(1)) * um[Field_uy] * (um[Field_By] - b_bound.y)
-                  + (REAL)(M_INV[0]/DZ) * 
-                  ((check_bound_l(iz,1) * (um[Field_uz] > 0)) * (REAL)(-1) + (check_bound_zr(iz,1) * (um[Field_uz] < 0)) * (REAL)(1)) * um[Field_uz] * (um[Field_By] - b_bound.y);
+    du_dt[Field_By] += 
+                    + (REAL)(M_INV[0]/DX) * 
+                    ((check_bound_l(ix,1) * (um[Field_ux] > 0)) * (REAL)(-1) + (check_bound_xr(ix,1) * (um[Field_ux] < 0)) * (REAL)(1)) * um[Field_ux] * (um[Field_By] - b_bound.y)
+                    + (REAL)(M_INV[0]/DY) * 
+                    ((check_bound_l(iy,1) * (um[Field_uy] > 0)) * (REAL)(-1) + (check_bound_yr(iy,1) * (um[Field_uy] < 0)) * (REAL)(1)) * um[Field_uy] * (um[Field_By] - b_bound.y)
+                    + (REAL)(M_INV[0]/DZ) * 
+                    ((check_bound_l(iz,1) * (um[Field_uz] > 0)) * (REAL)(-1) + (check_bound_zr(iz,1) * (um[Field_uz] < 0)) * (REAL)(1)) * um[Field_uz] * (um[Field_By] - b_bound.y);
 
-  du_dt[Field_Bz] = du_dt[Field_Bz] 
-                  + (REAL)(M_INV[0]/DX) * 
-                  ((check_bound_l(ix,1) * (um[Field_ux] > 0)) * (REAL)(-1) + (check_bound_xr(ix,1) * (um[Field_ux] < 0)) * (REAL)(1)) * um[Field_ux] * (um[Field_Bz] - b_bound.z)
-                  + (REAL)(M_INV[0]/DY) * 
-                  ((check_bound_l(iy,1) * (um[Field_uy] > 0)) * (REAL)(-1) + (check_bound_yr(iy,1) * (um[Field_uy] < 0)) * (REAL)(1)) * um[Field_uy] * (um[Field_Bz] - b_bound.z)
-                  + (REAL)(M_INV[0]/DZ) * 
-                  ((check_bound_l(iz,1) * (um[Field_uz] > 0)) * (REAL)(-1) + (check_bound_zr(iz,1) * (um[Field_uz] < 0)) * (REAL)(1)) * um[Field_uz] * (um[Field_Bz] - b_bound.z);
+    du_dt[Field_Bz] += 
+                    + (REAL)(M_INV[0]/DX) * 
+                    ((check_bound_l(ix,1) * (um[Field_ux] > 0)) * (REAL)(-1) + (check_bound_xr(ix,1) * (um[Field_ux] < 0)) * (REAL)(1)) * um[Field_ux] * (um[Field_Bz] - b_bound.z)
+                    + (REAL)(M_INV[0]/DY) * 
+                    ((check_bound_l(iy,1) * (um[Field_uy] > 0)) * (REAL)(-1) + (check_bound_yr(iy,1) * (um[Field_uy] < 0)) * (REAL)(1)) * um[Field_uy] * (um[Field_Bz] - b_bound.z)
+                    + (REAL)(M_INV[0]/DZ) * 
+                    ((check_bound_l(iz,1) * (um[Field_uz] > 0)) * (REAL)(-1) + (check_bound_zr(iz,1) * (um[Field_uz] < 0)) * (REAL)(1)) * um[Field_uz] * (um[Field_Bz] - b_bound.z);
+
+  #else
+    // TODO: Depending on the boundary, we want to have either inflow or outflow BCs!
+    // Up to now, there are only outflow BCs!
+
+    // outflow BC, cf. 'directional do-nothing conditions'
+    REAL4 test_velocity = (REAL4) {0.0, 0.0, 0.0, 0.0};
+    test_velocity.x = (REAL)(0.5) * um[Field_ux] - um[Field_curlB_rho_x];
+    test_velocity.y = (REAL)(0.5) * um[Field_uy] - um[Field_curlB_rho_y];
+    test_velocity.z = (REAL)(0.5) * um[Field_uz] - um[Field_curlB_rho_z];
+
+    du_dt[Field_Bx] +=
+                    (REAL)(M_INV[0]/DX) * (
+                      ( check_bound_l(ix,1) * (test_velocity.x > 0) * (REAL)(-1)
+                      + check_bound_xr(ix,1) * (test_velocity.x < 0) * (REAL)(1)
+                      ) * test_velocity.x * um[Field_Bx]
+                      +
+                      (	check_bound_l(ix,1) * (REAL)(-1)
+                      + check_bound_xr(ix,1) * (REAL)(1)
+                      ) * um[Field_Bx] * um[Field_curlB_rho_x]
+                    )
+
+                    + (REAL)(M_INV[0]/DY) * (
+                      ( check_bound_l(iy,1) * (test_velocity.y > 0) * (REAL)(-1)
+                      + check_bound_yr(iy,1) * (test_velocity.y < 0) * (REAL)(1)
+                      ) * test_velocity.y * um[Field_Bx]
+                      +
+                      (	check_bound_l(iy,1) * (REAL)(-1)
+                      + check_bound_yr(iy,1) * (REAL)(1)
+                      ) * um[Field_By] * um[Field_curlB_rho_x]
+                    )
+
+                    + (REAL)(M_INV[0]/DZ) * (
+                      ( check_bound_l(iz,1) * (test_velocity.z > 0) * (REAL)(-1)
+                      + check_bound_zr(iz,1) * (test_velocity.z < 0) * (REAL)(1)
+                      ) * test_velocity.z * um[Field_Bx]
+                      +
+                      (	check_bound_l(iz,1) * (REAL)(-1)
+                      + check_bound_zr(iz,1) * (REAL)(1)
+                      ) * um[Field_Bz] * um[Field_curlB_rho_x]
+                    );
+
+    du_dt[Field_By] += 
+                    + (REAL)(M_INV[0]/DX) * (
+                      ( check_bound_l(ix,1) * (test_velocity.x > 0) * (REAL)(-1)
+                      + check_bound_xr(ix,1) * (test_velocity.x < 0) * (REAL)(1)
+                      ) * test_velocity.x * um[Field_By]
+                      +
+                      (	check_bound_l(ix,1) * (REAL)(-1)
+                      + check_bound_xr(ix,1) * (REAL)(1)
+                      ) * um[Field_Bx] * um[Field_curlB_rho_y]
+                    )
+
+                    + (REAL)(M_INV[0]/DY) * (
+                      ( check_bound_l(iy,1) * (test_velocity.y > 0) * (REAL)(-1)
+                      + check_bound_yr(iy,1) * (test_velocity.y < 0) * (REAL)(1)
+                      ) * test_velocity.y * um[Field_By]
+                      +
+                      (	check_bound_l(iy,1) * (REAL)(-1)
+                      + check_bound_yr(iy,1) * (REAL)(1)
+                      ) * um[Field_By] * um[Field_curlB_rho_y]
+                    )
+
+                    + (REAL)(M_INV[0]/DZ) * (
+                      ( check_bound_l(iz,1) * (test_velocity.z > 0) * (REAL)(-1)
+                      + check_bound_zr(iz,1) * (test_velocity.z < 0) * (REAL)(1)
+                      ) * test_velocity.z * um[Field_By]
+                      +
+                      (	check_bound_l(iz,1) * (REAL)(-1)
+                      + check_bound_zr(iz,1) * (REAL)(1)
+                      ) * um[Field_Bz] * um[Field_curlB_rho_y]
+                    );
+
+    du_dt[Field_Bz] += 
+                    + (REAL)(M_INV[0]/DX) * (
+                      ( check_bound_l(ix,1) * (test_velocity.x > 0) * (REAL)(-1)
+                      + check_bound_xr(ix,1) * (test_velocity.x < 0) * (REAL)(1)
+                      ) * test_velocity.x * um[Field_Bz]
+                      +
+                      (	check_bound_l(ix,1) * (REAL)(-1)
+                      + check_bound_xr(ix,1) * (REAL)(1)
+                      ) * um[Field_Bx] * um[Field_curlB_rho_z]
+                    )
+
+                    + (REAL)(M_INV[0]/DY) * (
+                      ( check_bound_l(iy,1) * (test_velocity.y > 0) * (REAL)(-1)
+                      + check_bound_yr(iy,1) * (test_velocity.y < 0) * (REAL)(1)
+                      ) * test_velocity.y * um[Field_Bz]
+                      +
+                      (	check_bound_l(iy,1) * (REAL)(-1)
+                      + check_bound_yr(iy,1) * (REAL)(1)
+                      ) * um[Field_By] * um[Field_curlB_rho_z]
+                    )
+
+                    + (REAL)(M_INV[0]/DZ) * (
+                      ( check_bound_l(iz,1) * (test_velocity.z > 0) * (REAL)(-1)
+                      + check_bound_zr(iz,1) * (test_velocity.z < 0) * (REAL)(1)
+                      ) * test_velocity.z * um[Field_Bz]
+                      +
+                      (	check_bound_l(iz,1) * (REAL)(-1)
+                      + check_bound_zr(iz,1) * (REAL)(1)
+                      ) * um[Field_Bz] * um[Field_curlB_rho_z]
+                    );
+    #endif // USE_HALL
 #endif // USE_PERIODIC
 
 }
