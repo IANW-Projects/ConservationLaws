@@ -286,7 +286,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
   #ifndef USE_HALL
     REAL4 b_bound = b_boundary(ix, iy, iz, time);
 
-    du_dt[Field_Bx] = du_dt[Field_Bx] 
+    du_dt[Field_Bx] += 
                     + (REAL)(M_INV[0]/DX) * 
                     ((check_bound_l(ix,1) * (um[Field_ux] > 0)) * (REAL)(-1) + (check_bound_xr(ix,1) * (um[Field_ux] < 0)) * (REAL)(1)) * um[Field_ux] * (um[Field_Bx] - b_bound.x)
                     + (REAL)(M_INV[0]/DY) * 
@@ -294,7 +294,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
                     + (REAL)(M_INV[0]/DZ) * 
                     ((check_bound_l(iz,1) * (um[Field_uz] > 0)) * (REAL)(-1) + (check_bound_zr(iz,1) * (um[Field_uz] < 0)) * (REAL)(1)) * um[Field_uz] * (um[Field_Bx] - b_bound.x);
 
-    du_dt[Field_By] = du_dt[Field_By] 
+    du_dt[Field_By] += 
                     + (REAL)(M_INV[0]/DX) * 
                     ((check_bound_l(ix,1) * (um[Field_ux] > 0)) * (REAL)(-1) + (check_bound_xr(ix,1) * (um[Field_ux] < 0)) * (REAL)(1)) * um[Field_ux] * (um[Field_By] - b_bound.y)
                     + (REAL)(M_INV[0]/DY) * 
@@ -302,7 +302,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
                     + (REAL)(M_INV[0]/DZ) * 
                     ((check_bound_l(iz,1) * (um[Field_uz] > 0)) * (REAL)(-1) + (check_bound_zr(iz,1) * (um[Field_uz] < 0)) * (REAL)(1)) * um[Field_uz] * (um[Field_By] - b_bound.y);
 
-    du_dt[Field_Bz] = du_dt[Field_Bz] 
+    du_dt[Field_Bz] += 
                     + (REAL)(M_INV[0]/DX) * 
                     ((check_bound_l(ix,1) * (um[Field_ux] > 0)) * (REAL)(-1) + (check_bound_xr(ix,1) * (um[Field_ux] < 0)) * (REAL)(1)) * um[Field_ux] * (um[Field_Bz] - b_bound.z)
                     + (REAL)(M_INV[0]/DY) * 
@@ -320,8 +320,8 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
     test_velocity.y = (REAL)(0.5) * um[Field_uy] - um[Field_curlB_rho_y];
     test_velocity.z = (REAL)(0.5) * um[Field_uz] - um[Field_curlB_rho_z];
 
-    du_dt[Field_Bx] = du_dt[Field_Bx]
-                    + (REAL)(M_INV[0]/DX) * (
+    du_dt[Field_Bx] +=
+                    (REAL)(M_INV[0]/DX) * (
                       ( check_bound_l(ix,1) * (test_velocity.x > 0) * (REAL)(-1)
                       + check_bound_xr(ix,1) * (test_velocity.x < 0) * (REAL)(1)
                       ) * test_velocity.x * um[Field_Bx]
@@ -351,7 +351,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
                       ) * um[Field_Bz] * um[Field_curlB_rho_x]
                     );
 
-    du_dt[Field_By] = du_dt[Field_By]
+    du_dt[Field_By] += 
                     + (REAL)(M_INV[0]/DX) * (
                       ( check_bound_l(ix,1) * (test_velocity.x > 0) * (REAL)(-1)
                       + check_bound_xr(ix,1) * (test_velocity.x < 0) * (REAL)(1)
@@ -382,7 +382,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
                       ) * um[Field_Bz] * um[Field_curlB_rho_y]
                     );
 
-    du_dt[Field_Bz] = du_dt[Field_Bz]
+    du_dt[Field_Bz] += 
                     + (REAL)(M_INV[0]/DX) * (
                       ( check_bound_l(ix,1) * (test_velocity.x > 0) * (REAL)(-1)
                       + check_bound_xr(ix,1) * (test_velocity.x < 0) * (REAL)(1)
