@@ -11,12 +11,18 @@ def compile_kernels(src_path, cmd_line, *args):
     return prg
 
 def create_ctx():
-    global ctx, queue, PYOPENCL_COMPILER_OUTPUT, devices, group_size
+    global ctx, queue, PYOPENCL_COMPILER_OUTPUT, devices, group_size, iscpu
     PYOPENCL_COMPILER_OUTPUT=1
     ctx = cl.create_some_context()
     queue = cl.CommandQueue(ctx)
     devices = ctx.devices
     group_size = devices[0].max_work_group_size
+    idstring = str(devices[0])
+    if 'CPU' in idstring or 'cpu' in idstring:
+        iscpu = True
+    else:
+        iscpu = False
+        
     return ctx, queue
 
 def run_kernel(names, g_range, l_range, *arguments):

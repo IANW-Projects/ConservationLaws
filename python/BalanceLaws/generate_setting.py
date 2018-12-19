@@ -1,7 +1,8 @@
 def generate_settings(map, keys):
+    # based on the matlab counterpart
     # Atomatically generates a formatted settings string that contains all
     # compiler optimizations and OpenCL defines of map with the given keys where 
-    # keys is a cell array, e.g. settings_mesh = generate_settings(I_Mesh, {'DX'; 'DY'; 'DZ'}
+    # keys is a list, e.g. settings_mesh = generate_settings(I_Mesh, ['DX', 'DY', 'DZ'])
 
     settings = '';
     for key in keys:

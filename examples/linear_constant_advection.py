@@ -27,7 +27,7 @@ dt = I_TI['cfl'] * 2.0 / float(N)
 num_steps = math.ceil(I_TI['final_time']/dt)
 dt = I_TI['final_time'] / num_steps
 
-I_TI['time_integrator'] = 'CarpenterKennedy2n54'
+I_TI['time_integrator'] = 'CarpenterKennedy2N54'
 
 I_TI['DT'] = dt
 I_TI['num_steps'] = num_steps
@@ -35,7 +35,7 @@ I_TI['num_steps'] = num_steps
 # I_Tech['device'] = 1
 
 I_Tech['REAL'] = 'double'
-I_Tech['REAL4'] = I_Tech['REAL'] + "4"
+I_Tech['REAL4'] = I_Tech['REAL'] + '4'
 
 I_BalanceLaws['NUM_CONSERVED_VARS'] = 1
 I_BalanceLaws['NUM_AUXILILIARY_VARS'] = 0

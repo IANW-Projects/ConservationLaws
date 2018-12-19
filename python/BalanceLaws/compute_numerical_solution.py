@@ -13,7 +13,7 @@ def compute_numerical_solution(field_u1, field_u2):
         Lerror = np.zeros((I_TI['num_steps']+1, I_BalanceLaws['NUM_CONSERVED_VARS']), dtype=np.float64)
 
 
-    if I_TI['time_integrator'] == 'CarpenterKennedy2n54':
+    if I_TI['time_integrator'] == 'CarpenterKennedy2N54':
         RK_Step_a = ['CarpenterKennedy2N54_1a', 'CarpenterKennedy2N54_2a', \
                      'CarpenterKennedy2N54_3a', 'CarpenterKennedy2N54_4a', \
                      'CarpenterKennedy2N54_5a']
@@ -128,7 +128,6 @@ def compute_numerical_solution(field_u1, field_u2):
             norm_output[:] = 0
             cl.run_kernel('norm_infty', I_Tech['g_range'], I_Tech['l_range'], field_u2, norm_output, components)
             rel_err[comp] = abs_err[comp] / np.max(norm_output)
-            print(abs_err)
 
     I_Results['abs_err'] = abs_err
     I_Results['rel_err'] = rel_err

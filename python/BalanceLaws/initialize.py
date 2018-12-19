@@ -22,10 +22,14 @@ def initialize():
 
     num_nodes = I_Mesh['NODES_X']*I_Mesh['NODES_Y']*I_Mesh['NODES_Z']
 
-    if (num_nodes > cl.group_size):
-        group_size = cl.group_size
+    if cl.iscpu:
+        group_size=16
     else:
-        group_size = 2**floor(log(num_nodes) / log(2))
+        if (num_nodes > cl.group_size):
+            group_size = cl.group_size
+        else:
+            group_size = 2**floor(log(num_nodes) / log(2))
+    
 
     num_nodes_pad = math.ceil(num_nodes/group_size)*group_size
     num_groups = math.ceil(num_nodes_pad/group_size)
@@ -34,8 +38,8 @@ def initialize():
     I_Tech['num_groups'] = int(num_groups)
     I_Tech['W_SIZE'] = int(group_size)
 
-    I_Tech['g_range'] = [I_Tech['num_nodes_pad'], 1,1]  
-    I_Tech['l_range' ] = [I_Tech['W_SIZE'], 1,1]
+    I_Tech['g_range'] = [I_Tech['num_nodes_pad'],1,1]  
+    I_Tech['l_range' ] = [I_Tech['W_SIZE'],1,1]
 
 
     if I_Tech['REAL'] == 'float':
