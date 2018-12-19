@@ -17,16 +17,24 @@ def plot_2D(u, CSs, NODES_X, NODES_Y, NODES_Z, plot_title, field_idx1, field_idx
         if CS[0] == 'x':
             title = plot_title + ' X-Cross-Section'
             v = field_cs[:,:,int(math.floor(NODES_X)/2)]
+            xtext = 'Y'
+            ytext = 'Z'
         if CS[0] == 'y':
             title = plot_title + ' Y-Cross-Section'
             v = field_cs[:, int(math.floor(NODES_Y)/2)]
+            xtext = 'X'
+            ytext = 'Z'
         if CS[0] =='z':
+            ytext = 'Y'
+            xtext = 'X'
             title = plot_title + ' Z-Cross-Section'
             v = field_cs[int(math.floor(NODES_Z)/2), :, :]
 
         a = plt.pcolor(v)
         plt.colorbar(a)
         plt.title(title)
+        plt.xlabel(xtext + " Axis (Nodes)")
+        plt.ylabel(ytext + " Axis (Nodes)")
     plt.show()
 
 	
