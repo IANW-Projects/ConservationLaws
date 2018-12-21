@@ -14,6 +14,7 @@ REAL constant GAMMA = (REAL)(1.4);
 /* available numerical volume fluxes:
   - CENTRAL
   - DucrosEtAl
+  - KuyaTotaniKawai_QCC
 
 TODO: Finite difference fluxes
   - Morinishi
@@ -23,7 +24,7 @@ TODO: Entropy conservative fluxes
   - Ismail and Roe
   - Chandrashekar
 */
-#define USE_FLUX_DucrosEtAl
+#define USE_FLUX_KuyaTotaniKawai_QCC
 
 
 enum Fields {
