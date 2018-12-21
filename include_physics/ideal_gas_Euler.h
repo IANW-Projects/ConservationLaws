@@ -82,6 +82,21 @@ inline REAL compute_pressure(REAL rho, REAL ux, REAL uy, REAL uz, REAL E) {
   }
 
 #elif defined USE_FLUX_DucrosEtAl
+/* Kinetic energy preserving numerical fluxes of
+@article{ducros2000high,
+  title={High-Order Fluxes for Conservative Skew-Symmetric-Like Schemes in
+         Structured Meshes: {A}pplication to Compressible Flows},
+  author={Ducros, F and Laporte, F and Souleres, T and Guinot, V and Moinat, P
+          and Caruelle, B},
+  journal={Journal of Computational Physics},
+  volume={161},
+  number={1},
+  pages={114--139},
+  year={2000},
+  publisher={Elsevier},
+  doi={10.1006/jcph.2000.6492}
+}
+*/
 
   inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
