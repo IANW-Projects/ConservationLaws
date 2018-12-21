@@ -14,7 +14,7 @@ I_Mesh('YMIN') = 0.0; I_Mesh('YMAX') = 2.0;
 I_Mesh('ZMIN') = 0.0; I_Mesh('ZMAX') = 1.0;
 
 I_TI('final_time') = 100;
-I_TI('cfl') = 0.95;
+I_TI('cfl') = 0.85;
 
 dt = I_TI('cfl') * 2.0 / double(I_Mesh('NODES_Y'));
 num_steps = ceil(I_TI('final_time')/dt);
@@ -46,7 +46,7 @@ end
 I_RunOps('periodic') = 'USE_PERIODIC'; % 'NONE', 'USE_PERIODIC'; must be set to 'USE_PERIODIC'
                                        % if periodic boundary conditions should be used
 
-I_RunOps('order') = 4;
+I_RunOps('order') = 6;
 I_RunOps('conservation_laws') = 'ideal_MHD';
 I_RunOps('testcase') = 'alfven_periodic';
 I_RunOps('plot_numerical_solution') = 'z';
