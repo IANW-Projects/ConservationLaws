@@ -1,0 +1,14 @@
+# MatCL files
+matlab/*.mexa64
+matlab/*.mexmaci64
+matlab/*.mexw32
+matlab/*.mexw64
+
+# temporary matlab files
+*/*.m~
+
+# python files
+__pycache__/
+*.py[cod]
+*$py.class
+
