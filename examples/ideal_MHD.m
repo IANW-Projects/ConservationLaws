@@ -46,7 +46,7 @@ end
 I_RunOps('periodic') = 'USE_PERIODIC'; % 'NONE', 'USE_PERIODIC'; must be set to 'USE_PERIODIC'
                                        % if periodic boundary conditions should be used
 
-I_RunOps('order') = 6;
+I_RunOps('order') = 6; I_RunOps('operator_form') = 'classical'; % order: 2, 4, 6; operator_form: classical, extended
 I_RunOps('conservation_laws') = 'ideal_MHD';
 I_RunOps('testcase') = 'alfven_periodic';
 I_RunOps('plot_numerical_solution') = 'z';

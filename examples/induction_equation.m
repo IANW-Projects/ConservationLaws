@@ -47,8 +47,8 @@ end
 
 I_RunOps('periodic') = 'NONE'; % 'NONE', 'USE_PERIODIC'; must be set to 'USE_PERIODIC'
                                        % if periodic boundary conditions should be used
-                                       
-I_RunOps('order') = 4;
+
+I_RunOps('order') = 4; I_RunOps('operator_form') = 'classical'; % order: 2, 4, 6; operator_form: classical, extended
 I_RunOps('conservation_laws') = 'induction_equation';
 I_RunOps('testcase') = 'hall_periodic';
 I_RunOps('plot_numerical_solution') = 'z';
@@ -78,4 +78,3 @@ if ismember(lower(char(I_RunOps('plot_numerical_solution'))),{'x','y','z','xy', 
     plot_2D(field_u1_reshaped, I_RunOps('plot_numerical_solution'),...
         I_Mesh('NODES_X'), I_Mesh('NODES_Y'), I_Mesh('NODES_Z'), 'Numerical Solution', 1, 3);
 end
-
