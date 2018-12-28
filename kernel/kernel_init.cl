@@ -7,6 +7,4 @@ kernel void init(global REAL *u) {
    uint iz = get_global_id(2);
 
    init_fields(ix, iy, iz, u);
-
 }
-

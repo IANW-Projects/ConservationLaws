@@ -82,6 +82,13 @@ inline uint4 calc_sub_idx(uint idx){
   return s_idx;
 }
 
+
+#if (defined USE_ARRAY_OF_STRUCTURES) && (defined USE_STRUCTURE_OF_ARRAYS)
+
+#error "Error in utils.h: You cannot USE_ARRAY_OF_STRUCTURES and USE_STRUCTURE_OF_ARRAYS."
+
+#elif defined USE_ARRAY_OF_STRUCTURES
+
 // Return the value of the ith (conserved or auxiliary) variable given by u at (ix, iy, iz).
 inline REAL get_field_component(uint ix, uint iy, uint iz, uint i, global REAL const *u){
 
@@ -113,6 +120,47 @@ inline void aypz_field_component(uint ix, uint iy, uint iz, uint i,  global REAL
 
   u1[idx*NUM_TOTAL_VARS + i] = a * u2[idx*NUM_TOTAL_VARS + i] + field_component;
 }
+
+#elif defined USE_STRUCTURE_OF_ARRAYS
+
+// Return the value of the ith (conserved or auxiliary) variable given by u at (ix, iy, iz).
+inline REAL get_field_component(uint ix, uint iy, uint iz, uint i, global REAL const *u){
+
+  uint idx = calc_idx(ix, iy, iz);
+
+  return u[idx + i*NODES_X*NODES_Y*NODES_Z];
+}
+
+// Set the ith component of u2 at (ix, iy, iz) to field_compoennt.
+inline void set_field_component(uint ix, uint iy, uint iz, uint i, global REAL *u, REAL field_component){
+
+  uint idx = calc_idx(ix, iy, iz);
+
+  u[idx + i*NODES_X*NODES_Y*NODES_Z] = field_component;
+}
+
+// Set the ith component of u at (ix, iy, iz) to a*u+field_component.
+inline void axpy_field_component(uint ix, uint iy, uint iz, uint i, REAL a, global REAL *u, REAL field_component){
+
+  uint idx = calc_idx(ix, iy, iz);
+
+  u[idx + i*NODES_X*NODES_Y*NODES_Z] = a * u[idx + i*NODES_X*NODES_Y*NODES_Z] + field_component;
+}
+
+// Set the ith component of u1 at (ix, iy, iz) to a*u2+field_compoennt.
+inline void aypz_field_component(uint ix, uint iy, uint iz, uint i,  global REAL *u1, REAL a, global REAL const *u2, REAL field_component){
+
+  uint idx = calc_idx(ix, iy, iz);
+
+  u1[idx + i*NODES_X*NODES_Y*NODES_Z] = a * u2[idx + i*NODES_X*NODES_Y*NODES_Z] + field_component;
+}
+
+#else
+
+#error "Error in utils.h: You must USE_ARRAY_OF_STRUCTURES or USE_STRUCTURE_OF_ARRAYS."
+
+#endif // USE_ARRAY_OF_STRUCTURES
+
 
 #ifdef USE_PERIODIC
 
