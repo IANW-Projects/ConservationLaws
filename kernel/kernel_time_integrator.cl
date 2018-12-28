@@ -15,7 +15,7 @@ inline void add_volume_terms(REAL time, uint ix, uint iy, uint iz, global REAL c
   get_field(ix, iy, iz, 0, 0, 0, u, um);
 
   // the variables at remote positions used to compute the time derivative at (ix, iy, iz)
-  REAL uk[NUM_TOTAL_VARS] = {0.0};;
+  REAL uk[NUM_TOTAL_VARS] = {0.0};
 
   // the time derivative of the conserved variables, initalised as zero
   REAL du[NUM_CONSERVED_VARS] = {0.0};

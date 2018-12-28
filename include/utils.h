@@ -83,7 +83,7 @@ inline uint4 calc_sub_idx(uint idx){
 }
 
 // Return the value of the ith (conserved or auxiliary) variable given by u at (ix, iy, iz).
-inline REAL get_field_component(uint ix, uint iy, uint iz, uint i, global REAL *u){
+inline REAL get_field_component(uint ix, uint iy, uint iz, uint i, global REAL const *u){
 
   uint idx = calc_idx(ix, iy, iz);
 
@@ -96,7 +96,6 @@ inline void set_field_component(uint ix, uint iy, uint iz, uint i, global REAL *
   uint idx = calc_idx(ix, iy, iz);
 
   u[idx*NUM_TOTAL_VARS + i] = field_component;
-
 }
 
 // Set the ith component of u at (ix, iy, iz) to a*u+field_component.
@@ -108,7 +107,7 @@ inline void axpy_field_component(uint ix, uint iy, uint iz, uint i, REAL a, glob
 }
 
 // Set the ith component of u1 at (ix, iy, iz) to a*u2+field_compoennt.
-inline void aypz_field_component(uint ix, uint iy, uint iz, uint i,  global REAL *u1, REAL a, global REAL *u2, REAL field_component){
+inline void aypz_field_component(uint ix, uint iy, uint iz, uint i,  global REAL *u1, REAL a, global REAL const *u2, REAL field_component){
 
   uint idx = calc_idx(ix, iy, iz);
 
@@ -144,10 +143,8 @@ inline void get_field(uint ix, uint iy, uint iz, int bx, int by, int bz, global 
   uint n_iz = iz + bz + (bz < 0) * (!check_interior_l( iz, abs(bz))) * NODES_Z
                       - (bz > 0) * (!check_interior_zr(iz, abs(bz))) * NODES_Z;
 
-  uint idx = calc_idx(n_ix, n_iy, n_iz);
-
   for (uint i = 0; i < NUM_TOTAL_VARS; ++i) {
-    field[i] = u[idx*NUM_TOTAL_VARS + i];
+    field[i] = get_field_component(n_ix, n_iy, n_iz, i, u);
   }
 }
 
@@ -197,14 +194,13 @@ inline void get_field(uint ix, uint iy, uint iz, int bx, int by, int bz, global 
 
   uint n_iz = iz + ((bz < 0)*check_interior_l(iz,abs(bz)) + (bz > 0)*check_interior_zr(iz,abs(bz)))*bz;
 
-  uint idx = calc_idx(n_ix, n_iy, n_iz);
-
   for (uint i = 0; i < NUM_TOTAL_VARS; ++i) {
-    field[i] = u[idx*NUM_TOTAL_VARS + i];
+    field[i] = get_field_component(n_ix, n_iy, n_iz, i, u);
   }
 }
 
 #endif // USE_PERIODIC
+
 
 
 //--------------------------------------------------------------------------------------------------
@@ -227,5 +223,6 @@ inline REAL logmean(REAL x, REAL y){
 
   return (a+b) / (2*F);
 }
+
 
 #endif //UTILS_H
