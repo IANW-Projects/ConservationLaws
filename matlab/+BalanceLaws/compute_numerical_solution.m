@@ -174,9 +174,9 @@ switch time_integrator_num_fields
     case 3
         num_nodes = I_Mesh('NODES_X')*I_Mesh('NODES_Y')*I_Mesh('NODES_Z');
         if strcmp(I_Tech('REAL'),'float')
-            field_u3 = single(zeros(1, I_Tech('num_nodes_pad')*I_BalanceLaws('NUM_TOTAL_VARS')));
+            field_u3 = single(zeros(1, I_Tech('NUM_NODES_PAD')*I_BalanceLaws('NUM_TOTAL_VARS')));
         else
-            field_u3 = double(zeros(1, I_Tech('num_nodes_pad')*I_BalanceLaws('NUM_TOTAL_VARS')));
+            field_u3 = double(zeros(1, I_Tech('NUM_NODES_PAD')*I_BalanceLaws('NUM_TOTAL_VARS')));
         end
 
         if I_RunOps('save_integrals_over_time')

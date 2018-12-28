@@ -35,8 +35,8 @@ function [] = prepare_vars()
     valueSet = {'' 0 0 0 0 0};
     I_BalanceLaws = containers.Map(keySet, valueSet,'UniformValues',false);
 
-    keySet = {'device', 'REAL', 'optimizations', 'num_nodes_pad', 'num_groups','W_SIZE', 'g_range', 'l_range', 'memory_layout'};
-    valueSet = {0 '' '' 0 0 0 0 0 'USE_ARRAY_OF_STRUCTURES'};
+    keySet = {'device', 'REAL', 'optimizations', 'NUM_NODES_PAD', 'num_groups','W_SIZE', 'g_range', 'l_range', 'memory_layout'};
+    valueSet = {0 '' '' 0 0 0 0 0 'USE_STRUCTURE_OF_ARRAYS'};
     I_Tech = containers.Map(keySet, valueSet,'UniformValues',false);
 
     keySet = {'order', 'operator_form','conservation_laws', 'testcase', 'periodic', 'plot_numerical_solution', 'save_fields', 'save_integrals_over_time', 'norm'};

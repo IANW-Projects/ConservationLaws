@@ -128,7 +128,7 @@ inline REAL get_field_component(uint ix, uint iy, uint iz, uint i, global REAL c
 
   uint idx = calc_idx(ix, iy, iz);
 
-  return u[idx + i*NODES_X*NODES_Y*NODES_Z];
+  return u[idx + i*NUM_NODES_PAD];
 }
 
 // Set the ith component of u2 at (ix, iy, iz) to field_compoennt.
@@ -136,7 +136,7 @@ inline void set_field_component(uint ix, uint iy, uint iz, uint i, global REAL *
 
   uint idx = calc_idx(ix, iy, iz);
 
-  u[idx + i*NODES_X*NODES_Y*NODES_Z] = field_component;
+  u[idx + i*NUM_NODES_PAD] = field_component;
 }
 
 // Set the ith component of u at (ix, iy, iz) to a*u+field_component.
@@ -144,7 +144,7 @@ inline void axpy_field_component(uint ix, uint iy, uint iz, uint i, REAL a, glob
 
   uint idx = calc_idx(ix, iy, iz);
 
-  u[idx + i*NODES_X*NODES_Y*NODES_Z] = a * u[idx + i*NODES_X*NODES_Y*NODES_Z] + field_component;
+  u[idx + i*NUM_NODES_PAD] = a * u[idx + i*NUM_NODES_PAD] + field_component;
 }
 
 // Set the ith component of u1 at (ix, iy, iz) to a*u2+field_compoennt.
@@ -152,7 +152,7 @@ inline void aypz_field_component(uint ix, uint iy, uint iz, uint i,  global REAL
 
   uint idx = calc_idx(ix, iy, iz);
 
-  u1[idx + i*NODES_X*NODES_Y*NODES_Z] = a * u2[idx + i*NODES_X*NODES_Y*NODES_Z] + field_component;
+  u1[idx + i*NUM_NODES_PAD] = a * u2[idx + i*NUM_NODES_PAD] + field_component;
 }
 
 #else

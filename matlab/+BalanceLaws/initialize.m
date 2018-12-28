@@ -45,20 +45,20 @@ function [field_u1, field_u2] = initialize()
     num_nodes_pad = ceil(double(num_nodes)/group_size)*group_size;
     num_groups = ceil(num_nodes_pad/group_size);
 
-    I_Tech('num_nodes_pad') = num_nodes_pad;
+    I_Tech('NUM_NODES_PAD') = uint32(num_nodes_pad);
     I_Tech('num_groups') = num_groups;
     I_Tech('W_SIZE') = uint16(group_size);
 
     % Global and local range for dot product and norm
-    I_Tech('g_range') = uint32([I_Tech('num_nodes_pad'), 1, 1]);
+    I_Tech('g_range') = uint32([I_Tech('NUM_NODES_PAD'), 1, 1]);
     I_Tech('l_range') = uint32([I_Tech('W_SIZE'), 1, 1]);
 %%
     if strcmp(I_Tech('REAL'),'float')
-        field_u1 = single(zeros(1, I_Tech('num_nodes_pad')*I_BalanceLaws('NUM_TOTAL_VARS')));
-        field_u2 = single(zeros(1, I_Tech('num_nodes_pad')*I_BalanceLaws('NUM_TOTAL_VARS')));
+        field_u1 = single(zeros(1, I_Tech('NUM_NODES_PAD')*I_BalanceLaws('NUM_TOTAL_VARS')));
+        field_u2 = single(zeros(1, I_Tech('NUM_NODES_PAD')*I_BalanceLaws('NUM_TOTAL_VARS')));
     else
-        field_u1 = double(zeros(1, I_Tech('num_nodes_pad')*I_BalanceLaws('NUM_TOTAL_VARS')));
-        field_u2 = double(zeros(1, I_Tech('num_nodes_pad')*I_BalanceLaws('NUM_TOTAL_VARS')));
+        field_u1 = double(zeros(1, I_Tech('NUM_NODES_PAD')*I_BalanceLaws('NUM_TOTAL_VARS')));
+        field_u2 = double(zeros(1, I_Tech('NUM_NODES_PAD')*I_BalanceLaws('NUM_TOTAL_VARS')));
     end
 
 %%
@@ -95,7 +95,7 @@ function [field_u1, field_u2] = initialize()
     kernel_path_list = [kernel_path_list, {sprintf('../include_physics/%s.h', I_RunOps('conservation_laws'))}];
     kernel_path_list = [kernel_path_list, {'../kernel/kernel_init.cl'}];
 
-    settings_tech = generate_settings(I_Tech, {'REAL'; 'REAL4'; 'optimizations'; 'memory_layout'});
+    settings_tech = generate_settings(I_Tech, {'REAL'; 'REAL4'; 'optimizations'; 'memory_layout'; 'NUM_NODES_PAD'});
     settings_mesh = generate_settings(I_Mesh, {'DX'; 'DY'; 'DZ';...
                                                'NODES_X'; 'NODES_Y'; 'NODES_Z';...
                                                'XMIN'; 'XMAX'; 'YMIN'; 'YMAX'; 'ZMAX'; 'ZMIN'});
@@ -138,7 +138,7 @@ function [field_u1, field_u2] = initialize()
     kernel_path_list = [kernel_path_list, {'../kernel/kernel_time_integrator.cl'}];
     kernel_path_list = [kernel_path_list, {'../kernel/kernel_norm.cl'}];
 
-    settings_tech = generate_settings(I_Tech, {'REAL'; 'REAL4'; 'W_SIZE'; 'optimizations'; 'memory_layout'});
+    settings_tech = generate_settings(I_Tech, {'REAL'; 'REAL4'; 'W_SIZE'; 'optimizations'; 'memory_layout'; 'NUM_NODES_PAD'});
     settings_mesh = generate_settings(I_Mesh, {'DX'; 'DY'; 'DZ';...
                                                'NODES_X'; 'NODES_Y'; 'NODES_Z';...
                                                'XMIN'; 'XMAX'; 'YMIN'; 'YMAX'; 'ZMAX'; 'ZMIN'});

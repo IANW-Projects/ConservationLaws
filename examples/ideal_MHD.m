@@ -28,9 +28,9 @@ I_TI('DT') = dt;
 I_TI('num_steps') = num_steps;
 
 I_Tech('device') = 1;
-I_Tech('REAL') = 'double'; % float
+I_Tech('REAL') = 'double'; % float, double
 I_Tech('REAL4') = sprintf('%s4',I_Tech('REAL')); %Vector datatype
-I_Tech('memory_layout') = 'USE_ARRAY_OF_STRUCTURES'; % USE_ARRAY_OF_STRUCTURES, USE_STRUCTURE_OF_ARRAYS
+I_Tech('memory_layout') = 'USE_STRUCTURE_OF_ARRAYS'; % USE_ARRAY_OF_STRUCTURES, USE_STRUCTURE_OF_ARRAYS
 
 % Use as kernel defines to keep consistency with header files?
 I_BalanceLaws('NUM_CONSERVED_VARS') = 8;
