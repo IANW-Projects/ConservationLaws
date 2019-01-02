@@ -45,7 +45,24 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 
 inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL *u, REAL *du_dt) {
 
-  // nothing to do in a periodic domain
+  // For periodic boundary conditions and a single block, no surface term has to be used.
+  #ifndef USE_PERIODIC
+
+    REAL um[NUM_TOTAL_VARS] = {0};
+    get_field(ix, iy, iz, 0, 0, 0, u, um);
+
+    REAL u_bound = u_boundary(ix, iy, iz, time);
+
+    // Apply the usual upwind numerical flux at the boundaries.
+    du_dt[Field_u] += + (REAL)(M_INV[0]/DX) *
+                        ((check_bound_l(ix,1) * (a_x > 0)) * (REAL)(-1) + (check_bound_xr(ix,1) * (a_x < 0)) * (REAL)(1)) * a_x * (um[Field_u] - u_bound)
+                      + (REAL)(M_INV[0]/DY) *
+                        ((check_bound_l(iy,1) * (a_y > 0)) * (REAL)(-1) + (check_bound_yr(iy,1) * (a_y < 0)) * (REAL)(1)) * a_y * (um[Field_u] - u_bound)
+                      + (REAL)(M_INV[0]/DZ) *
+                        ((check_bound_l(iz,1) * (a_z > 0)) * (REAL)(-1) + (check_bound_zr(iz,1) * (a_z < 0)) * (REAL)(1)) * a_z * (um[Field_u] - u_bound);
+
+  #endif // USE_PERIODIC
+
   return;
 }
 
@@ -65,10 +82,9 @@ inline void compute_auxiliary_variables(REAL time, uint ix, uint iy, uint iz, gl
 
 inline void analytical_solution(uint ix, uint iy, uint iz, global REAL *u, REAL time) {
 
-	REAL u_ana =  u_analytical(ix, iy, iz, time);
+  REAL u_ana =  u_analytical(ix, iy, iz, time);
 
-	set_field_component(ix, iy, iz, Field_u, u, u_ana);
-	
+  set_field_component(ix, iy, iz, Field_u, u, u_ana);
 }
 
 
