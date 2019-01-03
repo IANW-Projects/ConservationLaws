@@ -207,4 +207,25 @@ inline void get_field(uint ix, uint iy, uint iz, int bx, int by, int bz, global 
 #endif // USE_PERIODIC
 
 
+//--------------------------------------------------------------------------------------------------
+// Mean values
+//--------------------------------------------------------------------------------------------------
+
+// logarithmic mean (x - y) / (log(x) - log(y))
+inline REAL logmean(REAL x, REAL y){
+
+  REAL a = min(x, y);
+  REAL b = max(x, y);
+
+  // see Ismail, Roe (2009): Affordable, entropy consistent...
+  REAL zeta = a / b;
+  REAL f = (zeta-1) / (zeta+1);
+  REAL u = f*f;
+
+  REAL F = (u <  (REAL)(1.0e-2)) * (1 + u * ((REAL)(1.0/3.0) + u * ((REAL)(1.0/5.0) + u * (REAL)(1.0/7.0))))
+         + (u >= (REAL)(1.0e-2)) * (log(zeta) / (2*f));
+
+  return (a+b) / (2*F);
+}
+
 #endif //UTILS_H
