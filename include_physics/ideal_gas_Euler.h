@@ -355,6 +355,89 @@ inline REAL compute_pressure(REAL rho, REAL ux, REAL uy, REAL uz, REAL E) {
                                   - (REAL)(-0.25) * (k_rho*k_uz*(k_ux*k_ux+k_uy*k_uy+k_uz*k_uz) + m_rho*m_uz*(m_ux*m_ux+m_uy*m_uy+m_uz*m_uz));
   }
 
+#elif defined USE_FLUX_Pirozzoli
+/* Kinetic energy preserving numerical fluxes of
+@article{pirozzoli2011numerical,
+  title={Numerical Methods for High-Speed Flows},
+  author={Pirozzoli, Sergio},
+  journal={Annual Review of Fluid Mechanics},
+  volume={43},
+  pages={163--194},
+  year={2011},
+  publisher={Annual Reviews},
+  doi={10.1146/annurev-fluid-122109-160718}
+}
+*/
+
+  inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
+
+      REAL m_rho = um[Field_rho];
+      REAL m_E   = um[Field_E];
+      REAL m_ux  = um[Field_ux];
+      REAL m_uy  = um[Field_uy];
+      REAL m_uz  = um[Field_uz];
+      REAL m_p   = um[Field_p];
+
+      REAL k_rho = uk[Field_rho];
+      REAL k_E   = uk[Field_E];
+      REAL k_ux  = uk[Field_ux];
+      REAL k_uy  = uk[Field_uy];
+      REAL k_uz  = uk[Field_uz];
+      REAL k_p   = uk[Field_p];
+
+      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_ux + m_ux);
+      ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_ux + m_ux) + (REAL)(-0.5) * (k_p + m_p);
+      ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uy + m_uy);
+      ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uz + m_uz);
+      ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * ((k_E+k_p)/k_rho + (m_E+m_p)/m_rho) * (k_ux + m_ux);
+  }
+
+  inline void compute_ext_num_flux_y(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
+
+      REAL m_rho = um[Field_rho];
+      REAL m_E   = um[Field_E];
+      REAL m_ux  = um[Field_ux];
+      REAL m_uy  = um[Field_uy];
+      REAL m_uz  = um[Field_uz];
+      REAL m_p   = um[Field_p];
+
+      REAL k_rho = uk[Field_rho];
+      REAL k_E   = uk[Field_E];
+      REAL k_ux  = uk[Field_ux];
+      REAL k_uy  = uk[Field_uy];
+      REAL k_uz  = uk[Field_uz];
+      REAL k_p   = uk[Field_p];
+
+      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uy + m_uy);
+      ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_ux + m_ux);
+      ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uy + m_uy) + (REAL)(-0.5) * (k_p + m_p);
+      ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uz + m_uz);
+      ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * ((k_E+k_p)/k_rho + (m_E+m_p)/m_rho) * (k_uy + m_uy);
+  }
+
+  inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
+
+      REAL m_rho = um[Field_rho];
+      REAL m_E   = um[Field_E];
+      REAL m_ux  = um[Field_ux];
+      REAL m_uy  = um[Field_uy];
+      REAL m_uz  = um[Field_uz];
+      REAL m_p   = um[Field_p];
+
+      REAL k_rho = uk[Field_rho];
+      REAL k_E   = uk[Field_E];
+      REAL k_ux  = uk[Field_ux];
+      REAL k_uy  = uk[Field_uy];
+      REAL k_uz  = uk[Field_uz];
+      REAL k_p   = uk[Field_p];
+
+      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uz + m_uz);
+      ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_ux + m_ux);
+      ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uy + m_uy);
+      ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uz + m_uz) + (REAL)(-0.5) * (k_p + m_p);
+      ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * ((k_E+k_p)/k_rho + (m_E+m_p)/m_rho) * (k_uz + m_uz);
+  }
+
 #elif defined USE_FLUX_KuyaTotaniKawai_QCC
 /* Kinetic energy preserving numerical fluxes of
 @article{kuya2018kinetic,
