@@ -20,12 +20,13 @@ REAL constant GAMMA = (REAL)(1.4);
     - DucrosEtAl (2000)
     - KennedyGruber (2008)
     - Morinishi (2010)
+    - Pirozzoli (2011)
     - KuyaTotaniKawai_QCC (2018)
 
 TODO: Finite difference fluxes
-  - Pirozzoli (2011)
+  - KravchenkoMoin (1997)
 TODO: Entropy conservative fluxes
-  - Ranocha
+  - Ranocha (2018)
 */
 #define USE_FLUX_KennedyGruber
 
