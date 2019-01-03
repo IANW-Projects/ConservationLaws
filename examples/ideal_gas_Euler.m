@@ -7,7 +7,7 @@ addpath('../matlab')
 BalanceLaws.prepare_vars();
 global I_Mesh I_TI I_BalanceLaws I_Tech I_RunOps I_Results
 
-N = uint32(50);
+N = uint32(64);
 I_Mesh('NODES_X') = N; I_Mesh('NODES_Y') = N; I_Mesh('NODES_Z') = N;
 I_Mesh('XMIN') = 0.0; I_Mesh('XMAX') = 6.283185307179586; % = 2*pi
 I_Mesh('YMIN') = 0.0; I_Mesh('YMAX') = 6.283185307179586;
