@@ -12,9 +12,12 @@ REAL constant GAMMA = (REAL)(1.4);
 #define NUM_TOTAL_VARS (NUM_CONSERVED_VARS + NUM_AUXILIARY_VARS)
 
 /* available numerical volume fluxes:
-  - CENTRAL
-  - DucrosEtAl
-  - KuyaTotaniKawai_QCC
+  - entropy conservative fluxes
+    - Chandrashekar
+  - other fluxes
+    - CENTRAL
+    - DucrosEtAl
+    - KuyaTotaniKawai_QCC
 
 TODO: Finite difference fluxes
   - Morinishi
@@ -22,7 +25,6 @@ TODO: Finite difference fluxes
   - Pirozzoli
 TODO: Entropy conservative fluxes
   - Ismail and Roe
-  - Chandrashekar
 */
 #define USE_FLUX_KuyaTotaniKawai_QCC
 
