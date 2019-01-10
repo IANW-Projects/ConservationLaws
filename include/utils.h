@@ -165,7 +165,7 @@ inline void aypz_field_component(uint ix, uint iy, uint iz, uint i,  global REAL
 #ifdef USE_PERIODIC
 
 // Calculate the boundary index offset of the row of the derivative etc. operator compared to the central one
-// in x,y,z direction. Since // periodic boundaries are used, the central row is applied.
+// in x,y,z direction. Since periodic boundaries are used, the central row is applied.
 inline int get_bound_x(uint ix, uint num_bounds) {
 
   return (int)(0);
@@ -266,8 +266,8 @@ inline REAL logmean(REAL x, REAL y){
   REAL f = (zeta-1) / (zeta+1);
   REAL u = f*f;
 
-  REAL F = (u <  (REAL)(1.0e-2)) * (1 + u * ((REAL)(1.0/3.0) + u * ((REAL)(1.0/5.0) + u * (REAL)(1.0/7.0))))
-         + (u >= (REAL)(1.0e-2)) * (log(zeta) / (2*f));
+  REAL F = (u <  (REAL)(1.0e-2)) ? (1 + u * ((REAL)(1.0/3.0) + u * ((REAL)(1.0/5.0) + u * (REAL)(1.0/7.0))))
+                                 : (log(zeta) / (2*f));
 
   return (a+b) / (2*F);
 }
