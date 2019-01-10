@@ -301,7 +301,7 @@ kernel void CarpenterKennedy2N54_4a(global REAL *u1, global REAL *u2, global REA
     uint iy = get_global_id(1);
     uint iz = get_global_id(2);
 
-    REAL du[NUM_CONSERVED_VARS] = {0.0};;
+    REAL du[NUM_CONSERVED_VARS] = {0.0};
 
     REAL coef_A = (REAL)(-3550918686646.0 / 2091501179385.0);
 
@@ -337,7 +337,7 @@ kernel void CarpenterKennedy2N54_5a(global REAL *u1, global REAL *u2, global REA
     uint iy = get_global_id(1);
     uint iz = get_global_id(2);
 
-    REAL du[NUM_CONSERVED_VARS] = {0.0};;
+    REAL du[NUM_CONSERVED_VARS] = {0.0};
 
     REAL coef_A = (REAL)(-1275806237668.0 / 842570457699.0);
 
