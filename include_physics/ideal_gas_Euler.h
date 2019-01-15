@@ -923,10 +923,21 @@ inline void compute_auxiliary_variables(REAL time, uint ix, uint iy, uint iz, gl
 
 inline void analytical_solution(uint ix, uint iy, uint iz, global REAL *u, REAL time) {
 
-  // No analytical solution
+  /*// No analytical solution
   for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
     set_field_component(ix, iy, iz, i, u, (REAL)(0));
-  }
+  }*/
+
+  REAL rho_ana = rho_analytical(ix, iy, iz, time);
+  REAL4 u_ana = u_analytical(ix, iy, iz, time);
+  REAL p_ana = p_analytical(ix, iy, iz, time);
+  REAL E_ana = compute_energy(p_ana, rho_ana, u_ana.x, u_ana.y, u_ana.z);
+
+  set_field_component(ix, iy, iz, Field_rho, u, rho_ana);
+  set_field_component(ix, iy, iz, Field_rho_ux, u, rho_ana*u_ana.x);
+  set_field_component(ix, iy, iz, Field_rho_uy, u, rho_ana*u_ana.y);
+  set_field_component(ix, iy, iz, Field_rho_uz, u, rho_ana*u_ana.z);
+  set_field_component(ix, iy, iz, Field_E, u, E_ana);
 }
 
 #endif // IDEAL_GAS_EULER
