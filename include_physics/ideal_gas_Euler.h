@@ -904,6 +904,31 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 // Surface terms
 //--------------------------------------------------------------------------------------------------
 
+/* choice of boundary flux term implementation:
+  - USE_BOUNDARY_FLUX_TERMS_MULTIPLICATION_BY_BOOLS
+  - USE_BOUNDARY_FLUX_TERMS_IF
+
+TODO: Cleanup?
+*/
+#define USE_BOUNDARY_FLUX_TERMS_IF
+/*
+- Possibility 1: `USE_BOUNDARY_FLUX_TERMS_MULTIPLICATION_BY_BOOLS`
+
+  |                       Device, Version                      | Runtime |
+  |:----------------------------------------------------------:|--------:|
+  | OpenCL 1.2 CUDA 9.1.84, GeForce GTX 1070 Ti                |   2.6 s |
+  | OpenCL 2.1 LINUX, Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz |  11.2 s |
+  | OpenCL 2.1, Intel(R) Gen9 HD Graphics NEO                  |  12.4 s |
+
+- Possibility 2: `USE_BOUNDARY_FLUX_TERMS_IF`
+
+  |                       Device, Version                      | Runtime |
+  |:----------------------------------------------------------:|--------:|
+  | OpenCL 1.2 CUDA 9.1.84, GeForce GTX 1070 Ti                |   2.4 s |
+  | OpenCL 2.1 LINUX, Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz |  11.0 s |
+  | OpenCL 2.1, Intel(R) Gen9 HD Graphics NEO                  |  12.4 s |
+*/
+
 
 #if defined USE_BOUNDARY_FLUX_Suliciu
 /* Suliciu relaxation solver (numerical flux) of
@@ -969,7 +994,8 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
       REAL rs_eps = r_eps + (s_p*s_p - r_p*r_p) / (2*r_c*r_c);
 
       // compute fluxes
-      // if (...) {...} else if (...) {...} etc.?
+#if defined USE_BOUNDARY_FLUX_TERMS_MULTIPLICATION_BY_BOOLS
+
       REAL f_rho   = (0 <= l_ux-l_c_rho) *
                       (l_rho * l_ux)
                    + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
@@ -1010,6 +1036,49 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
                       (0.5 * ls_rho * (s_ux*s_ux + r_uy*r_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_ux
                    + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
                       (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_ux;
+
+#elif defined USE_BOUNDARY_FLUX_TERMS_IF
+
+        REAL f_rho   = 0;
+        REAL f_rhoux = 0;
+        REAL f_rhouy = 0;
+        REAL f_rhouz = 0;
+        REAL f_E     = 0;
+
+        if (0 <= l_ux-l_c_rho) {
+          f_rho   = l_rho * l_ux;
+          f_rhoux = l_rho * l_ux * l_ux + l_p;
+          f_rhouy = l_rho * l_ux * l_uy;
+          f_rhouz = l_rho * l_ux * l_uz;
+          f_E     = (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_ux;
+        }
+        else if (0 <= s_ux) {
+          f_rho   = ls_rho * s_ux;
+          f_rhoux = ls_rho * s_ux * s_ux + s_p;
+          f_rhouy = ls_rho * s_ux * l_uy;
+          f_rhouz = ls_rho * s_ux * l_uz;
+          f_E     = (0.5 * ls_rho * (s_ux*s_ux + l_uy*l_uy + l_uz*l_uz) + ls_rho*ls_eps + s_p) * s_ux;
+        }
+        else if (0 <= r_ux+r_c_rho) {
+          f_rho   = rs_rho * s_ux;
+          f_rhoux = rs_rho * s_ux * s_ux + s_p;
+          f_rhouy = rs_rho * s_ux * r_uy;
+          f_rhouz = rs_rho * s_ux * r_uz;
+          f_E     = (0.5 * ls_rho * (s_ux*s_ux + r_uy*r_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_ux;
+        }
+        else {
+          f_rho   = r_rho * r_ux;
+          f_rhoux = r_rho * r_ux * r_ux + r_p;
+          f_rhouy = r_rho * r_ux * r_uy;
+          f_rhouz = r_rho * r_ux * r_uz;
+          f_E     = (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_ux;
+        }
+
+#else
+
+  #error "Error in ideal_gas_Euler.cl: No `USE_BOUNDARY_FLUX_TERMS_...` specified!"
+
+#endif // USE_BOUNDARY_FLUX_TERMS_...
 
       num_flux[Field_rho]    = f_rho;
       num_flux[Field_rho_ux] = f_rhoux;
@@ -1069,7 +1138,8 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
       REAL rs_eps = r_eps + (s_p*s_p - r_p*r_p) / (2*r_c*r_c);
 
       // compute fluxes
-      // if (...) {...} else if (...) {...} etc.?
+#if defined USE_BOUNDARY_FLUX_TERMS_MULTIPLICATION_BY_BOOLS
+
       REAL f_rho   = (0 <= l_uy-l_c_rho) *
                       (l_rho * l_uy)
                    + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
@@ -1089,9 +1159,9 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
       REAL f_rhouy = (0 <= l_uy-l_c_rho) *
                       (l_rho * l_uy * l_uy + l_p)
                    + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
-                      (ls_rho * s_uy * l_uy + s_p)
+                      (ls_rho * s_uy * s_uy + s_p)
                    + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
-                      (rs_rho * s_uy * r_uy + s_p)
+                      (rs_rho * s_uy * s_uy + s_p)
                    + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
                       (r_rho * r_uy * r_uy + r_p);
       REAL f_rhouz = (0 <= l_uy-l_c_rho) *
@@ -1110,6 +1180,49 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
                       (0.5 * ls_rho * (r_ux*r_ux + s_uy*s_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_uy
                    + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
                       (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uy;
+
+#elif defined USE_BOUNDARY_FLUX_TERMS_IF
+
+        REAL f_rho   = 0;
+        REAL f_rhoux = 0;
+        REAL f_rhouy = 0;
+        REAL f_rhouz = 0;
+        REAL f_E     = 0;
+
+        if (0 <= l_uy-l_c_rho) {
+          f_rho   = l_rho * l_uy;
+          f_rhoux = l_rho * l_uy * l_ux;
+          f_rhouy = l_rho * l_uy * l_uy + l_p;
+          f_rhouz = l_rho * l_uy * l_uz;
+          f_E     = (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_uy;
+        }
+        else if (0 <= s_uy) {
+          f_rho   = ls_rho * s_uy;
+          f_rhoux = ls_rho * s_uy * l_ux;
+          f_rhouy = ls_rho * s_uy * s_uy + s_p;
+          f_rhouz = ls_rho * s_uy * l_uz;
+          f_E     = (0.5 * ls_rho * (l_ux*l_ux + s_uy*s_uy + l_uz*l_uz) + ls_rho*ls_eps + s_p) * s_uy;
+        }
+        else if (0 <= r_uy+r_c_rho) {
+          f_rho   = rs_rho * s_uy;
+          f_rhoux = rs_rho * s_uy * r_ux;
+          f_rhouy = rs_rho * s_uy * s_uy + s_p;
+          f_rhouz = rs_rho * s_uy * r_uz;
+          f_E     = (0.5 * ls_rho * (r_ux*r_ux + s_uy*s_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_uy;
+        }
+        else {
+          f_rho   = r_rho * r_uy;
+          f_rhoux = r_rho * r_uy * r_ux;
+          f_rhouy = r_rho * r_uy * r_uy + r_p;
+          f_rhouz = r_rho * r_uy * r_uz;
+          f_E     = (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uy;
+        }
+
+#else
+
+  #error "Error in ideal_gas_Euler.cl: No `USE_BOUNDARY_FLUX_TERMS_...` specified!"
+
+#endif // USE_BOUNDARY_FLUX_TERMS_...
 
       num_flux[Field_rho]    = f_rho;
       num_flux[Field_rho_ux] = f_rhoux;
@@ -1169,7 +1282,8 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
       REAL rs_eps = r_eps + (s_p*s_p - r_p*r_p) / (2*r_c*r_c);
 
       // compute fluxes
-      // if (...) {...} else if (...) {...} etc.?
+#if defined USE_BOUNDARY_FLUX_TERMS_MULTIPLICATION_BY_BOOLS
+
       REAL f_rho   = (0 <= l_uz-l_c_rho) *
                       (l_rho * l_uz)
                    + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
@@ -1197,9 +1311,9 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
       REAL f_rhouz = (0 <= l_uz-l_c_rho) *
                       (l_rho * l_uz * l_uz + l_p)
                    + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
-                      (ls_rho * s_uz * l_uz + s_p)
+                      (ls_rho * s_uz * s_uz + s_p)
                    + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
-                      (rs_rho * s_uz * r_uz + s_p)
+                      (rs_rho * s_uz * s_uz + s_p)
                    + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
                       (r_rho * r_uz * r_uz + r_p);
       REAL f_E     = (0 <= l_uz-l_c_rho) *
@@ -1210,6 +1324,49 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
                       (0.5 * ls_rho * (r_ux*r_ux + r_uy*r_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz
                    + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
                       (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uz;
+
+#elif defined USE_BOUNDARY_FLUX_TERMS_IF
+
+        REAL f_rho   = 0;
+        REAL f_rhoux = 0;
+        REAL f_rhouy = 0;
+        REAL f_rhouz = 0;
+        REAL f_E     = 0;
+
+        if (0 <= l_uz-l_c_rho) {
+          f_rho   = l_rho * l_uz;
+          f_rhoux = l_rho * l_uz * l_ux;
+          f_rhouy = l_rho * l_uz * l_uy;
+          f_rhouz = l_rho * l_uz * l_uz + l_p;
+          f_E     = (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_uz;
+        }
+        else if (0 <= s_uz) {
+          f_rho   = ls_rho * s_uz;
+          f_rhoux = ls_rho * s_uz * l_ux;
+          f_rhouy = ls_rho * s_uz * l_uy;
+          f_rhouz = ls_rho * s_uz * s_uz + s_p;
+          f_E     = (0.5 * ls_rho * (l_ux*l_ux + l_uy*l_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz;
+        }
+        else if (0 <= r_uz+r_c_rho) {
+          f_rho   = rs_rho * s_uz;
+          f_rhoux = rs_rho * s_uz * r_ux;
+          f_rhouy = rs_rho * s_uz * r_uy;
+          f_rhouz = rs_rho * s_uz * s_uz + s_p;
+          f_E     = (0.5 * ls_rho * (r_ux*r_ux + r_uy*r_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz;
+        }
+        else {
+          f_rho   = r_rho * r_uz;
+          f_rhoux = r_rho * r_uz * r_ux;
+          f_rhouy = r_rho * r_uz * r_uy;
+          f_rhouz = r_rho * r_uz * r_uz + r_p;
+          f_E     = (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uz;
+        }
+
+#else
+
+  #error "Error in ideal_gas_Euler.cl: No `USE_BOUNDARY_FLUX_TERMS_...` specified!"
+
+#endif // USE_BOUNDARY_FLUX_TERMS_...
 
       num_flux[Field_rho]    = f_rho;
       num_flux[Field_rho_ux] = f_rhoux;
@@ -1226,10 +1383,29 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 
 
 /* choice of surface term implementation:
-  - USE_SURFACE_TERMS_MULTIPLICATION_WITH_BOOLS
+  - USE_SURFACE_TERMS_MULTIPLICATION_BY_BOOLS
   - USE_SURFACE_TERMS_IF
+
+TODO: Cleanup?
 */
 #define USE_SURFACE_TERMS_IF
+/*
+- Possibility 1: `USE_SURFACE_TERMS_MULTIPLICATION_BY_BOOLS`
+
+  |                       Device, Version                      | Runtime |
+  |:----------------------------------------------------------:|--------:|
+  | OpenCL 1.2 CUDA 9.1.84, GeForce GTX 1070 Ti                |   4.4 s |
+  | OpenCL 2.1 LINUX, Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz |  19.2 s |
+  | OpenCL 2.1, Intel(R) Gen9 HD Graphics NEO                  |  22.6 s |
+
+- Possibility 2: `USE_SURFACE_TERMS_IF`
+
+  |                       Device, Version                      | Runtime |
+  |:----------------------------------------------------------:|--------:|
+  | OpenCL 1.2 CUDA 9.1.84, GeForce GTX 1070 Ti                |   2.6 s |
+  | OpenCL 2.1 LINUX, Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz |  11.2 s |
+  | OpenCL 2.1, Intel(R) Gen9 HD Graphics NEO                  |  12.4 s |
+*/
 
 
 inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL *u, REAL *du_dt) {
@@ -1260,16 +1436,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
   u_outer[Field_p] = p_bound;
 
 
-#if defined USE_SURFACE_TERMS_MULTIPLICATION_WITH_BOOLS
-  /*
-  - Possibility 1
-
-    |                       Device, Version                      | Runtime |
-    |:----------------------------------------------------------:|--------:|
-    | OpenCL 1.2 CUDA 9.1.84, GeForce GTX 1070 Ti                |   4.4 s |
-    | OpenCL 2.1 LINUX, Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz |  19.2 s |
-    | OpenCL 2.1, Intel(R) Gen9 HD Graphics NEO                  |  22.6 s |
-  */
+#if defined USE_SURFACE_TERMS_MULTIPLICATION_BY_BOOLS
 
   // flux x
   compute_flux_x(u_inner, flux);
@@ -1311,15 +1478,6 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
   }
 
 #elif defined USE_SURFACE_TERMS_IF
-  /*
-  - Possibility 2
-
-    |                       Device, Version                      | Runtime |
-    |:----------------------------------------------------------:|--------:|
-    | OpenCL 1.2 CUDA 9.1.84, GeForce GTX 1070 Ti                |   2.6 s |
-    | OpenCL 2.1 LINUX, Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz |  11.2 s |
-    | OpenCL 2.1, Intel(R) Gen9 HD Graphics NEO                  |  12.4 s |
-  */
 
   // flux x
   compute_flux_x(u_inner, flux);
@@ -1371,6 +1529,10 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
       du_dt[i] -= (REAL)(M_INV[0] / DZ) * (num_flux[i] - flux[i]);
     }
   }
+
+#else
+
+  #error "Error in ideal_gas_Euler.cl: No `USE_SURFACE_TERMS_...` specified!"
 
 #endif // USE_SURFACE_TERMS_...
 
