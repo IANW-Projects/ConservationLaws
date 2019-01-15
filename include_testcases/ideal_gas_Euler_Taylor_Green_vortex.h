@@ -5,7 +5,7 @@
 //--------------------------------------------------------------------------------------------------
 
 /*
-Teylor Green vortextestcase used in section 4.2 of
+Taylor Green vortextestcase used in section 4.2 of
 Split form nodal discontinuous Galerkin schemes with summation-by-parts property
 for the compressible Euler equations.
 
@@ -13,7 +13,7 @@ Gregor J. Gassner, Andrew R. Winters, David A. Kopriva, 2016.
 */
 
 /*
-Initial condition solution of the density.
+Initial condition of the density.
 */
 inline REAL rho_init(uint ix, uint iy, uint iz) {
 
@@ -21,7 +21,7 @@ inline REAL rho_init(uint ix, uint iy, uint iz) {
 }
 
 /*
-Initial condition solution of the velocity.
+Initial condition of the velocity.
 */
 inline REAL4 u_init(uint ix, uint iy, uint iz) {
 
@@ -37,7 +37,7 @@ inline REAL4 u_init(uint ix, uint iy, uint iz) {
 }
 
 /*
-Initial condition solution of the pressure.
+Initial condition of the pressure.
 */
 inline REAL p_init(uint ix, uint iy, uint iz) {
 

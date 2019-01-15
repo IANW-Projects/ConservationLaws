@@ -13,7 +13,7 @@ I_Mesh('XMIN') = 0.0; I_Mesh('XMAX') = 6.283185307179586; % = 2*pi
 I_Mesh('YMIN') = 0.0; I_Mesh('YMAX') = 6.283185307179586;
 I_Mesh('ZMIN') = 0.0; I_Mesh('ZMAX') = 6.283185307179586;
 
-I_TI('final_time') = 20;
+I_TI('final_time') = 2;
 I_TI('cfl') = 0.85;
 
 dt = I_TI('cfl') * (I_Mesh('YMAX') / double(I_Mesh('NODES_Y')-1)) / 10;
@@ -49,7 +49,7 @@ I_RunOps('periodic') = 'USE_PERIODIC'; % 'NONE', 'USE_PERIODIC'; must be set to 
 
 I_RunOps('order') = 4; I_RunOps('operator_form') = 'classical'; % order: 2, 4, 6; operator_form: classical, extended
 I_RunOps('conservation_laws') = 'ideal_gas_Euler';
-I_RunOps('testcase') = 'Taylor_Green_vortex';
+I_RunOps('testcase') = 'advection';
 I_RunOps('plot_numerical_solution') = 'z';
 I_RunOps('save_integrals_over_time') = false;
 % Choose between L2 and LInfinity norm for error calculation
@@ -63,6 +63,10 @@ fprintf('Testcase: %s \nOrder: %d \nTime integrator: %s\nDT: %.16e   N_STEPS: %5
 BalanceLaws.compute_numerical_solution(field_u1, field_u2);
 fprintf('Total runtime: %.3f seconds   Kernel runtime: %d\n',  I_Results('runtime'), I_Results('kernel_runtime'));
 
+rel_err = I_Results('rel_err');
+for comp=0:I_BalanceLaws('NUM_CONSERVED_VARS') - 1
+    fprintf('Relative Error of Field Component %d: %.15f %%\n', comp, 100*rel_err(comp + 1))
+end
 %% Plot numerical solution
 num_nodes = I_Mesh('NODES_X')*I_Mesh('NODES_Y')*I_Mesh('NODES_Z');
 if strcmp(I_Tech('memory_layout'), 'USE_ARRAY_OF_STRUCTURES')
@@ -77,5 +81,5 @@ end
 %Optional plots
 if ismember(lower(char(I_RunOps('plot_numerical_solution'))),{'x','y','z','xy', 'xz', 'yz', 'xyz'})
     plot_2D(field_u1_plot, I_RunOps('plot_numerical_solution'),...
-        I_Mesh('NODES_X'), I_Mesh('NODES_Y'), I_Mesh('NODES_Z'), 'Numerical Solution', 6, 8);
+        I_Mesh('NODES_X'), I_Mesh('NODES_Y'), I_Mesh('NODES_Z'), 'Numerical Solution', 1, 1);
 end
