@@ -1225,6 +1225,13 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 #endif
 
 
+/* choice of surface term implementation:
+  - USE_SURFACE_TERMS_MULTIPLICATION_WITH_BOOLS
+  - USE_SURFACE_TERMS_IF
+*/
+#define USE_SURFACE_TERMS_IF
+
+
 inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL *u, REAL *du_dt) {
 
   // For periodic boundary conditions and a single block, no surface term has to be used.
@@ -1251,6 +1258,18 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
   u_outer[Field_uy] = u_bound.y;
   u_outer[Field_uz] = u_bound.z;
   u_outer[Field_p] = p_bound;
+
+
+#if defined USE_SURFACE_TERMS_MULTIPLICATION_WITH_BOOLS
+  /*
+  - Possibility 1
+
+    |                       Device, Version                      | Runtime |
+    |:----------------------------------------------------------:|--------:|
+    | OpenCL 1.2 CUDA 9.1.84, GeForce GTX 1070 Ti                |   4.4 s |
+    | OpenCL 2.1 LINUX, Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz |  19.2 s |
+    | OpenCL 2.1, Intel(R) Gen9 HD Graphics NEO                  |  22.6 s |
+  */
 
   // flux x
   compute_flux_x(u_inner, flux);
@@ -1290,6 +1309,70 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
   for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
     du_dt[i] -= check_bound_zr(iz, 1) * (REAL)(M_INV[0] / DZ) * (num_flux[i] - flux[i]);
   }
+
+#elif defined USE_SURFACE_TERMS_IF
+  /*
+  - Possibility 2
+
+    |                       Device, Version                      | Runtime |
+    |:----------------------------------------------------------:|--------:|
+    | OpenCL 1.2 CUDA 9.1.84, GeForce GTX 1070 Ti                |   2.6 s |
+    | OpenCL 2.1 LINUX, Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz |  11.2 s |
+    | OpenCL 2.1, Intel(R) Gen9 HD Graphics NEO                  |  12.4 s |
+  */
+
+  // flux x
+  compute_flux_x(u_inner, flux);
+  // left
+  if (check_bound_l(ix, 1)) {
+    compute_boundary_num_flux_x(u_outer, u_inner, num_flux);
+    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+      du_dt[i] += (REAL)(M_INV[0] / DX) * (num_flux[i] - flux[i]);
+    }
+  }
+  // right
+  if (check_bound_xr(ix, 1)) {
+    compute_boundary_num_flux_x(u_inner, u_outer, num_flux);
+    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+      du_dt[i] -= (REAL)(M_INV[0] / DX) * (num_flux[i] - flux[i]);
+    }
+  }
+
+  // flux y
+  compute_flux_y(u_inner, flux);
+  // bottom
+  if (check_bound_l(iy, 1)) {
+    compute_boundary_num_flux_y(u_outer, u_inner, num_flux);
+    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+      du_dt[i] +=  (REAL)(M_INV[0] / DY) * (num_flux[i] - flux[i]);
+    }
+  }
+  // top
+  if (check_bound_yr(iy, 1)) {
+    compute_boundary_num_flux_y(u_inner, u_outer, num_flux);
+    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+      du_dt[i] -= (REAL)(M_INV[0] / DY) * (num_flux[i] - flux[i]);
+    }
+  }
+
+  // flux z
+  compute_flux_z(u_inner, flux);
+  // left
+  if (check_bound_l(iz, 1)) {
+    compute_boundary_num_flux_z(u_outer, u_inner, num_flux);
+    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+      du_dt[i] += (REAL)(M_INV[0] / DZ) * (num_flux[i] - flux[i]);
+    }
+  }
+  // right
+  if (check_bound_zr(iz, 1)) {
+    compute_boundary_num_flux_z(u_inner, u_outer, num_flux);
+    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+      du_dt[i] -= (REAL)(M_INV[0] / DZ) * (num_flux[i] - flux[i]);
+    }
+  }
+
+#endif // USE_SURFACE_TERMS_...
 
 #endif // USE_PERIODIC
 
