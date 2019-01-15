@@ -31,6 +31,12 @@ TODO: Entropy conservative fluxes
 #define USE_FLUX_KennedyGruber
 
 
+/* available numerical boundary fluxes:
+  - Suliciu relaxation solver, cf. Bouchut (2004)
+*/
+#define USE_BOUNDARY_FLUX_Suliciu
+
+
 enum Fields {
              // Density
              Field_rho,

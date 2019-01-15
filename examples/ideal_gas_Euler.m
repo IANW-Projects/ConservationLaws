@@ -44,7 +44,7 @@ else
     I_Tech('optimizations') = ' -cl-mad-enable -cl-no-signed-zeros -cl-finite-math-only';
 end
 
-I_RunOps('periodic') = 'USE_PERIODIC'; % 'NONE', 'USE_PERIODIC'; must be set to 'USE_PERIODIC'
+I_RunOps('periodic') = 'NONE'; % 'NONE', 'USE_PERIODIC'; must be set to 'USE_PERIODIC'
                                        % if periodic boundary conditions should be used
 
 I_RunOps('order') = 4; I_RunOps('operator_form') = 'classical'; % order: 2, 4, 6; operator_form: classical, extended

@@ -25,6 +25,31 @@ inline REAL compute_pressure(REAL rho, REAL ux, REAL uy, REAL uz, REAL E) {
 }
 
 
+inline void compute_flux_x(REAL* u, REAL* flux) {
+  flux[Field_rho]    = u[Field_rho_ux];
+  flux[Field_rho_ux] = u[Field_rho_ux] * u[Field_ux] + u[Field_p];
+  flux[Field_rho_uy] = u[Field_rho_ux] * u[Field_uy];
+  flux[Field_rho_uz] = u[Field_rho_ux] * u[Field_uz];
+  flux[Field_E]      = (u[Field_E] + u[Field_p]) * u[Field_ux];
+}
+
+inline void compute_flux_y(REAL* u, REAL* flux) {
+  flux[Field_rho]    = u[Field_rho_uy];
+  flux[Field_rho_ux] = u[Field_rho_uy] * u[Field_ux];
+  flux[Field_rho_uy] = u[Field_rho_uy] * u[Field_uy] + u[Field_p];
+  flux[Field_rho_uz] = u[Field_rho_uy] * u[Field_uz];
+  flux[Field_E]      = (u[Field_E] + u[Field_p]) * u[Field_uy];
+}
+
+inline void compute_flux_z(REAL* u, REAL* flux) {
+  flux[Field_rho]    = u[Field_rho_uz];
+  flux[Field_rho_ux] = u[Field_rho_uz] * u[Field_ux];
+  flux[Field_rho_uy] = u[Field_rho_uz] * u[Field_uy];
+  flux[Field_rho_uz] = u[Field_rho_uz] * u[Field_uz] + u[Field_p];
+  flux[Field_E]      = (u[Field_E] + u[Field_p]) * u[Field_uz];
+}
+
+
 //--------------------------------------------------------------------------------------------------
 // Extended numerical fluxes for the volume terms
 //--------------------------------------------------------------------------------------------------
@@ -880,11 +905,392 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 //--------------------------------------------------------------------------------------------------
 
 
+#if defined USE_BOUNDARY_FLUX_Suliciu
+/* Suliciu relaxation solver (numerical flux) of
+@book{bouchut2004nonlinear,
+  title={Nonlinear Stability of Finite Volume Methods for Hyperbolic Conservation
+         Laws and Well{\hyphen}Balanced Schemes for Sources},
+  author={Bouchut, Fran{\c{c}}ois},
+  year={2004},
+  publisher={Birkh{\"a}user Verlag},
+  address={Basel},
+  doi={10.1007/b93802}
+}
+*/
+
+  inline void compute_boundary_num_flux_x(REAL const* u_l, REAL const* u_r, REAL* num_flux) {
+
+      // "left" state
+      REAL l_rho = u_l[Field_rho];
+      REAL l_E   = u_l[Field_E];
+      REAL l_ux  = u_l[Field_ux];
+      REAL l_uy  = u_l[Field_uy];
+      REAL l_uz  = u_l[Field_uz];
+      REAL l_p   = u_l[Field_p];
+      REAL l_c = sqrt(GAMMA * l_p / l_rho);
+      REAL l_eps = l_p / ((GAMMA-1) * l_rho);
+
+      // "right" state
+      REAL r_rho = u_r[Field_rho];
+      REAL r_E   = u_r[Field_E];
+      REAL r_ux  = u_r[Field_ux];
+      REAL r_uy  = u_r[Field_uy];
+      REAL r_uz  = u_r[Field_uz];
+      REAL r_p   = u_r[Field_p];
+      REAL r_c = sqrt(GAMMA * r_p / r_rho);
+      REAL r_eps = r_p / ((GAMMA-1) * r_rho);
+
+      REAL alpha = 0.5 * (GAMMA+1);
+
+      // compute speeds
+      REAL l_c_rho = 0;
+      REAL r_c_rho = 0;
+      if ((l_p <= r_p) && (0 < r_p)) {
+        l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_rho * r_c) + l_ux - r_ux);
+        r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_c_rho * l_rho) + l_ux - r_ux);
+      }
+      else if ((r_p <= l_p) && (0 < l_p)) {
+        r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_rho * l_c) + l_ux - r_ux);
+        l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_c_rho * r_rho) + l_ux - r_ux);
+      }
+
+      // compute intermediate values
+      l_c = l_c_rho * l_rho;
+      r_c = r_c_rho * r_rho;
+      REAL s_ux = ( l_c*l_ux + r_c*r_ux + l_p - r_p) / (l_c + r_c);
+      // = ifelse(isnan(... ?
+      REAL s_p = (r_c*l_p + l_c*r_p - l_c*r_c*(r_ux - l_ux)) / (l_c + r_c);
+      // = ifelse(isnan(... ?
+      REAL ls_rho = (REAL)(1) / ( 1/l_rho + (r_c*(r_ux-l_ux) + l_p - r_p) / (l_c*(l_c+r_c)) );
+      // = ifelse(isnan(... ?
+      REAL rs_rho = (REAL)(1) / ( 1/r_rho + (l_c*(r_ux-l_ux) + r_p - l_p) / (r_c*(l_c+r_c)) );
+      // = ifelse(isnan(... ?
+      REAL ls_eps = l_eps + (s_p*s_p - l_p*l_p) / (2*l_c*l_c);
+      REAL rs_eps = r_eps + (s_p*s_p - r_p*r_p) / (2*r_c*r_c);
+
+      // compute fluxes
+      // if (...) {...} else if (...) {...} etc.?
+      REAL f_rho   = (0 <= l_ux-l_c_rho) *
+                      (l_rho * l_ux)
+                   + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
+                      (ls_rho * s_ux)
+                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
+                      (rs_rho * s_ux)
+                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
+                      (r_rho * r_ux);
+      REAL f_rhoux = (0 <= l_ux-l_c_rho) *
+                      (l_rho * l_ux * l_ux + l_p)
+                   + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
+                      (ls_rho * s_ux * s_ux + s_p)
+                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
+                      (rs_rho * s_ux * s_ux + s_p)
+                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
+                      (r_rho * r_ux * r_ux + r_p);
+      REAL f_rhouy = (0 <= l_ux-l_c_rho) *
+                      (l_rho * l_ux * l_uy)
+                   + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
+                      (ls_rho * s_ux * l_uy)
+                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
+                      (rs_rho * s_ux * r_uy)
+                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
+                      (r_rho * r_ux * r_uy);
+      REAL f_rhouz = (0 <= l_ux-l_c_rho) *
+                      (l_rho * l_ux * l_uz)
+                   + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
+                      (ls_rho * s_ux * l_uz)
+                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
+                      (rs_rho * s_ux * r_uz)
+                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
+                      (r_rho * r_ux * r_uz);
+      REAL f_E     = (0 <= l_ux-l_c_rho) *
+                      (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_ux
+                   + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
+                      (0.5 * ls_rho * (s_ux*s_ux + l_uy*l_uy + l_uz*l_uz) + ls_rho*ls_eps + s_p) * s_ux
+                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
+                      (0.5 * ls_rho * (s_ux*s_ux + r_uy*r_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_ux
+                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
+                      (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_ux;
+
+      num_flux[Field_rho]    = f_rho;
+      num_flux[Field_rho_ux] = f_rhoux;
+      num_flux[Field_rho_uy] = f_rhouy;
+      num_flux[Field_rho_uz] = f_rhouz;
+      num_flux[Field_E]      = f_E;
+  }
+
+  inline void compute_boundary_num_flux_y(REAL const* u_l, REAL const* u_r, REAL* num_flux) {
+
+      // "left" state
+      REAL l_rho = u_l[Field_rho];
+      REAL l_E   = u_l[Field_E];
+      REAL l_ux  = u_l[Field_ux];
+      REAL l_uy  = u_l[Field_uy];
+      REAL l_uz  = u_l[Field_uz];
+      REAL l_p   = u_l[Field_p];
+      REAL l_c = sqrt(GAMMA * l_p / l_rho);
+      REAL l_eps = l_p / ((GAMMA-1) * l_rho);
+
+      // "right" state
+      REAL r_rho = u_r[Field_rho];
+      REAL r_E   = u_r[Field_E];
+      REAL r_ux  = u_r[Field_ux];
+      REAL r_uy  = u_r[Field_uy];
+      REAL r_uz  = u_r[Field_uz];
+      REAL r_p   = u_r[Field_p];
+      REAL r_c = sqrt(GAMMA * r_p / r_rho);
+      REAL r_eps = r_p / ((GAMMA-1) * r_rho);
+
+      REAL alpha = 0.5 * (GAMMA+1);
+
+      // compute speeds
+      REAL l_c_rho = 0;
+      REAL r_c_rho = 0;
+      if ((l_p <= r_p) && (0 < r_p)) {
+        l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_rho * r_c) + l_uy - r_uy);
+        r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_c_rho * l_rho) + l_uy - r_uy);
+      }
+      else if ((r_p <= l_p) && (0 < l_p)) {
+        r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_rho * l_c) + l_uy - r_uy);
+        l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_c_rho * r_rho) + l_uy - r_uy);
+      }
+
+      // compute intermediate values
+      l_c = l_c_rho * l_rho;
+      r_c = r_c_rho * r_rho;
+      REAL s_uy = ( l_c*l_uy + r_c*r_uy + l_p - r_p) / (l_c + r_c);
+      // = ifelse(isnan(... ?
+      REAL s_p = (r_c*l_p + l_c*r_p - l_c*r_c*(r_uy - l_uy)) / (l_c + r_c);
+      //= ifelse(isnan(... ?
+      REAL ls_rho = (REAL)(1) / ( 1/l_rho + (r_c*(r_uy-l_uy) + l_p - r_p) / (l_c*(l_c+r_c)) );
+      // = ifelse(isnan(... ?
+      REAL rs_rho = (REAL)(1) / ( 1/r_rho + (l_c*(r_uy-l_uy) + r_p - l_p) / (r_c*(l_c+r_c)) );
+      // = ifelse(isnan(... ?
+      REAL ls_eps = l_eps + (s_p*s_p - l_p*l_p) / (2*l_c*l_c);
+      REAL rs_eps = r_eps + (s_p*s_p - r_p*r_p) / (2*r_c*r_c);
+
+      // compute fluxes
+      // if (...) {...} else if (...) {...} etc.?
+      REAL f_rho   = (0 <= l_uy-l_c_rho) *
+                      (l_rho * l_uy)
+                   + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
+                      (ls_rho * s_uy)
+                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
+                      (rs_rho * s_uy)
+                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
+                      (r_rho * r_uy);
+      REAL f_rhoux = (0 <= l_uy-l_c_rho) *
+                      (l_rho * l_uy * l_ux)
+                   + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
+                      (ls_rho * s_uy * l_ux)
+                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
+                      (rs_rho * s_uy * r_ux)
+                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
+                      (r_rho * r_uy * r_ux);
+      REAL f_rhouy = (0 <= l_uy-l_c_rho) *
+                      (l_rho * l_uy * l_uy + l_p)
+                   + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
+                      (ls_rho * s_uy * l_uy + s_p)
+                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
+                      (rs_rho * s_uy * r_uy + s_p)
+                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
+                      (r_rho * r_uy * r_uy + r_p);
+      REAL f_rhouz = (0 <= l_uy-l_c_rho) *
+                      (l_rho * l_uy * l_uz)
+                   + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
+                      (ls_rho * s_uy * l_uz)
+                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
+                      (rs_rho * s_uy * r_uz)
+                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
+                      (r_rho * r_uy * r_uz);
+      REAL f_E     = (0 <= l_uy-l_c_rho) *
+                      (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_uy
+                   + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
+                      (0.5 * ls_rho * (l_ux*l_ux + s_uy*s_uy + l_uz*l_uz) + ls_rho*ls_eps + s_p) * s_uy
+                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
+                      (0.5 * ls_rho * (r_ux*r_ux + s_uy*s_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_uy
+                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
+                      (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uy;
+
+      num_flux[Field_rho]    = f_rho;
+      num_flux[Field_rho_ux] = f_rhoux;
+      num_flux[Field_rho_uy] = f_rhouy;
+      num_flux[Field_rho_uz] = f_rhouz;
+      num_flux[Field_E]      = f_E;
+  }
+
+  inline void compute_boundary_num_flux_z(REAL const* u_l, REAL const* u_r, REAL* num_flux) {
+
+      // "left" state
+      REAL l_rho = u_l[Field_rho];
+      REAL l_E   = u_l[Field_E];
+      REAL l_ux  = u_l[Field_ux];
+      REAL l_uy  = u_l[Field_uy];
+      REAL l_uz  = u_l[Field_uz];
+      REAL l_p   = u_l[Field_p];
+      REAL l_c = sqrt(GAMMA * l_p / l_rho);
+      REAL l_eps = l_p / ((GAMMA-1) * l_rho);
+
+      // "right" state
+      REAL r_rho = u_r[Field_rho];
+      REAL r_E   = u_r[Field_E];
+      REAL r_ux  = u_r[Field_ux];
+      REAL r_uy  = u_r[Field_uy];
+      REAL r_uz  = u_r[Field_uz];
+      REAL r_p   = u_r[Field_p];
+      REAL r_c = sqrt(GAMMA * r_p / r_rho);
+      REAL r_eps = r_p / ((GAMMA-1) * r_rho);
+
+      REAL alpha = 0.5 * (GAMMA+1);
+
+      // compute speeds
+      REAL l_c_rho = 0;
+      REAL r_c_rho = 0;
+      if ((l_p <= r_p) && (0 < r_p)) {
+        l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_rho * r_c) + l_uz - r_uz);
+        r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_c_rho * l_rho) + l_uz - r_uz);
+      }
+      else if ((r_p <= l_p) && (0 < l_p)) {
+        r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_rho * l_c) + l_uz - r_uz);
+        l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_c_rho * r_rho) + l_uz - r_uz);
+      }
+
+      // compute intermediate values
+      l_c = l_c_rho * l_rho;
+      r_c = r_c_rho * r_rho;
+      REAL s_uz = ( l_c*l_uz + r_c*r_uz + l_p - r_p) / (l_c + r_c);
+      // = ifelse(isnan(... ?
+      REAL s_p = (r_c*l_p + l_c*r_p - l_c*r_c*(r_uz - l_uz)) / (l_c + r_c);
+      //= ifelse(isnan(... ?
+      REAL ls_rho = (REAL)(1) / ( 1/l_rho + (r_c*(r_uz-l_uz) + l_p - r_p) / (l_c*(l_c+r_c)) );
+      // = ifelse(isnan(... ?
+      REAL rs_rho = (REAL)(1) / ( 1/r_rho + (l_c*(r_uz-l_uz) + r_p - l_p) / (r_c*(l_c+r_c)) );
+      // = ifelse(isnan(... ?
+      REAL ls_eps = l_eps + (s_p*s_p - l_p*l_p) / (2*l_c*l_c);
+      REAL rs_eps = r_eps + (s_p*s_p - r_p*r_p) / (2*r_c*r_c);
+
+      // compute fluxes
+      // if (...) {...} else if (...) {...} etc.?
+      REAL f_rho   = (0 <= l_uz-l_c_rho) *
+                      (l_rho * l_uz)
+                   + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
+                      (ls_rho * s_uz)
+                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
+                      (rs_rho * s_uz)
+                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
+                      (r_rho * r_uz);
+      REAL f_rhoux = (0 <= l_uz-l_c_rho) *
+                      (l_rho * l_uz * l_ux)
+                   + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
+                      (ls_rho * s_uz * l_ux)
+                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
+                      (rs_rho * s_uz * r_ux)
+                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
+                      (r_rho * r_uz * r_ux);
+      REAL f_rhouy = (0 <= l_uz-l_c_rho) *
+                      (l_rho * l_uz * l_uy)
+                   + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
+                      (ls_rho * s_uz * l_uy)
+                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
+                      (rs_rho * s_uz * r_uy)
+                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
+                      (r_rho * r_uz * r_uy);
+      REAL f_rhouz = (0 <= l_uz-l_c_rho) *
+                      (l_rho * l_uz * l_uz + l_p)
+                   + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
+                      (ls_rho * s_uz * l_uz + s_p)
+                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
+                      (rs_rho * s_uz * r_uz + s_p)
+                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
+                      (r_rho * r_uz * r_uz + r_p);
+      REAL f_E     = (0 <= l_uz-l_c_rho) *
+                      (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_uz
+                   + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
+                      (0.5 * ls_rho * (l_ux*l_ux + l_uy*l_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz
+                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
+                      (0.5 * ls_rho * (r_ux*r_ux + r_uy*r_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz
+                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
+                      (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uz;
+
+      num_flux[Field_rho]    = f_rho;
+      num_flux[Field_rho_ux] = f_rhoux;
+      num_flux[Field_rho_uy] = f_rhouy;
+      num_flux[Field_rho_uz] = f_rhouz;
+      num_flux[Field_E]      = f_E;
+  }
+
+#else
+
+  #error "Error in ideal_gas_Euler.cl: No boundary numerical flux specified!"
+
+#endif
+
+
 inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL *u, REAL *du_dt) {
 
   // For periodic boundary conditions and a single block, no surface term has to be used.
 #ifndef USE_PERIODIC
-  #error "Error in ideal_gas_Euler.cl: Surface terms not implemented for nonperiodic boundaries!"
+
+  REAL u_inner[NUM_TOTAL_VARS] = {0};
+  REAL u_outer[NUM_TOTAL_VARS] = {0};
+  REAL flux[NUM_CONSERVED_VARS] = {0};
+  REAL num_flux[NUM_CONSERVED_VARS] = {0};
+
+  // inner and outer values of the conserved and auxiliary quantities
+  get_field(ix, iy, iz, 0, 0, 0, u, u_inner);
+
+  REAL rho_bound = rho_boundary(ix, iy, iz, time);
+  REAL4 u_bound = u_boundary(ix, iy, iz, time);
+  REAL p_bound = p_boundary(ix, iy, iz, time);
+  REAL E_bound = compute_energy(p_bound, rho_bound, u_bound.x, u_bound.y, u_bound.z);
+  u_outer[Field_rho] = rho_bound;
+  u_outer[Field_rho_ux] = rho_bound*u_bound.x;
+  u_outer[Field_rho_uy] = rho_bound*u_bound.y;
+  u_outer[Field_rho_uz] = rho_bound*u_bound.z;
+  u_outer[Field_E] = E_bound;
+  u_outer[Field_ux] = u_bound.x;
+  u_outer[Field_uy] = u_bound.y;
+  u_outer[Field_uz] = u_bound.z;
+  u_outer[Field_p] = p_bound;
+
+  // flux x
+  compute_flux_x(u_inner, flux);
+  // left
+  compute_boundary_num_flux_x(u_outer, u_inner, num_flux);
+  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+    du_dt[i] += check_bound_l(ix, 1) * (REAL)(M_INV[0] / DX) * (num_flux[i] - flux[i]);
+  }
+  // right
+  compute_boundary_num_flux_x(u_inner, u_outer, num_flux);
+  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+    du_dt[i] -= check_bound_xr(ix, 1) * (REAL)(M_INV[0] / DX) * (num_flux[i] - flux[i]);
+  }
+
+  // flux y
+  compute_flux_y(u_inner, flux);
+  // bottom
+  compute_boundary_num_flux_y(u_outer, u_inner, num_flux);
+  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+    du_dt[i] += check_bound_l(iy, 1) * (REAL)(M_INV[0] / DY) * (num_flux[i] - flux[i]);
+  }
+  // top
+  compute_boundary_num_flux_y(u_inner, u_outer, num_flux);
+  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+    du_dt[i] -= check_bound_yr(iy, 1) * (REAL)(M_INV[0] / DY) * (num_flux[i] - flux[i]);
+  }
+
+  // flux z
+  compute_flux_z(u_inner, flux);
+  // left
+  compute_boundary_num_flux_z(u_outer, u_inner, num_flux);
+  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+    du_dt[i] += check_bound_l(iz, 1) * (REAL)(M_INV[0] / DZ) * (num_flux[i] - flux[i]);
+  }
+  // right
+  compute_boundary_num_flux_z(u_inner, u_outer, num_flux);
+  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+    du_dt[i] -= check_bound_zr(iz, 1) * (REAL)(M_INV[0] / DZ) * (num_flux[i] - flux[i]);
+  }
+
 #endif // USE_PERIODIC
 
 }
@@ -923,7 +1329,8 @@ inline void compute_auxiliary_variables(REAL time, uint ix, uint iy, uint iz, gl
 
 inline void analytical_solution(uint ix, uint iy, uint iz, global REAL *u, REAL time) {
 
-  /*// No analytical solution
+  /*
+  // No analytical solution
   for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
     set_field_component(ix, iy, iz, i, u, (REAL)(0));
   }*/
