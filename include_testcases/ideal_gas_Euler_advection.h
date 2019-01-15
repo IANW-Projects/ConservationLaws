@@ -56,6 +56,31 @@ inline REAL p_analytical(uint ix, uint iy, uint iz, REAL time) {
 
 
 /*
+Boundary condition of the density.
+*/
+inline REAL rho_boundary(uint ix, uint iy, uint iz, REAL time) {
+
+	return rho_analytical(ix, iy, iz, time);
+}
+
+/*
+Boundary condition of the velocity.
+*/
+inline REAL4 u_boundary(uint ix, uint iy, uint iz, REAL time) {
+
+	return u_analytical(ix, iy, iz, time);
+}
+
+/*
+Boundary condition of the pressure.
+*/
+inline REAL p_boundary(uint ix, uint iy, uint iz, REAL time) {
+
+	return p_analytical(ix, iy, iz, time);
+}
+
+
+/*
 Initial condition of the density.
 */
 inline REAL rho_init(uint ix, uint iy, uint iz) {
