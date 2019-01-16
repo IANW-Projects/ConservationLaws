@@ -912,6 +912,8 @@ TODO: Cleanup?
 */
 #define USE_BOUNDARY_FLUX_TERMS_IF
 /*
+For `USE_BOUNDARY_FLUX_Suliciu` and `USE_SURFACE_TERMS_IF`:
+
 - Possibility 1: `USE_BOUNDARY_FLUX_TERMS_MULTIPLICATION_BY_BOOLS`
 
   |                       Device, Version                      | Runtime |
@@ -1373,6 +1375,208 @@ TODO: Cleanup?
       num_flux[Field_rho_uy] = f_rhouy;
       num_flux[Field_rho_uz] = f_rhouz;
       num_flux[Field_E]      = f_E;
+  }
+
+#elif defined USE_BOUNDARY_FLUX_HLL
+/* HLL flux of
+@article{harten1983upstream,
+  title={On Upstream Differencing and {G}odunov-Type Schemes for Hyperbolic
+         Conservation Laws},
+  author={Harten, Amiram and Lax, Peter D and van Leer, Bram},
+  journal={SIAM Review},
+  volume={25},
+  number={1},
+  pages={35--61},
+  year={1983},
+  publisher={Society for Industrial and Applied Mathematics},
+  doi={10.1137/1025002}
+}
+with wave speed estimates of
+@article{guermond2016fast,
+  title={Fast estimation from above of the maximum wave speed in the {R}iemann
+         problem for the Euler equations},
+  author={Guermond, Jean-Luc and Popov, Bojan},
+  journal={Journal of Computational Physics},
+  volume={321},
+  pages={908--926},
+  year={2016},
+  publisher={Elsevier},
+  doi={10.1016/j.jcp.2016.05.054}
+}
+*/
+
+  inline void compute_boundary_num_flux_x(REAL const* u_l, REAL const* u_r, REAL* num_flux) {
+
+      // "left" state
+      REAL l_rho = u_l[Field_rho];
+      REAL l_E   = u_l[Field_E];
+      REAL l_ux  = u_l[Field_ux];
+      REAL l_uy  = u_l[Field_uy];
+      REAL l_uz  = u_l[Field_uz];
+      REAL l_p   = u_l[Field_p];
+      REAL l_a = sqrt(GAMMA * l_p / l_rho);
+
+      // "right" state
+      REAL r_rho = u_r[Field_rho];
+      REAL r_E   = u_r[Field_E];
+      REAL r_ux  = u_r[Field_ux];
+      REAL r_uy  = u_r[Field_uy];
+      REAL r_uz  = u_r[Field_uz];
+      REAL r_p   = u_r[Field_p];
+      REAL r_a = sqrt(GAMMA * r_p / r_rho);
+
+      REAL m_p = pow( ( l_a + r_a + 0.5*(GAMMA-1)*(l_ux-r_ux) )
+                      / ( l_a/pow(l_p, 0.5*(GAMMA-1)/GAMMA) + r_a/pow(r_p, 0.5*(GAMMA-1)/GAMMA) ),
+                      2.*GAMMA/(GAMMA-1.));
+
+      REAL lambda_m = (m_p <= l_p) ?
+                      // approximated by rarefaction wave
+                      (l_ux - l_a) :
+                      // approximated by shock wave
+                      (l_ux - l_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/l_p - 1)));
+      REAL lambda_p = (m_p <= r_p) ?
+                      // approximated by rarefaction wave
+                      (r_ux + r_a) :
+                      // approximated by shock wave
+                      (r_ux + r_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/r_p - 1)));
+
+      // compute fluxes
+      REAL flux_l[NUM_CONSERVED_VARS] = {0};
+      compute_flux_x(u_l, flux_l);
+      REAL flux_r[NUM_CONSERVED_VARS] = {0};
+      compute_flux_x(u_r, flux_r);
+
+      if (0 <= lambda_m) {
+        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+          num_flux[i] = flux_l[i];
+        }
+      }
+      else if (0 < lambda_p) {
+        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+          num_flux[i] = ( -lambda_m * flux_r[i] + lambda_p * flux_l[i] + lambda_m*lambda_p * (u_r[i] - u_l[i]) ) / (lambda_p - lambda_m);
+        }
+      }
+      else {
+        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+          num_flux[i] = flux_r[i];
+        }
+      }
+  }
+
+  inline void compute_boundary_num_flux_y(REAL const* u_l, REAL const* u_r, REAL* num_flux) {
+
+      // "left" state
+      REAL l_rho = u_l[Field_rho];
+      REAL l_E   = u_l[Field_E];
+      REAL l_ux  = u_l[Field_ux];
+      REAL l_uy  = u_l[Field_uy];
+      REAL l_uz  = u_l[Field_uz];
+      REAL l_p   = u_l[Field_p];
+      REAL l_a = sqrt(GAMMA * l_p / l_rho);
+
+      // "right" state
+      REAL r_rho = u_r[Field_rho];
+      REAL r_E   = u_r[Field_E];
+      REAL r_ux  = u_r[Field_ux];
+      REAL r_uy  = u_r[Field_uy];
+      REAL r_uz  = u_r[Field_uz];
+      REAL r_p   = u_r[Field_p];
+      REAL r_a = sqrt(GAMMA * r_p / r_rho);
+
+      REAL m_p = pow( ( l_a + r_a + 0.5*(GAMMA-1)*(l_uy-r_uy) )
+                      / ( l_a/pow(l_p, 0.5*(GAMMA-1)/GAMMA) + r_a/pow(r_p, 0.5*(GAMMA-1)/GAMMA) ),
+                      2.*GAMMA/(GAMMA-1.));
+
+      REAL lambda_m = (m_p <= l_p) ?
+                      // approximated by rarefaction wave
+                      (l_uy - l_a) :
+                      // approximated by shock wave
+                      (l_uy - l_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/l_p - 1)));
+      REAL lambda_p = (m_p <= r_p) ?
+                      // approximated by rarefaction wave
+                      (r_uy + r_a) :
+                      // approximated by shock wave
+                      (r_uy + r_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/r_p - 1)));
+
+      // compute fluxes
+      REAL flux_l[NUM_CONSERVED_VARS] = {0};
+      compute_flux_y(u_l, flux_l);
+      REAL flux_r[NUM_CONSERVED_VARS] = {0};
+      compute_flux_y(u_r, flux_r);
+
+      if (0 <= lambda_m) {
+        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+          num_flux[i] = flux_l[i];
+        }
+      }
+      else if (0 < lambda_p) {
+        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+          num_flux[i] = ( -lambda_m * flux_r[i] + lambda_p * flux_l[i] + lambda_m*lambda_p * (u_r[i] - u_l[i]) ) / (lambda_p - lambda_m);
+        }
+      }
+      else {
+        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+          num_flux[i] = flux_r[i];
+        }
+      }
+  }
+
+  inline void compute_boundary_num_flux_z(REAL const* u_l, REAL const* u_r, REAL* num_flux) {
+
+      // "left" state
+      REAL l_rho = u_l[Field_rho];
+      REAL l_E   = u_l[Field_E];
+      REAL l_ux  = u_l[Field_ux];
+      REAL l_uy  = u_l[Field_uy];
+      REAL l_uz  = u_l[Field_uz];
+      REAL l_p   = u_l[Field_p];
+      REAL l_a = sqrt(GAMMA * l_p / l_rho);
+
+      // "right" state
+      REAL r_rho = u_r[Field_rho];
+      REAL r_E   = u_r[Field_E];
+      REAL r_ux  = u_r[Field_ux];
+      REAL r_uy  = u_r[Field_uy];
+      REAL r_uz  = u_r[Field_uz];
+      REAL r_p   = u_r[Field_p];
+      REAL r_a = sqrt(GAMMA * r_p / r_rho);
+
+      REAL m_p = pow( ( l_a + r_a + 0.5*(GAMMA-1)*(l_uz-r_uz) )
+                      / ( l_a/pow(l_p, 0.5*(GAMMA-1)/GAMMA) + r_a/pow(r_p, 0.5*(GAMMA-1)/GAMMA) ),
+                      2.*GAMMA/(GAMMA-1.));
+
+      REAL lambda_m = (m_p <= l_p) ?
+                      // approximated by rarefaction wave
+                      (l_uz - l_a) :
+                      // approximated by shock wave
+                      (l_uz - l_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/l_p - 1)));
+      REAL lambda_p = (m_p <= r_p) ?
+                      // approximated by rarefaction wave
+                      (r_uz + r_a) :
+                      // approximated by shock wave
+                      (r_uz + r_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/r_p - 1)));
+
+      // compute fluxes
+      REAL flux_l[NUM_CONSERVED_VARS] = {0};
+      compute_flux_z(u_l, flux_l);
+      REAL flux_r[NUM_CONSERVED_VARS] = {0};
+      compute_flux_z(u_r, flux_r);
+
+      if (0 <= lambda_m) {
+        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+          num_flux[i] = flux_l[i];
+        }
+      }
+      else if (0 < lambda_p) {
+        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+          num_flux[i] = ( -lambda_m * flux_r[i] + lambda_p * flux_l[i] + lambda_m*lambda_p * (u_r[i] - u_l[i]) ) / (lambda_p - lambda_m);
+        }
+      }
+      else {
+        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+          num_flux[i] = flux_r[i];
+        }
+      }
   }
 
 #else
