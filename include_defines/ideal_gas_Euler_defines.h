@@ -32,7 +32,8 @@ TODO: Entropy conservative fluxes
 
 
 /* available numerical boundary fluxes:
-  - Suliciu relaxation solver, cf. Bouchut (2004)
+  - USE_BOUNDARY_FLUX_Suliciu: Suliciu relaxation solver, cf. Bouchut (2004)
+  - USE_BOUNDARY_FLUX_HLL: HLL flux with wave speed estimates of Guermond and Popov (2016)
 */
 #define USE_BOUNDARY_FLUX_Suliciu
 
