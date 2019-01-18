@@ -38,7 +38,7 @@ function [field_u1, field_u2] = initialize()
         if (num_nodes > lw_size(I_Tech('device')))
             group_size = lw_size(I_Tech('device'));
         else
-            group_size = 2^floor(log(num_nodes) / log(2));
+            group_size = 2^floor(log(double(num_nodes)) / log(2));
         end
     end
     group_size = double(group_size);
