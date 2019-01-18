@@ -66,9 +66,10 @@ fprintf('Total runtime: %.3f seconds   Kernel runtime: %d\n',  I_Results('runtim
 %% Plot numerical solution
 num_nodes = I_Mesh('NODES_X')*I_Mesh('NODES_Y')*I_Mesh('NODES_Z');
 if strcmp(I_Tech('memory_layout'), 'USE_ARRAY_OF_STRUCTURES')
-  field_u1_plot = reshape(field_u1(1:num_nodes*I_BalanceLaws('NUM_TOTAL_VARS')), [I_BalanceLaws('NUM_TOTAL_VARS'), num_nodes]);
+    field_u1_plot = reshape(field_u1(1:num_nodes*I_BalanceLaws('NUM_TOTAL_VARS')), [I_BalanceLaws('NUM_TOTAL_VARS'), num_nodes]);
 elseif strcmp(I_Tech('memory_layout'), 'USE_STRUCTURE_OF_ARRAYS')
-  field_u1_plot = reshape(field_u1(1:num_nodes*I_BalanceLaws('NUM_TOTAL_VARS')), [num_nodes, I_BalanceLaws('NUM_TOTAL_VARS')])';
+    field_u1_tmp = reshape(field_u1, I_Tech('NUM_NODES_PAD'), I_BalanceLaws('NUM_TOTAL_VARS'));
+    field_u1_plot = field_u1_tmp(1:num_nodes, :)';
 else
     error('You must USE_ARRAY_OF_STRUCTURES or USE_STRUCTURE_OF_ARRAYS.')
 end
