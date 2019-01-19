@@ -15,6 +15,7 @@ REAL constant GAMMA = (REAL)(1.4);
   - entropy conservative fluxes
     - IsmailRoe (2009)
     - Chandrashekar (2013)
+    - Ranocha (2018)
   - other fluxes
     - CENTRAL
     - DucrosEtAl (2000)
@@ -26,7 +27,7 @@ REAL constant GAMMA = (REAL)(1.4);
 TODO: Finite difference fluxes
   - KravchenkoMoin (1997)
 TODO: Entropy conservative fluxes
-  - Ranocha (2018)
+  - Variants of Hicken, Crean (2018)
 */
 #define USE_FLUX_KennedyGruber
 
