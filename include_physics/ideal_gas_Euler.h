@@ -869,6 +869,143 @@ inline void compute_flux_z(REAL* u, REAL* flux) {
       ext_num_flux[Field_E]      = - f_E;
   }
 
+#elif defined USE_FLUX_Ranocha
+/* Entropy conservative and kinetic energy preserving numerical fluxes of
+section 7.4.2 of
+@phdthesis{ranocha2018thesis,
+  title={Generalised Summation-by-Parts Operators and Entropy Stability of
+         Numerical Methods for Hyperbolic Balance Laws},
+  author={Ranocha, Hendrik},
+  year={2018},
+  school={TU Braunschweig},
+  publisher={Cuvilier}
+}
+*/
+
+  inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
+
+      REAL m_rho   = um[Field_rho];
+      REAL m_E     = um[Field_E];
+      REAL m_ux    = um[Field_ux];
+      REAL m_uy    = um[Field_uy];
+      REAL m_uz    = um[Field_uz];
+      REAL m_p     = um[Field_p];
+      REAL m_rho_p = m_rho / m_p;
+
+      REAL k_rho   = uk[Field_rho];
+      REAL k_E     = uk[Field_E];
+      REAL k_ux    = uk[Field_ux];
+      REAL k_uy    = uk[Field_uy];
+      REAL k_uz    = uk[Field_uz];
+      REAL k_p     = uk[Field_p];
+      REAL k_rho_p = k_rho / k_p;
+
+      REAL rho       = (REAL)(0.5) * (m_rho + k_rho);
+      REAL rho_log   = logmean(m_rho, k_rho);
+      REAL ux        = (REAL)(0.5) * (m_ux + k_ux);
+      REAL uy        = (REAL)(0.5) * (m_uy + k_uy);
+      REAL uz        = (REAL)(0.5) * (m_uz + k_uz);
+      REAL u2        = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
+      REAL p         = (REAL)(0.5) * (m_p + k_p);
+      REAL rho_p_log = logmean(m_rho_p, k_rho_p);
+
+      REAL f_rho   = rho_log*ux;
+      REAL f_rhoux = ux*f_rho + p;
+      REAL f_rhouy = uy*f_rho;
+      REAL f_rhouz = uz*f_rho;
+      REAL f_E     = (rho_log * (ux*ux + uy*uy + uz*uz - (REAL)(0.5)*u2) + (REAL)(1)/(GAMMA-1)*rho_log/rho_p_log) * ux
+                      - (REAL)(0.25) * (m_p - k_p) * (m_ux - k_ux);
+
+      ext_num_flux[Field_rho]    = - f_rho;
+      ext_num_flux[Field_rho_ux] = - f_rhoux;
+      ext_num_flux[Field_rho_uy] = - f_rhouy;
+      ext_num_flux[Field_rho_uz] = - f_rhouz;
+      ext_num_flux[Field_E]      = - f_E;
+  }
+
+  inline void compute_ext_num_flux_y(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
+
+      REAL m_rho   = um[Field_rho];
+      REAL m_E     = um[Field_E];
+      REAL m_ux    = um[Field_ux];
+      REAL m_uy    = um[Field_uy];
+      REAL m_uz    = um[Field_uz];
+      REAL m_p     = um[Field_p];
+      REAL m_rho_p = m_rho / m_p;
+
+      REAL k_rho   = uk[Field_rho];
+      REAL k_E     = uk[Field_E];
+      REAL k_ux    = uk[Field_ux];
+      REAL k_uy    = uk[Field_uy];
+      REAL k_uz    = uk[Field_uz];
+      REAL k_p     = uk[Field_p];
+      REAL k_rho_p = k_rho / k_p;
+
+      REAL rho       = (REAL)(0.5) * (m_rho + k_rho);
+      REAL rho_log   = logmean(m_rho, k_rho);
+      REAL ux        = (REAL)(0.5) * (m_ux + k_ux);
+      REAL uy        = (REAL)(0.5) * (m_uy + k_uy);
+      REAL uz        = (REAL)(0.5) * (m_uz + k_uz);
+      REAL u2        = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
+      REAL p         = (REAL)(0.5) * (m_p + k_p);
+      REAL rho_p_log = logmean(m_rho_p, k_rho_p);
+
+      REAL f_rho   = rho_log*uy;
+      REAL f_rhoux = ux*f_rho;
+      REAL f_rhouy = uy*f_rho + p;
+      REAL f_rhouz = uz*f_rho;
+      REAL f_E     = (rho_log * (ux*ux + uy*uy + uz*uz - (REAL)(0.5)*u2) + (REAL)(1)/(GAMMA-1)*rho_log/rho_p_log) * uy
+                      - (REAL)(0.25) * (m_p - k_p) * (m_ux - k_ux);
+
+      ext_num_flux[Field_rho]    = - f_rho;
+      ext_num_flux[Field_rho_ux] = - f_rhoux;
+      ext_num_flux[Field_rho_uy] = - f_rhouy;
+      ext_num_flux[Field_rho_uz] = - f_rhouz;
+      ext_num_flux[Field_E]      = - f_E;
+  }
+
+  inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
+
+      REAL m_rho   = um[Field_rho];
+      REAL m_E     = um[Field_E];
+      REAL m_ux    = um[Field_ux];
+      REAL m_uy    = um[Field_uy];
+      REAL m_uz    = um[Field_uz];
+      REAL m_p     = um[Field_p];
+      REAL m_rho_p = m_rho / m_p;
+
+      REAL k_rho   = uk[Field_rho];
+      REAL k_E     = uk[Field_E];
+      REAL k_ux    = uk[Field_ux];
+      REAL k_uy    = uk[Field_uy];
+      REAL k_uz    = uk[Field_uz];
+      REAL k_p     = uk[Field_p];
+      REAL k_rho_p = k_rho / k_p;
+
+      REAL rho       = (REAL)(0.5) * (m_rho + k_rho);
+      REAL rho_log   = logmean(m_rho, k_rho);
+      REAL ux        = (REAL)(0.5) * (m_ux + k_ux);
+      REAL uy        = (REAL)(0.5) * (m_uy + k_uy);
+      REAL uz        = (REAL)(0.5) * (m_uz + k_uz);
+      REAL u2        = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
+      REAL p         = (REAL)(0.5) * (m_p + k_p);
+      REAL rho_p_log = logmean(m_rho_p, k_rho_p);
+
+      REAL f_rho   = rho_log*uz;
+      REAL f_rhoux = ux*f_rho;
+      REAL f_rhouy = uy*f_rho;
+      REAL f_rhouz = uz*f_rho + p;
+      REAL f_E     = (rho_log * (ux*ux + uy*uy + uz*uz - (REAL)(0.5)*u2) + (REAL)(1)/(GAMMA-1)*rho_log/rho_p_log) * uz
+                      - (REAL)(0.25) * (m_p - k_p) * (m_ux - k_ux);
+
+      ext_num_flux[Field_rho]    = - f_rho;
+      ext_num_flux[Field_rho_ux] = - f_rhoux;
+      ext_num_flux[Field_rho_uy] = - f_rhouy;
+      ext_num_flux[Field_rho_uz] = - f_rhouz;
+      ext_num_flux[Field_E]      = - f_E;
+  }
+
+
 #else
 
   #error "Error in ideal_gas_Euler.cl: No conservative discretisation specified!"
