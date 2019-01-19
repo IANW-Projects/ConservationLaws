@@ -30,6 +30,7 @@ I_TI('num_steps') = num_steps;
 I_Tech('device') = 1;
 I_Tech('REAL') = 'double'; % float, double
 I_Tech('REAL4') = sprintf('%s4',I_Tech('REAL')); %Vector datatype
+I_Tech('memory_layout') = 'USE_STRUCTURE_OF_ARRAYS'; % USE_ARRAY_OF_STRUCTURES, USE_STRUCTURE_OF_ARRAYS
 
 % Use as kernel defines to keep consistency with header files?
 I_BalanceLaws('NUM_CONSERVED_VARS') = 5;
@@ -60,12 +61,21 @@ fprintf('Testcase: %s \nOrder: %d \nTime integrator: %s\nDT: %.16e   N_STEPS: %5
         I_RunOps('testcase'), I_RunOps('order'), I_TI('time_integrator'), I_TI('DT'), I_TI('num_steps'), I_TI('final_time'), I_Mesh('DX'), I_Mesh('NODES_X'), I_Mesh('DY'), I_Mesh('NODES_Y'), I_Mesh('DZ'), I_Mesh('NODES_Z'), I_Tech('REAL'));
 %% Compute numerical solution
 BalanceLaws.compute_numerical_solution(field_u1, field_u2);
+fprintf('Total runtime: %.3f seconds   Kernel runtime: %d\n',  I_Results('runtime'), I_Results('kernel_runtime'));
 
 %% Plot numerical solution
-field_u1_reshaped = reshape(field_u1, [I_BalanceLaws('NUM_TOTAL_VARS'), I_Tech('num_nodes_pad')]);
+num_nodes = I_Mesh('NODES_X')*I_Mesh('NODES_Y')*I_Mesh('NODES_Z');
+if strcmp(I_Tech('memory_layout'), 'USE_ARRAY_OF_STRUCTURES')
+    field_u1_plot = reshape(field_u1(1:num_nodes*I_BalanceLaws('NUM_TOTAL_VARS')), [I_BalanceLaws('NUM_TOTAL_VARS'), num_nodes]);
+elseif strcmp(I_Tech('memory_layout'), 'USE_STRUCTURE_OF_ARRAYS')
+    field_u1_tmp = reshape(field_u1, I_Tech('NUM_NODES_PAD'), I_BalanceLaws('NUM_TOTAL_VARS'));
+    field_u1_plot = field_u1_tmp(1:num_nodes, :)';
+else
+    error('You must USE_ARRAY_OF_STRUCTURES or USE_STRUCTURE_OF_ARRAYS.')
+end
 
 %Optional plots
 if ismember(lower(char(I_RunOps('plot_numerical_solution'))),{'x','y','z','xy', 'xz', 'yz', 'xyz'})
-    plot_2D(field_u1_reshaped, I_RunOps('plot_numerical_solution'),...
+    plot_2D(field_u1_plot, I_RunOps('plot_numerical_solution'),...
         I_Mesh('NODES_X'), I_Mesh('NODES_Y'), I_Mesh('NODES_Z'), 'Numerical Solution', 6, 8);
 end

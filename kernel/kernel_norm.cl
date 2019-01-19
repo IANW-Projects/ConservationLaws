@@ -1,8 +1,8 @@
 //This project is licensed under the terms of the Creative Commons CC BY-NC-ND 4.0 license.
 
-// Contains kernel for norm and derivative operators 
+// Contains kernel for norm and derivative operators
 //--------------------------------------------------------------------------------------------------
-// Norm 
+// Norm
 //--------------------------------------------------------------------------------------------------
 
 /*
@@ -109,15 +109,7 @@ kernel void norm_infty_diff(global REAL * u1, global REAL *u2, global REAL *outp
 
   uint4 s_idx = calc_sub_idx(gid);
 
-  int bound_x = get_bound_x(s_idx.x, NUM_BOUNDS);
-  int bound_y = get_bound_y(s_idx.y, NUM_BOUNDS);
-  int bound_z = get_bound_z(s_idx.z, NUM_BOUNDS);
-
-  REAL fac = ((REAL)DX / M_INV[NUM_BOUNDS + bound_x])
-           * ((REAL)DY / M_INV[NUM_BOUNDS + bound_y])
-           * ((REAL)DZ / M_INV[NUM_BOUNDS + bound_z]);
-
-  REAL pmax = fabs(get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u1) - get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u2));;
+  REAL pmax = fabs(get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u1) - get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u2));
 
   if (lid == 0) {
     local_max[0] = (REAL)(0);
@@ -150,14 +142,6 @@ kernel void norm_infty(global REAL *u, global REAL *output, global REAL* comp) {
 
   uint4 s_idx = calc_sub_idx(gid);
 
-  int bound_x = get_bound_x(s_idx.x, NUM_BOUNDS);
-  int bound_y = get_bound_y(s_idx.y, NUM_BOUNDS);
-  int bound_z = get_bound_z(s_idx.z, NUM_BOUNDS);
-
-  REAL fac = ((REAL)DX / M_INV[NUM_BOUNDS + bound_x])
-           * ((REAL)DY / M_INV[NUM_BOUNDS + bound_y])
-           * ((REAL)DZ / M_INV[NUM_BOUNDS + bound_z]);
-
   REAL pmax = fabs(get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u));
 
   if (lid == 0) {
@@ -183,5 +167,4 @@ kernel void analytical_u(global REAL *u, global REAL *time) {
    uint iz = get_global_id(2);
 
    analytical_solution(ix, iy, iz, u, time[0]);
-
 }
