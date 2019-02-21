@@ -60,4 +60,19 @@ inline REAL4 b_analytical(uint ix, uint iy, uint iz, REAL time) {
 	return (REAL4) {B1, B2, B3, (REAL)(0)};
 }
 
+/*
+Boundary condition of the magnetic field.
+*/
+inline REAL4 b_boundary(uint ix, uint iy, uint iz, REAL time) {
+
+        return b_analytical(ix, iy, iz, time);
+}
+
+/*
+Boundary condition of the velocity field.
+*/
+inline REAL4 u_boundary(uint ix, uint iy, uint iz, REAL time) {
+
+        return u_analytical(ix, iy, iz, time);
+}
 
