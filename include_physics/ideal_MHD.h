@@ -362,9 +362,9 @@ inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num
 inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 
   REAL rho = rho_initial(ix, iy, iz, (REAL)(0));
-  REAL p = p_initial(ix, iy, iz, (REAL)(0)); 
-  REAL4 uinit = u_initial(ix, iy, iz, (REAL)(0)); 
-  REAL4 binit = b_initial(ix, iy, iz, (REAL)(0)); 
+  REAL p = p_initial(ix, iy, iz, (REAL)(0));
+  REAL4 uinit = u_initial(ix, iy, iz, (REAL)(0));
+  REAL4 binit = b_initial(ix, iy, iz, (REAL)(0));
 
   REAL um[NUM_TOTAL_VARS] = {0};
 
@@ -443,7 +443,7 @@ inline void calc_num_flux(REAL al, REAL ar, REAL *ul, REAL *ur, REAL *fluxl, REA
   else if(0 < ar) {
     for (i = 0; i < NUM_CONSERVED_VARS; i++)
       num_flux[i] = ((ar*fluxl[i]-al*fluxr[i]) + ar*al*(ur[i]-ul[i]))/(ar-al);
-  } 
+  }
   else {
     for (i = 0; i < NUM_CONSERVED_VARS; i++)
       num_flux[i] = fluxr[i];
@@ -453,7 +453,7 @@ inline void calc_num_flux(REAL al, REAL ar, REAL *ul, REAL *ur, REAL *fluxl, REA
 
 inline void calc_hll_speeds(REAL* ul, REAL* ur, REAL *cl, REAL* cr, int dir) {
 #ifdef USE_HLL_SPEED_BKW
-// Speeds from 
+// Speeds from
 // A multiwave approximate Riemann solver for ideal MHD based on relaxation I and II
 // Bouchut, Klingenberg and Waagan (2007 and 2012)
 
@@ -499,7 +499,7 @@ inline void calc_hll_speeds(REAL* ul, REAL* ur, REAL *cl, REAL* cr, int dir) {
   }
 
 
-  REAL dp_drho_cs_l = GAMMA*P_l/rho_l; 
+  REAL dp_drho_cs_l = GAMMA*P_l/rho_l;
   REAL dp_drho_cs_r = GAMMA*P_r/rho_r;
   REAL pi_l = P_l + 0.5 * Bsq_l - 0.5 * Bx_l * Bx_l;
   REAL pi_r = P_r + 0.5 * Bsq_r - 0.5 * Bx_r * Bx_r;
@@ -525,10 +525,10 @@ inline void calc_hll_speeds(REAL* ul, REAL* ur, REAL *cl, REAL* cr, int dir) {
   // eq. 3.13
   *cl = -rho_l * a_0l - alpha * rho_l * (PLUS(u_l - u_r) + PLUS(pi_r - pi_l) / (rho_l * a_ql + rho_r * a_qr));
   *cr = rho_r * a_0r + alpha * rho_r * (PLUS(u_l - u_r) + PLUS(pi_l - pi_r) / (rho_l * a_ql + rho_r * a_qr));
-  return; 
+  return;
 
 #elif defined USE_HLL_SPEED_KUSANO
-  // Speeds for the HLL solver are from equation (12) of 
+  // Speeds for the HLL solver are from equation (12) of
   // A multi-state HLL approximate Riemann solver for ideal magnetohydrodynamics
   // Miyoshi and Kusano (2005)
 
@@ -566,7 +566,7 @@ inline void calc_hll_speeds(REAL* ul, REAL* ur, REAL *cl, REAL* cr, int dir) {
 #endif //USE_HLL_SPEED_KUSANO
 }
 
- 
+
 #endif //USE_BOUNDARY_FLUX_HLL
 #endif //USE_PERIODIC
 
@@ -577,7 +577,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
 #ifdef USE_BOUNDARY_FLUX_HLL
   int i;
   REAL um[NUM_TOTAL_VARS] = {0.0};
-  get_field(ix, iy, iz, 0, 0, 0, u, um); 
+  get_field(ix, iy, iz, 0, 0, 0, u, um);
   REAL4 b_bound = b_boundary(ix, iy, iz, time);
   REAL4 u_bound = u_boundary(ix, iy, iz, time);
   REAL rho_bound = rho_boundary(ix, iy, iz, time); //(REAL)1;
@@ -604,9 +604,9 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
   REAL fluxb[NUM_CONSERVED_VARS] = {0.0};
 
   REAL alx, arx, aly, ary, alz, arz;
- 
+
   if (check_bound_xr(ix, 1)) {
-    calc_hll_speeds(um, ub, &alx, &arx, 0);    
+    calc_hll_speeds(um, ub, &alx, &arx, 0);
     calc_flux_f(um, fluxm);
     calc_flux_f(ub, fluxb);
     calc_num_flux(alx, arx, um, ub, fluxm, fluxb, flux);
@@ -622,7 +622,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
       du_dt[i] += (REAL)(M_INV[0] / DX) * (flux[i] - fluxm[i]);
   }
 
-  if (check_bound_yr(iy, 1)) { 
+  if (check_bound_yr(iy, 1)) {
     calc_hll_speeds(um, ub, &aly, &ary, 1);
     calc_flux_g(um, fluxm);
     calc_flux_g(ub, fluxb);
