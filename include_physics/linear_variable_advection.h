@@ -15,11 +15,11 @@ inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num
 
   #ifdef USE_CENTRAL_FLUX
     ext_num_flux[Field_u] = (REAL)(-0.5) * (uk[Field_ax]*uk[Field_u] + um[Field_ax]*um[Field_u]);
-	#elif defined USE_SPLIT_FLUX
+  #elif defined USE_SPLIT_FLUX
     ext_num_flux[Field_u] = (REAL)(-0.25) * (uk[Field_ax] + um[Field_ax]) * (uk[Field_u] + um[Field_u]);
-	#elif defined USE_PRODUCT_FLUX
+  #elif defined USE_PRODUCT_FLUX
     ext_num_flux[Field_u] = (REAL)(-0.5) * (uk[Field_ax]*um[Field_u] + um[Field_ax]*uk[Field_u]);
-	#else
+  #else
     #error "Error in linear_variable_advection.cl: No discretisation specified!"
   #endif
 }
@@ -28,11 +28,11 @@ inline void compute_ext_num_flux_y(REAL const* uk, REAL const* um, REAL* ext_num
 
   #ifdef USE_CENTRAL_FLUX
     ext_num_flux[Field_u] = (REAL)(-0.5) * (uk[Field_ay]*uk[Field_u] + um[Field_ay]*um[Field_u]);
-	#elif defined USE_SPLIT_FLUX
+  #elif defined USE_SPLIT_FLUX
     ext_num_flux[Field_u] = (REAL)(-0.25) * (uk[Field_ay] + um[Field_ay]) * (uk[Field_u] + um[Field_u]);
-	#elif defined USE_PRODUCT_FLUX
+  #elif defined USE_PRODUCT_FLUX
     ext_num_flux[Field_u] = (REAL)(-0.5) * (uk[Field_ay]*um[Field_u] + um[Field_ay]*uk[Field_u]);
-	#else
+  #else
     #error "Error in linear_variable_advection.cl: No discretisation specified!"
   #endif
 }
@@ -41,11 +41,11 @@ inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num
 
   #ifdef USE_CENTRAL_FLUX
     ext_num_flux[Field_u] = (REAL)(-0.5) * (uk[Field_az]*uk[Field_u] + um[Field_az]*um[Field_u]);
-	#elif defined USE_SPLIT_FLUX
+  #elif defined USE_SPLIT_FLUX
     ext_num_flux[Field_u] = (REAL)(-0.25) * (uk[Field_az] + um[Field_az]) * (uk[Field_u] + um[Field_u]);
-	#elif defined USE_PRODUCT_FLUX
+  #elif defined USE_PRODUCT_FLUX
     ext_num_flux[Field_u] = (REAL)(-0.5) * (uk[Field_az]*um[Field_u] + um[Field_az]*uk[Field_u]);
-	#else
+  #else
     #error "Error in linear_variable_advection.cl: No discretisation specified!"
   #endif
 }
@@ -68,7 +68,24 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 
 inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL const *u, REAL *du_dt) {
 
-  // nothing to do in a periodic domain
+  // For periodic boundary conditions and a single block, no surface term has to be used.
+  #ifndef USE_PERIODIC
+
+    REAL um[NUM_TOTAL_VARS] = {0};
+    get_field(ix, iy, iz, 0, 0, 0, u, um);
+
+    REAL u_bound = u_boundary(ix, iy, iz, time);
+
+    // Apply the usual upwind numerical flux at the boundaries.
+    du_dt[Field_u] += + (REAL)(M_INV[0]/DX) *
+                        ((check_bound_l(ix,1) * (um[Field_ax] > 0)) * (REAL)(-1) + (check_bound_xr(ix,1) * (um[Field_ax] < 0)) * (REAL)(1)) * um[Field_ax] * (um[Field_u] - u_bound)
+                      + (REAL)(M_INV[0]/DY) *
+                        ((check_bound_l(iy,1) * (um[Field_ay] > 0)) * (REAL)(-1) + (check_bound_yr(iy,1) * (um[Field_ay] < 0)) * (REAL)(1)) * um[Field_ay] * (um[Field_u] - u_bound)
+                      + (REAL)(M_INV[0]/DZ) *
+                        ((check_bound_l(iz,1) * (um[Field_az] > 0)) * (REAL)(-1) + (check_bound_zr(iz,1) * (um[Field_az] < 0)) * (REAL)(1)) * um[Field_az] * (um[Field_u] - u_bound);
+
+  #endif // USE_PERIODIC
+
   return;
 }
 
@@ -79,7 +96,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
 inline void compute_auxiliary_variables(REAL time, uint ix, uint iy, uint iz, global REAL *u) {
 
   REAL x = (REAL)XMIN + ix*(REAL)DX;
-	REAL y = (REAL)YMIN + iy*(REAL)DY;
+  REAL y = (REAL)YMIN + iy*(REAL)DY;
 
   set_field_component(ix, iy, iz, Field_ax, u, -y);
   set_field_component(ix, iy, iz, Field_ay, u, x);
@@ -92,10 +109,9 @@ inline void compute_auxiliary_variables(REAL time, uint ix, uint iy, uint iz, gl
 
 inline void analytical_solution(uint ix, uint iy, uint iz, global REAL *u, REAL time) {
 
-	REAL u_ana =  u_analytical(ix, iy, iz, time);
+  REAL u_ana =  u_analytical(ix, iy, iz, time);
 
-	set_field_component(ix, iy, iz, Field_u, u, u_ana);
-	
+  set_field_component(ix, iy, iz, Field_u, u, u_ana);
 }
 
 #endif // LINEAR_VARIABLE_ADVECTION_H
