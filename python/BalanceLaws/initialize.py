@@ -87,7 +87,7 @@ def initialize():
     kernel_path_list.append('../include_physics/' + I_RunOps['conservation_laws'] + '.h')
     kernel_path_list.append('../kernel/kernel_init.cl')
 
-    settings_tech = generate_settings(I_Tech, ['REAL', 'REAL4', 'optimizations'])
+    settings_tech = generate_settings(I_Tech, ['REAL', 'REAL4', 'optimizations', 'memory_layout'])
 
     settings_mesh = generate_settings(I_Mesh,  ['DX', 'DY', 'DZ','NODES_X', 'NODES_Y', 'NODES_Z', 'XMIN', 'XMAX', 'YMIN', 'YMAX','ZMIN', 'ZMAX'])
     settings_runops = generate_settings(I_RunOps, ['periodic'])
@@ -131,7 +131,7 @@ def initialize():
     kernel_path_list.append('../kernel/kernel_norm.cl')
 
 
-    settings_tech = generate_settings(I_Tech, ['REAL', 'REAL4', 'W_SIZE', 'optimizations'])
+    settings_tech = generate_settings(I_Tech, ['REAL', 'REAL4', 'W_SIZE', 'optimizations', 'memory_layout'])
 
     settings_mesh = generate_settings(I_Mesh,  ['DX', 'DY', 'DZ','NODES_X', 'NODES_Y', 'NODES_Z', 'XMIN', 'XMAX', 'YMIN', 'YMAX','ZMIN', 'ZMAX'])
     settings_time_integration = generate_settings(I_TI, ['DT'])

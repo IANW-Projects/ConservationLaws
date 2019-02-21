@@ -37,11 +37,12 @@ I_TI['num_steps'] = num_steps
 
 I_Tech['REAL'] = 'double'
 I_Tech['REAL4'] = I_Tech['REAL'] + "4"
+I_Tech['memory_layout'] = 'USE_ARRAY_OF_STRUCTURES'#'USE_STRUCTURE_OF_ARRAYS'
+
 
 I_BalanceLaws['NUM_CONSERVED_VARS'] = 8
 I_BalanceLaws['NUM_AUXILIARY_VARS'] = 4
 I_BalanceLaws['NUM_TOTAL_VARS'] = I_BalanceLaws['NUM_CONSERVED_VARS'] + I_BalanceLaws['NUM_AUXILIARY_VARS']
-print(I_BalanceLaws)
 
 # Compiler based optimizations
 
