@@ -110,8 +110,8 @@ def compute_numerical_solution(field_u1, field_u2):
 
     current_time[1] = I_TI['final_time']
     cl.run_kernel('analytical_u', I_BalanceLaws['g_range'], I_BalanceLaws['l_range'], field_u2, current_time)
-    abs_err = np.zeros((1,I_BalanceLaws['NUM_CONSERVED_VARS']), dtype = np.float64)
-    rel_err = np.zeros((1, I_BalanceLaws['NUM_CONSERVED_VARS']),dtype=np.float64)
+    abs_err = np.zeros((I_BalanceLaws['NUM_CONSERVED_VARS'],1), dtype = np.float64)
+    rel_err = np.zeros(( I_BalanceLaws['NUM_CONSERVED_VARS'],1),dtype=np.float64)
 
     for comp in range(I_BalanceLaws['NUM_CONSERVED_VARS']):
         components[0] = comp

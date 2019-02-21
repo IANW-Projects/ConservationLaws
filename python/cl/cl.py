@@ -1,5 +1,7 @@
 import pyopencl as cl
 
+debug = False
+
 def compile_kernels(src_path, cmd_line, *args):
     global program, ctx
     src = ' '
@@ -36,6 +38,13 @@ def run_kernel(names, g_range, l_range, *arguments):
     else:
         l_range = tuple(l_range)
 
+    if debug:
+        print("g_range: " + str(g_range) + " l_range: " +str(l_range))
+
+    if debug:
+        for arg in arguments:
+            print("Argumentshape:" + str(arg.shape))
+
     if type(names) is list:
         for name in names:
             callstrings.append('program.' + name + '(queue, tuple(g_range) , l_range, *inputbuffers)')
@@ -44,7 +53,7 @@ def run_kernel(names, g_range, l_range, *arguments):
 
     for callstring in callstrings:
         event = eval(callstring)
-        event.wait()
+        #event.wait()
     i = 0
     for arg in arguments:
         cl.enqueue_copy(queue, arg, inputbuffers[i]).wait()

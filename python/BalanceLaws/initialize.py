@@ -18,6 +18,9 @@ def initialize():
     I_Mesh['DX'] = DX; I_Mesh['DY'] = DY; I_Mesh['DZ'] = DZ
 
     I_BalanceLaws['g_range'] = np.array([I_Mesh['NODES_X'], I_Mesh['NODES_Y'], I_Mesh['NODES_Z']], dtype=np.uint32)
+   # I_BalanceLaws['g_range'] = np.array([I_Mesh['NODES_Z'], I_Mesh['NODES_Y'], I_Mesh['NODES_X']], dtype=np.uint32)
+   # I_BalanceLaws['g_range'] = np.array([I_Mesh['NODES_X']*I_BalanceLaws['NUM_TOTAL_VARS'],I_Mesh['NODES_Y'],I_Mesh['NODES_Z']], dtype=np.uint32)
+    
     I_BalanceLaws['l_range'] = np.array([0], dtype=np.uint32)
 
     num_nodes = I_Mesh['NODES_X']*I_Mesh['NODES_Y']*I_Mesh['NODES_Z']
