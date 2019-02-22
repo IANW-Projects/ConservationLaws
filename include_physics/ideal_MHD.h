@@ -392,58 +392,60 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 
 
 inline void calc_flux_f(REAL *u, REAL *flux) {
-        REAL BB = u[Field_Bx]*u[Field_Bx] + u[Field_By]*u[Field_By] + u[Field_Bz]*u[Field_Bz];
-        flux[Field_rho] = u[Field_rho_ux];
-        flux[Field_rho_ux] = u[Field_rho_ux]*u[Field_ux] + u[Field_p] + 0.5 * BB - u[Field_Bx]*u[Field_Bx];
-        flux[Field_rho_uy] = u[Field_rho_ux] * u[Field_uy] - u[Field_Bx]*u[Field_By];
-        flux[Field_rho_uz] = u[Field_rho_ux] * u[Field_uz] - u[Field_Bx]*u[Field_Bz];
-        flux[Field_E] = u[Field_ux]*(u[Field_E] + u[Field_p] + 0.5*BB)-u[Field_Bx]*(u[Field_Bx]*u[Field_ux] + u[Field_By]*u[Field_uy] + u[Field_Bz]*u[Field_uz]);
-//      flux[Field_Bx] = 0;
-        flux[Field_By] = u[Field_ux] * u[Field_By] - u[Field_uy]*u[Field_Bx];
-        flux[Field_Bz] = u[Field_ux] * u[Field_Bz]- u[Field_uz]*u[Field_Bx];
-        return;
+  REAL BB = u[Field_Bx]*u[Field_Bx] + u[Field_By]*u[Field_By] + u[Field_Bz]*u[Field_Bz];
+  flux[Field_rho] = u[Field_rho_ux];
+  flux[Field_rho_ux] = u[Field_rho_ux]*u[Field_ux] + u[Field_p] + 0.5 * BB - u[Field_Bx]*u[Field_Bx];
+  flux[Field_rho_uy] = u[Field_rho_ux] * u[Field_uy] - u[Field_Bx]*u[Field_By];
+  flux[Field_rho_uz] = u[Field_rho_ux] * u[Field_uz] - u[Field_Bx]*u[Field_Bz];
+  flux[Field_E] = u[Field_ux]*(u[Field_E] + u[Field_p] + 0.5*BB)-u[Field_Bx]*(u[Field_Bx]*u[Field_ux] + u[Field_By]*u[Field_uy] + u[Field_Bz]*u[Field_uz]);
+//flux[Field_Bx] = 0;
+  flux[Field_By] = u[Field_ux] * u[Field_By] - u[Field_uy]*u[Field_Bx];
+  flux[Field_Bz] = u[Field_ux] * u[Field_Bz]- u[Field_uz]*u[Field_Bx];
+  return;
 }
 
 inline void calc_flux_g(REAL *u, REAL *flux){
-        REAL BB = u[Field_Bx]*u[Field_Bx] + u[Field_By]*u[Field_By] + u[Field_Bz]*u[Field_Bz];
-        flux[Field_rho] = u[Field_rho_uy];
-        flux[Field_rho_ux] = u[Field_rho_uy] * u[Field_ux] - u[Field_By]*u[Field_Bx];
-        flux[Field_rho_uy] = u[Field_rho_uy]*u[Field_uy] + u[Field_p] + 0.5 * BB - u[Field_By]*u[Field_By];
-        flux[Field_rho_uz] = u[Field_rho_uy] * u[Field_uz] - u[Field_By]*u[Field_Bz];
-        flux[Field_E] = u[Field_uy]*(u[Field_E] + u[Field_p] + 0.5*BB)-u[Field_By]*(u[Field_Bx]*u[Field_ux] + u[Field_By]*u[Field_uy] + u[Field_Bz]*u[Field_uz]);
-        flux[Field_Bx] = u[Field_uy] * u[Field_Bx]- u[Field_ux]*u[Field_By];
-//      flux[Field_By] = 0;
-        flux[Field_Bz] = u[Field_uy] * u[Field_Bz] - u[Field_uz]*u[Field_By];
-        return;
+  REAL BB = u[Field_Bx]*u[Field_Bx] + u[Field_By]*u[Field_By] + u[Field_Bz]*u[Field_Bz];
+  flux[Field_rho] = u[Field_rho_uy];
+  flux[Field_rho_ux] = u[Field_rho_uy] * u[Field_ux] - u[Field_By]*u[Field_Bx];
+  flux[Field_rho_uy] = u[Field_rho_uy]*u[Field_uy] + u[Field_p] + 0.5 * BB - u[Field_By]*u[Field_By];
+  flux[Field_rho_uz] = u[Field_rho_uy] * u[Field_uz] - u[Field_By]*u[Field_Bz];
+  flux[Field_E] = u[Field_uy]*(u[Field_E] + u[Field_p] + 0.5*BB)-u[Field_By]*(u[Field_Bx]*u[Field_ux] + u[Field_By]*u[Field_uy] + u[Field_Bz]*u[Field_uz]);
+  flux[Field_Bx] = u[Field_uy] * u[Field_Bx]- u[Field_ux]*u[Field_By];
+//flux[Field_By] = 0;
+  flux[Field_Bz] = u[Field_uy] * u[Field_Bz] - u[Field_uz]*u[Field_By];
+  return;
 }
 
 inline void calc_flux_h(REAL *u, REAL *flux){
-        REAL BB = u[Field_Bx]*u[Field_Bx] + u[Field_By]*u[Field_By] + u[Field_Bz]*u[Field_Bz];
-        flux[Field_rho] = u[Field_rho_uz];
-        flux[Field_rho_ux] = u[Field_rho_uz] * u[Field_ux] - u[Field_Bz]*u[Field_Bx];
-        flux[Field_rho_uy] = u[Field_rho_uz] * u[Field_uy] - u[Field_Bz]*u[Field_By];
-        flux[Field_rho_uz] = u[Field_rho_uz] * u[Field_uz] + u[Field_p] + 0.5 * BB - u[Field_Bz]*u[Field_Bz];
-        flux[Field_E] = u[Field_uz]*(u[Field_E] + u[Field_p] + 0.5*BB)-u[Field_Bz]*(u[Field_Bx]*u[Field_ux] + u[Field_By]*u[Field_uy] + u[Field_Bz]*u[Field_uz]);
-        flux[Field_Bx] = u[Field_uz] * u[Field_Bx]- u[Field_ux]*u[Field_Bz];
-        flux[Field_By] = u[Field_uz] * u[Field_By]- u[Field_uy]*u[Field_Bz];
-//      flux[Field_Bz] = 0;
-        return;
+  REAL BB = u[Field_Bx]*u[Field_Bx] + u[Field_By]*u[Field_By] + u[Field_Bz]*u[Field_Bz];
+  flux[Field_rho] = u[Field_rho_uz];
+  flux[Field_rho_ux] = u[Field_rho_uz] * u[Field_ux] - u[Field_Bz]*u[Field_Bx];
+  flux[Field_rho_uy] = u[Field_rho_uz] * u[Field_uy] - u[Field_Bz]*u[Field_By];
+  flux[Field_rho_uz] = u[Field_rho_uz] * u[Field_uz] + u[Field_p] + 0.5 * BB - u[Field_Bz]*u[Field_Bz];
+  flux[Field_E] = u[Field_uz]*(u[Field_E] + u[Field_p] + 0.5*BB)-u[Field_Bz]*(u[Field_Bx]*u[Field_ux] + u[Field_By]*u[Field_uy] + u[Field_Bz]*u[Field_uz]);
+  flux[Field_Bx] = u[Field_uz] * u[Field_Bx]- u[Field_ux]*u[Field_Bz];
+  flux[Field_By] = u[Field_uz] * u[Field_By]- u[Field_uy]*u[Field_Bz];
+//flux[Field_Bz] = 0;
+  return;
 }
 
 
 
 inline void calc_num_flux(REAL al, REAL ar, REAL *ul, REAL *ur, REAL *fluxl, REAL *fluxr, REAL *num_flux){
-        int i;
-        if(0 < al){
-                for (i = 0; i < NUM_CONSERVED_VARS; i++)
-                        num_flux[i] = fluxl[i];
-        } else if(0 < ar)
-                for (i = 0; i < NUM_CONSERVED_VARS; i++)
-                        num_flux[i] = (ar*fluxl[i]-al*fluxr[i])/(ar-al) + ar*al*(ur[i]-ul[i])/(ar-al);
-        else
-                for (i = 0; i < NUM_CONSERVED_VARS; i++)
-                        num_flux[i] = fluxr[i];
-
+  int i;
+  if(0 < al){
+    for (i = 0; i < NUM_CONSERVED_VARS; i++)
+      num_flux[i] = fluxl[i];
+  }
+  else if(0 < ar) {
+    for (i = 0; i < NUM_CONSERVED_VARS; i++)
+      num_flux[i] = ((ar*fluxl[i]-al*fluxr[i]) + ar*al*(ur[i]-ul[i]))/(ar-al);
+  } 
+  else {
+    for (i = 0; i < NUM_CONSERVED_VARS; i++)
+      num_flux[i] = fluxr[i];
+  }
 }
 
 #endif
@@ -480,8 +482,11 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
   REAL fluxm[NUM_CONSERVED_VARS] = {0.0};
   REAL fluxb[NUM_CONSERVED_VARS] = {0.0};
 
-  REAL BBSQb = pow(ub[Field_Bx], 2) + pow(ub[Field_By], 2) + pow(ub[Field_Bz], 2);
-  REAL BBSQm = pow(um[Field_Bx], 2) + pow(um[Field_By], 2) + pow(um[Field_Bz], 2);
+  // Speeds for the HLL solver are from equation (12) of 
+  // A multi-state HLL approximate Riemann solver for ideal magnetohydrodynamics
+  // Miyoshi and Kusano (2005)
+  REAL BBSQb = ub[Field_Bx] * ub[Field_Bx] + ub[Field_By] * ub[Field_By] + ub[Field_Bz] * ub[Field_Bz];
+  REAL BBSQm = um[Field_Bx] * um[Field_Bx] + um[Field_By] * um[Field_By] + um[Field_Bz] * um[Field_Bz];
 
 
   // X direction
@@ -512,54 +517,51 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
 
 
   if (check_bound_xr(ix, 1)){
-	  calc_flux_f(um, fluxm);
-	  calc_flux_f(ub, fluxb);
-          calc_num_flux(alx, arx, um, ub, fluxm, fluxb, flux);
-          for(i = 0; i < NUM_CONSERVED_VARS; i++)
-          	du_dt[i] -= M_INV[0] / DX * (flux[i] - fluxm[i]);
-  } else if(check_bound_l(ix,1)) {
-          calc_flux_f(um, fluxm);
-          calc_flux_f(ub, fluxb);
-          calc_num_flux(alx, arx, ub, um, fluxb, fluxm, flux);
-          for(i = 0; i < NUM_CONSERVED_VARS; i++)
-          du_dt[i] += M_INV[0] / DX * (flux[i] - fluxm[i]);
+    calc_flux_f(um, fluxm);
+    calc_flux_f(ub, fluxb);
+    calc_num_flux(alx, arx, um, ub, fluxm, fluxb, flux);
+    for(i = 0; i < NUM_CONSERVED_VARS; i++)
+      du_dt[i] -= (REAL)(M_INV[0] / DX) * (flux[i] - fluxm[i]);
+  }
+  else if(check_bound_l(ix,1)) {
+    calc_flux_f(um, fluxm);
+    calc_flux_f(ub, fluxb);
+    calc_num_flux(alx, arx, ub, um, fluxb, fluxm, flux);
+    for(i = 0; i < NUM_CONSERVED_VARS; i++)
+      du_dt[i] += (REAL)(M_INV[0] / DX) * (flux[i] - fluxm[i]);
   }
 
   if (check_bound_yr(iy, 1)){
-          calc_flux_g(um, fluxm);
-          calc_flux_g(ub, fluxb);
-          calc_num_flux(aly, ary, um, ub, fluxm, fluxb, flux);
-          for(i = 0; i < NUM_CONSERVED_VARS; i++)
-                du_dt[i] -= M_INV[0] / DY * (flux[i] - fluxm[i]);
-  } else if(check_bound_l(iy,1)) {
-	  calc_flux_g(um, fluxm);
-          calc_flux_g(ub, fluxb);
-          calc_num_flux(aly, ary, ub, um, fluxb, fluxm, flux);
-          for(i = 0; i < NUM_CONSERVED_VARS; i++)
-          	du_dt[i] += M_INV[0] / DY * (flux[i] - fluxm[i]);
+    calc_flux_g(um, fluxm);
+    calc_flux_g(ub, fluxb);
+    calc_num_flux(aly, ary, um, ub, fluxm, fluxb, flux);
+    for(i = 0; i < NUM_CONSERVED_VARS; i++)
+      du_dt[i] -= (REAL)(M_INV[0] / DY) * (flux[i] - fluxm[i]);
+  }
+  else if(check_bound_l(iy,1)) {
+    calc_flux_g(um, fluxm);
+    calc_flux_g(ub, fluxb);
+    calc_num_flux(aly, ary, ub, um, fluxb, fluxm, flux);
+    for(i = 0; i < NUM_CONSERVED_VARS; i++)
+      du_dt[i] += (REAL)(M_INV[0] / DY) * (flux[i] - fluxm[i]);
   }
 
   if (check_bound_zr(iz, 1)){
-          calc_flux_h(um, fluxm);
-          calc_flux_h(ub, fluxb);
-          calc_num_flux(alz, arz, um, ub, fluxm, fluxb, flux);
-          for(i = 0; i < NUM_CONSERVED_VARS; i++)
-                du_dt[i] -= M_INV[0] / DZ * (flux[i] - fluxm[i]);
-  } else if(check_bound_l(iz,1)){
-          calc_flux_h(um, fluxm);
-          calc_flux_h(ub, fluxb);
-          calc_num_flux(alz, arz, ub, um, fluxb, fluxm, flux);
-          for(i = 0; i < NUM_CONSERVED_VARS; i++)
-                du_dt[i] += M_INV[0] / DZ * (flux[i] - fluxm[i]);
-
+    calc_flux_h(um, fluxm);
+    calc_flux_h(ub, fluxb);
+    calc_num_flux(alz, arz, um, ub, fluxm, fluxb, flux);
+    for(i = 0; i < NUM_CONSERVED_VARS; i++)
+      du_dt[i] -= (REAL)(M_INV[0] / DZ) * (flux[i] - fluxm[i]);
+  }
+  else if(check_bound_l(iz,1)){
+    calc_flux_h(um, fluxm);
+    calc_flux_h(ub, fluxb);
+    calc_num_flux(alz, arz, ub, um, fluxb, fluxm, flux);
+    for(i = 0; i < NUM_CONSERVED_VARS; i++)
+      du_dt[i] += (REAL)(M_INV[0] / DZ) * (flux[i] - fluxm[i]);
   }
 
-
-
-
-
 #endif // USE_PERIODIC
-
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -607,15 +609,15 @@ inline void analytical_solution(uint ix, uint iy, uint iz, global REAL *u, REAL 
 
   set_field_component(ix, iy, iz, Field_rho, u, rho);
 
-	set_field_component(ix, iy, iz, Field_rho_ux, u, rho*v.x);
-	set_field_component(ix, iy, iz, Field_rho_uy, u, rho*v.y);
-	set_field_component(ix, iy, iz, Field_rho_uz, u, rho*v.z);
+  set_field_component(ix, iy, iz, Field_rho_ux, u, rho*v.x);
+  set_field_component(ix, iy, iz, Field_rho_uy, u, rho*v.y);
+  set_field_component(ix, iy, iz, Field_rho_uz, u, rho*v.z);
 
   set_field_component(ix, iy, iz, Field_E, u, E);
 
   set_field_component(ix, iy, iz, Field_Bx, u, B.x);
-	set_field_component(ix, iy, iz, Field_By, u, B.y);
-	set_field_component(ix, iy, iz, Field_Bz, u, B.z);
+  set_field_component(ix, iy, iz, Field_By, u, B.y);
+  set_field_component(ix, iy, iz, Field_Bz, u, B.z);
 }
 
 #endif // IDEAL_MHD
