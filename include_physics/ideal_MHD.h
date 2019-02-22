@@ -486,7 +486,8 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
   // A multi-state HLL approximate Riemann solver for ideal magnetohydrodynamics
   // Miyoshi and Kusano (2005)
   REAL BBSQb = ub[Field_Bx] * ub[Field_Bx] + ub[Field_By] * ub[Field_By] + ub[Field_Bz] * ub[Field_Bz];
-  REAL BBSQm = um[Field_Bx] * um[Field_Bx] + um[Field_By] * um[Field_by] + um[Field_Bz] * um[Field_Bz];
+  REAL BBSQm = um[Field_Bx] * um[Field_Bx] + um[Field_By] * um[Field_By] + um[Field_Bz] * um[Field_Bz];
+
 
 
   // X direction
@@ -528,7 +529,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
     calc_flux_f(ub, fluxb);
     calc_num_flux(alx, arx, ub, um, fluxb, fluxm, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] += (ReAL)(M_INV[0] / DX) * (flux[i] - fluxm[i]);
+      du_dt[i] += (REAL)(M_INV[0] / DX) * (flux[i] - fluxm[i]);
   }
 
   if (check_bound_yr(iy, 1)){
