@@ -390,6 +390,7 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 
 #ifndef USE_PERIODIC
 
+#define sq(x)	((x)*(x))
 
 inline void calc_flux_f(REAL *u, REAL *flux) {
   REAL BB = u[Field_Bx]*u[Field_Bx] + u[Field_By]*u[Field_By] + u[Field_Bz]*u[Field_Bz];
@@ -491,19 +492,19 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
 
 
   // X direction
-  REAL cfbx = sqrt((GAMMA * ub[Field_p] + BBSQb + sqrt(pow(GAMMA * ub[Field_p] + BBSQb, 2) - 4 * GAMMA * ub[Field_p] * ub[Field_Bx] * ub[Field_Bx]))/(2 * ub[Field_rho]));
+  REAL cfbx = sqrt((GAMMA * ub[Field_p] + BBSQb + sqrt(sq(GAMMA * ub[Field_p] + BBSQb) - 4 * GAMMA * ub[Field_p] * ub[Field_Bx] * ub[Field_Bx]))/(2 * ub[Field_rho]));
 
-  REAL cfmx = sqrt((GAMMA * um[Field_p] + BBSQm + sqrt(pow(GAMMA * um[Field_p] + BBSQm, 2) - 4 * GAMMA * um[Field_p] * um[Field_Bx] * um[Field_Bx]))/(2 * um[Field_rho]));
+  REAL cfmx = sqrt((GAMMA * um[Field_p] + BBSQm + sqrt(sq(GAMMA * um[Field_p] + BBSQm) - 4 * GAMMA * um[Field_p] * um[Field_Bx] * um[Field_Bx]))/(2 * um[Field_rho]));
 
   // Y direction
-  REAL cfby = sqrt((GAMMA * ub[Field_p] + BBSQb + sqrt(pow(GAMMA * ub[Field_p] + BBSQb, 2) - 4 * GAMMA * ub[Field_p] * ub[Field_By] * ub[Field_By]))/(2 * ub[Field_rho]));
+  REAL cfby = sqrt((GAMMA * ub[Field_p] + BBSQb + sqrt(sq(GAMMA * ub[Field_p] + BBSQb) - 4 * GAMMA * ub[Field_p] * ub[Field_By] * ub[Field_By]))/(2 * ub[Field_rho]));
 
-  REAL cfmy = sqrt((GAMMA * um[Field_p] + BBSQm + sqrt(pow(GAMMA * um[Field_p] + BBSQm, 2) - 4 * GAMMA * um[Field_p] * um[Field_By] * um[Field_By]))/(2 * um[Field_rho]));
+  REAL cfmy = sqrt((GAMMA * um[Field_p] + BBSQm + sqrt(sq(GAMMA * um[Field_p] + BBSQm) - 4 * GAMMA * um[Field_p] * um[Field_By] * um[Field_By]))/(2 * um[Field_rho]));
 
   // Z direction
-  REAL cfbz = sqrt((GAMMA * ub[Field_p] + BBSQb + sqrt(pow(GAMMA * ub[Field_p] + BBSQb, 2) - 4 * GAMMA * ub[Field_p] * ub[Field_Bz] * ub[Field_Bz]))/(2 * ub[Field_rho]));
+  REAL cfbz = sqrt((GAMMA * ub[Field_p] + BBSQb + sqrt(sq(GAMMA * ub[Field_p] + BBSQb) - 4 * GAMMA * ub[Field_p] * ub[Field_Bz] * ub[Field_Bz]))/(2 * ub[Field_rho]));
 
-  REAL cfmz = sqrt((GAMMA * um[Field_p] + BBSQm + sqrt(pow(GAMMA * um[Field_p] + BBSQm, 2) - 4 * GAMMA * um[Field_p] * um[Field_Bz] * um[Field_Bz]))/(2 * um[Field_rho]));
+  REAL cfmz = sqrt((GAMMA * um[Field_p] + BBSQm + sqrt(sq(GAMMA * um[Field_p] + BBSQm) - 4 * GAMMA * um[Field_p] * um[Field_Bz] * um[Field_Bz]))/(2 * um[Field_rho]));
 
 
   REAL alx = fmin(ub[Field_ux] - cfbx, um[Field_ux] - cfmx);
