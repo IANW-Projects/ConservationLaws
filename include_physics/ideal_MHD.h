@@ -388,6 +388,30 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 //--------------------------------------------------------------------------------------------------
 
 #ifndef USE_PERIODIC
+  #ifndef USE_VR_KUSANO
+    #ifndef USE_VR_BKW
+	#error "USE_PERIODIC or USE_VR_KUSANO or USE_VR_BKW has to be defined"
+    #endif
+  #endif
+#endif
+
+#ifdef USE_PERIODIC
+	#ifdef USE_VR_KUSANO
+		#error "Relaxation speeds are not useful for periodic boundarys."
+	#endif
+	#ifdef USE_VR_BKW
+		#error "Relaxation speeds are not useful for periodic boundarys."
+	#endif
+#endif
+
+#ifdef USE_VR_KUSANO
+	#ifdef USE_VR_BKW
+		#error "only one relaxation speed can be used in this solver"
+	#endif
+#endif
+
+
+#ifndef USE_PERIODIC
 
 #define sq(x) ((x)*(x))
 #define PLUS(x) (fmax(x, 0.0))
