@@ -104,7 +104,6 @@ inline REAL4 u_initial(uint ix, uint iy, uint iz, REAL time){
 }
 
 inline REAL p_initial(uint idx, uint iy, uint iz, REAL time){
-
   return (REAL)(1);
 }
 
