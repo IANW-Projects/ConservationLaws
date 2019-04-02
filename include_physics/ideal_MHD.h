@@ -361,10 +361,10 @@ inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num
 
 inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 
-  REAL rho = (REAL)(1);
-  REAL p = (REAL)(1);
-  REAL4 uinit = u_analytical(ix, iy, iz, (REAL)(0));
-  REAL4 binit = b_analytical(ix, iy, iz, (REAL)(0));
+  REAL rho = rho_initial(ix, iy, iz, (REAL)(0));
+  REAL p = p_initial(ix, iy, iz, (REAL)(0)); 
+  REAL4 uinit = u_initial(ix, iy, iz, (REAL)(0)); 
+  REAL4 binit = b_initial(ix, iy, iz, (REAL)(0)); 
 
   REAL um[NUM_TOTAL_VARS] = {0};
 
@@ -523,8 +523,8 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
   get_field(ix, iy, iz, 0, 0, 0, u, um); 
   REAL4 b_bound = b_boundary(ix, iy, iz, time);
   REAL4 u_bound = u_boundary(ix, iy, iz, time);
-  REAL rho_bound = (REAL)1;
-  REAL p_bound = 1;
+  REAL rho_bound = rho_boundary(ix, iy, iz, time); //(REAL)1;
+  REAL p_bound = p_boundary(ix, iy, iz, time);
   REAL E_bound = compute_energy(p_bound, rho_bound, u_bound.x, u_bound.y, u_bound.z, b_bound.x, b_bound.y, b_bound.z);
 
 
