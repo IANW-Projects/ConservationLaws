@@ -1,4 +1,4 @@
-%clc
+clc
 clear
 close all
 
@@ -13,8 +13,8 @@ I_Mesh('XMIN') = 0.0; I_Mesh('XMAX') = 1.1547005383792517; % = 2/sqrt(3)
 I_Mesh('YMIN') = 0.0; I_Mesh('YMAX') = 2.0;
 I_Mesh('ZMIN') = 0.0; I_Mesh('ZMAX') = 1.0;
 
-I_TI('final_time') = 100;
-I_TI('cfl') = 0.85;
+I_TI('final_time') = 5;%100;
+I_TI('cfl') = 0.65;%0.85;
 
 dt = I_TI('cfl') * 2.0 / double(I_Mesh('NODES_Y'));
 num_steps = ceil(I_TI('final_time')/dt);
@@ -44,7 +44,7 @@ else
     I_Tech('optimizations') = ' -cl-mad-enable -cl-no-signed-zeros -cl-finite-math-only';
 end
 
-I_RunOps('periodic') = 'USE_PERIODIC'; % 'NONE', 'USE_PERIODIC'; must be set to 'USE_PERIODIC'
+I_RunOps('periodic') = 'NONE'; % 'NONE', 'USE_PERIODIC'; must be set to 'USE_PERIODIC'
                                        % if periodic boundary conditions should be used
 
 I_RunOps('order') = 6; I_RunOps('operator_form') = 'classical'; % order: 2, 4, 6; operator_form: classical, extended

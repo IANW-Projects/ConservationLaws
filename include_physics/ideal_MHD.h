@@ -387,31 +387,6 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 // Surface terms
 //--------------------------------------------------------------------------------------------------
 
-
-#ifndef USE_PERIODIC
-  #ifndef USE_VR_KUSANO
-    #ifndef USE_VR_BKW
-	#error "USE_PERIODIC or USE_VR_KUSANO or USE_VR_BKW has to be defined"
-    #endif
-  #endif
-#endif
-
-#ifdef USE_PERIODIC
-	#ifdef USE_VR_KUSANO
-		#error "Relaxation speeds are not useful for periodic boundarys."
-	#endif
-	#ifdef USE_VR_BKW
-		#error "Relaxation speeds are not useful for periodic boundarys."
-	#endif
-#endif
-
-#ifdef USE_VR_KUSANO
-	#ifdef USE_VR_BKW
-		#error "only one relaxation speed can be used in this solver"
-	#endif
-#endif
-
-
 #ifndef USE_PERIODIC
 
 #define sq(x) ((x)*(x))
@@ -474,7 +449,7 @@ inline void calc_num_flux(REAL al, REAL ar, REAL *ul, REAL *ur, REAL *fluxl, REA
   }
 }
 
-#endif
+
 #ifdef USE_VR_BKW
 // Speeds from 
 // A multiwave approximate Riemann solver for ideal MHD based on relaxation I and II
@@ -483,7 +458,48 @@ inline void calc_num_flux(REAL al, REAL ar, REAL *ul, REAL *ur, REAL *fluxl, REA
 #define alpha (0.5*(GAMMA+1)) //from page 9
 
 
-inline void calc_speed_bkw(REAL u_l, REAL Bx_l, REAL Bsq_l, REAL rho_l, REAL P_l, REAL u_r,  REAL Bx_r, REAL Bsq_r, REAL rho_r, REAL P_r, REAL *cl, REAL *cr) {
+inline void calc_speed_bkw(REAL* ul, REAL* ur, REAL *cl, REAL* cr, int dir) {
+
+  REAL rho_l = ul[Field_rho];
+  REAL P_l = ul[Field_p];
+  REAL rho_r = ur[Field_rho];
+  REAL P_r = ur[Field_p];
+  REAL u_l;
+  REAL u_r;
+  REAL Bx_l;
+  REAL Bx_r;
+  REAL Bsq_l;
+  REAL Bsq_r;
+
+  switch(dir) {
+    case 0:
+      u_l = ul[Field_ux];
+      Bx_l = ul[Field_Bx];
+      Bsq_l = ul[Field_By] * ul[Field_By] + ul[Field_Bz] * ul[Field_Bz];
+      u_r = ur[Field_ux];
+      Bx_r = ur[Field_Bx];
+      Bsq_r = ur[Field_By] * ur[Field_By] + ur[Field_Bz] * ur[Field_Bz];
+      break;
+    case 1:
+      u_l = ul[Field_uy];
+      Bx_l = ul[Field_By];
+      Bsq_l = ul[Field_Bx] * ul[Field_Bx] + ul[Field_Bz] * ul[Field_Bz];
+      u_r = ur[Field_uy];
+      Bx_r = ur[Field_By];
+      Bsq_r = ur[Field_Bx] * ur[Field_Bx] + ur[Field_Bz] * ur[Field_Bz];
+      break;
+    case 2:
+      u_l = ul[Field_uz];
+      Bx_l = ul[Field_Bz];
+      Bsq_l = ul[Field_Bx] * ul[Field_Bx] + ul[Field_By] * ul[Field_By];
+      u_r = ur[Field_uz];
+      Bx_r = ur[Field_Bz];
+      Bsq_r = ur[Field_Bx] * ur[Field_Bx] + ur[Field_By] * ur[Field_By];
+      break;
+      // Default?
+  }
+
+
   REAL dp_drho_cs_l = GAMMA*P_l/rho_l; 
   REAL dp_drho_cs_r = GAMMA*P_r/rho_r;
   REAL pi_l = P_l + 0.5 * Bsq_l - 0.5 * Bx_l * Bx_l;
@@ -512,7 +528,48 @@ inline void calc_speed_bkw(REAL u_l, REAL Bx_l, REAL Bsq_l, REAL rho_l, REAL P_l
   *cr = rho_r * a_0r + alpha * rho_r * (PLUS(u_l - u_r) + PLUS(pi_l - pi_r) / (rho_l * a_ql + rho_r * a_qr));
   return;
 } 
-#endif
+
+#elif defined USE_VR_KUSANO
+  // Speeds for the HLL solver are from equation (12) of 
+  // A multi-state HLL approximate Riemann solver for ideal magnetohydrodynamics
+  // Miyoshi and Kusano (2005)
+inline void calc_speed_kusano(REAL* um, REAL* ub, REAL *cl, REAL* cr, int dir) {
+
+  REAL BBSQb = ub[Field_Bx] * ub[Field_Bx] + ub[Field_By] * ub[Field_By] + ub[Field_Bz] * ub[Field_Bz];
+  REAL BBSQm = um[Field_Bx] * um[Field_Bx] + um[Field_By] * um[Field_By] + um[Field_Bz] * um[Field_Bz];
+
+  REAL cfbx, cfmx, cfby, cfmy, cfbz, cfmz;
+
+  switch(dir) {
+    case 0:
+      // X direction
+      cfbx = sqrt((GAMMA * ub[Field_p] + BBSQb + sqrt(sq(GAMMA * ub[Field_p] + BBSQb) - 4 * GAMMA * ub[Field_p] * ub[Field_Bx] * ub[Field_Bx]))/(2 * ub[Field_rho]));
+      cfmx = sqrt((GAMMA * um[Field_p] + BBSQm + sqrt(sq(GAMMA * um[Field_p] + BBSQm) - 4 * GAMMA * um[Field_p] * um[Field_Bx] * um[Field_Bx]))/(2 * um[Field_rho]));
+      *cl = fmin(ub[Field_ux] - cfbx, um[Field_ux] - cfmx);
+      *cr = fmax(ub[Field_ux] + cfbx, um[Field_ux] + cfmx);
+      break;
+    case 1:
+      // Y direction
+      cfby = sqrt((GAMMA * ub[Field_p] + BBSQb + sqrt(sq(GAMMA * ub[Field_p] + BBSQb) - 4 * GAMMA * ub[Field_p] * ub[Field_By] * ub[Field_By]))/(2 * ub[Field_rho]));
+      cfmy = sqrt((GAMMA * um[Field_p] + BBSQm + sqrt(sq(GAMMA * um[Field_p] + BBSQm) - 4 * GAMMA * um[Field_p] * um[Field_By] * um[Field_By]))/(2 * um[Field_rho]));
+      *cl = fmin(ub[Field_uy] - cfby, um[Field_uy] - cfmy);
+      *cr = fmax(ub[Field_uy] + cfby, um[Field_uy] + cfmy);
+      break;
+    case 2:
+      // Z direction
+      cfbz = sqrt((GAMMA * ub[Field_p] + BBSQb + sqrt(sq(GAMMA * ub[Field_p] + BBSQb) - 4 * GAMMA * ub[Field_p] * ub[Field_Bz] * ub[Field_Bz]))/(2 * ub[Field_rho]));
+      cfmz = sqrt((GAMMA * um[Field_p] + BBSQm + sqrt(sq(GAMMA * um[Field_p] + BBSQm) - 4 * GAMMA * um[Field_p] * um[Field_Bz] * um[Field_Bz]))/(2 * um[Field_rho]));
+      *cl = fmin(ub[Field_uz] - cfbz, um[Field_uz] - cfmz);
+      *cr = fmax(ub[Field_uz] + cfbz, um[Field_uz] + cfmz);
+      break;
+  }// Default?
+}
+
+#else
+  #error "Define speeds to use at boundaries. Options: USE_VR_BKW / USE_VR_KUSANO."
+#endif //USE_VR_KUSANO
+
+#endif //USE_PERIODIC
 
 inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL *u, REAL *du_dt) {
 
@@ -546,49 +603,13 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
   REAL fluxm[NUM_CONSERVED_VARS] = {0.0};
   REAL fluxb[NUM_CONSERVED_VARS] = {0.0};
 
-#ifdef USE_VR_KUSANO
-
-  // Speeds for the HLL solver are from equation (12) of 
-  // A multi-state HLL approximate Riemann solver for ideal magnetohydrodynamics
-  // Miyoshi and Kusano (2005)
-  REAL BBSQb = ub[Field_Bx] * ub[Field_Bx] + ub[Field_By] * ub[Field_By] + ub[Field_Bz] * ub[Field_Bz];
-  REAL BBSQm = um[Field_Bx] * um[Field_Bx] + um[Field_By] * um[Field_By] + um[Field_Bz] * um[Field_Bz];
-
-
-  // X direction
-  REAL cfbx = sqrt((GAMMA * ub[Field_p] + BBSQb + sqrt(sq(GAMMA * ub[Field_p] + BBSQb) - 4 * GAMMA * ub[Field_p] * ub[Field_Bx] * ub[Field_Bx]))/(2 * ub[Field_rho]));
-
-  REAL cfmx = sqrt((GAMMA * um[Field_p] + BBSQm + sqrt(sq(GAMMA * um[Field_p] + BBSQm) - 4 * GAMMA * um[Field_p] * um[Field_Bx] * um[Field_Bx]))/(2 * um[Field_rho]));
-
-  // Y direction
-  REAL cfby = sqrt((GAMMA * ub[Field_p] + BBSQb + sqrt(sq(GAMMA * ub[Field_p] + BBSQb) - 4 * GAMMA * ub[Field_p] * ub[Field_By] * ub[Field_By]))/(2 * ub[Field_rho]));
-
-  REAL cfmy = sqrt((GAMMA * um[Field_p] + BBSQm + sqrt(sq(GAMMA * um[Field_p] + BBSQm) - 4 * GAMMA * um[Field_p] * um[Field_By] * um[Field_By]))/(2 * um[Field_rho]));
-
-  // Z direction
-  REAL cfbz = sqrt((GAMMA * ub[Field_p] + BBSQb + sqrt(sq(GAMMA * ub[Field_p] + BBSQb) - 4 * GAMMA * ub[Field_p] * ub[Field_Bz] * ub[Field_Bz]))/(2 * ub[Field_rho]));
-
-  REAL cfmz = sqrt((GAMMA * um[Field_p] + BBSQm + sqrt(sq(GAMMA * um[Field_p] + BBSQm) - 4 * GAMMA * um[Field_p] * um[Field_Bz] * um[Field_Bz]))/(2 * um[Field_rho]));
-
-
-  REAL alx = fmin(ub[Field_ux] - cfbx, um[Field_ux] - cfmx);
-  REAL arx = fmax(ub[Field_ux] + cfbx, um[Field_ux] + cfmx);
- 
-  REAL aly = fmin(ub[Field_uy] - cfby, um[Field_uy] - cfmy);
-  REAL ary = fmax(ub[Field_uy] + cfby, um[Field_uy] + cfmy);
-
-  REAL alz = fmin(ub[Field_uz] - cfbz, um[Field_uz] - cfmz);
-  REAL arz = fmax(ub[Field_uz] + cfbz, um[Field_uz] + cfmz);
-#endif //USE_VR_KUSANO
-
-#ifdef USE_VR_BKW
   REAL alx, arx, aly, ary, alz, arz;
-#endif
-
-
-  if (check_bound_xr(ix, 1)){
+ 
+  if (check_bound_xr(ix, 1)) {
     #ifdef USE_VR_BKW
-      calc_speed_bkw(um[Field_ux], um[Field_Bx], um[Field_By] * um[Field_By] + um[Field_Bz] * um[Field_Bz], um[Field_rho], um[Field_p], ub[Field_ux], ub[Field_Bx], ub[Field_By] * ub[Field_By] + ub[Field_Bz] * ub[Field_Bz], ub[Field_rho], ub[Field_p], &alx, &arx);
+      calc_speed_bkw(um, ub, &alx, &arx, 0);
+    #elif defined USE_VR_KUSANO
+      calc_speed_kusano(um, ub, &alx, &arx, 0);
     #endif
     calc_flux_f(um, fluxm);
     calc_flux_f(ub, fluxb);
@@ -598,7 +619,9 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
   }
   else if(check_bound_l(ix,1)) {
     #ifdef USE_VR_BKW
-      calc_speed_bkw(ub[Field_ux], ub[Field_Bx], ub[Field_By] * ub[Field_By] + ub[Field_Bz] * ub[Field_Bz], ub[Field_rho], ub[Field_p], um[Field_ux], um[Field_Bx], um[Field_By] * um[Field_By] + um[Field_Bz] * um[Field_Bz], um[Field_rho], um[Field_p], &alx, &arx);
+      calc_speed_bkw(ub, um, &alx, &arx, 0);
+    #elif defined USE_VR_KUSANO
+      calc_speed_kusano(um, ub, &alx, &arx, 0);
     #endif  
     calc_flux_f(um, fluxm);
     calc_flux_f(ub, fluxb);
@@ -607,9 +630,11 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
       du_dt[i] += (REAL)(M_INV[0] / DX) * (flux[i] - fluxm[i]);
   }
 
-  if (check_bound_yr(iy, 1)){
+  if (check_bound_yr(iy, 1)) { 
     #ifdef USE_VR_BKW
-      calc_speed_bkw(um[Field_uy], um[Field_By], um[Field_Bx] * um[Field_Bx] + um[Field_Bz] * um[Field_Bz], um[Field_rho], um[Field_p], ub[Field_uy], ub[Field_By], ub[Field_Bx] * ub[Field_Bx] + ub[Field_Bz] * ub[Field_Bz], ub[Field_rho], ub[Field_p], &aly, &ary);
+      calc_speed_bkw(um, ub, &aly, &ary, 1);
+    #elif defined USE_VR_KUSANO
+      calc_speed_kusano(um, ub, &aly, &ary, 1);
     #endif
     calc_flux_g(um, fluxm);
     calc_flux_g(ub, fluxb);
@@ -619,7 +644,9 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
   }
   else if(check_bound_l(iy,1)) {
     #ifdef USE_VR_BKW
-      calc_speed_bkw(ub[Field_uy], ub[Field_By], ub[Field_Bx] * ub[Field_Bx] + ub[Field_Bz] * ub[Field_Bz], ub[Field_rho], ub[Field_p], um[Field_uy], um[Field_By], um[Field_Bx] * um[Field_Bx] + um[Field_Bz] * um[Field_Bz], um[Field_rho], um[Field_p], &aly, &ary);
+      calc_speed_bkw(ub, um, &aly, &ary, 1);
+    #elif defined USE_VR_KUSANO
+      calc_speed_kusano(um, ub, &aly, &ary, 1);
     #endif
     calc_flux_g(um, fluxm);
     calc_flux_g(ub, fluxb);
@@ -628,9 +655,11 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
       du_dt[i] += (REAL)(M_INV[0] / DY) * (flux[i] - fluxm[i]);
   }
 
-  if (check_bound_zr(iz, 1)){
+  if (check_bound_zr(iz, 1)) {
     #ifdef USE_VR_BKW
-      calc_speed_bkw(um[Field_uz], um[Field_Bz], um[Field_Bx] * um[Field_Bx] + um[Field_By] * um[Field_By], um[Field_rho], um[Field_p], ub[Field_uz], ub[Field_Bz], ub[Field_Bx] * ub[Field_Bx] + ub[Field_By] * ub[Field_By], ub[Field_rho], ub[Field_p], &alz, &arz);
+      calc_speed_bkw(um, ub, &alz, &arz, 2);
+    #elif defined USE_VR_KUSANO
+      calc_speed_kusano(um, ub, &alz, &arz, 2);
     #endif
     calc_flux_h(um, fluxm);
     calc_flux_h(ub, fluxb);
@@ -638,9 +667,11 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
       du_dt[i] -= (REAL)(M_INV[0] / DZ) * (flux[i] - fluxm[i]);
   }
-  else if(check_bound_l(iz,1)){
+  else if(check_bound_l(iz,1)) {
     #ifdef USE_VR_BKW
-      calc_speed_bkw(ub[Field_uz], ub[Field_Bz], ub[Field_Bx] * ub[Field_Bx] + ub[Field_By] * ub[Field_By], ub[Field_rho], ub[Field_p], um[Field_uz], um[Field_Bz], um[Field_Bx] * um[Field_Bx] + um[Field_By] * um[Field_By], um[Field_rho], um[Field_p], &alz, &arz);
+      calc_speed_bkw(ub, um, &alz, &arz, 2);
+    #elif defined USE_VR_KUSANO
+      calc_speed_kusano(um, ub, &alz, &arz, 2);
     #endif
     calc_flux_h(um, fluxm);
     calc_flux_h(ub, fluxb);

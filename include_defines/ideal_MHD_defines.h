@@ -57,6 +57,9 @@ TODO: JANHUNEN_CENTRAL, BRACKBILL_BARNES_CENTRAL, cf.
 */
 #define USE_SOURCE_GODUNOV_CENTRAL
 
+// Speeds: USE_VR_KUSANO USE_VR_BKW
+#define USE_VR_KUSANO
+
 
 enum Fields {
              // Density
