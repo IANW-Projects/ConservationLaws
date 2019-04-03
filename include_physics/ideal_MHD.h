@@ -571,9 +571,10 @@ inline void calc_speed_kusano(REAL* um, REAL* ub, REAL *cl, REAL* cr, int dir) {
 
 #endif //USE_BOUNDARY_FLUX_HLL
 
-inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL *u, REAL *du_dt) {
+inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global REAL *u, REAL *du_dt) {
 
   // For periodic boundary conditions and a single block, no surface term has to be used.
+#ifndef USE_PERIODIC
 #ifdef USE_BOUNDARY_FLUX_HLL
   int i;
   REAL um[NUM_TOTAL_VARS] = {0.0};
@@ -680,7 +681,11 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
       du_dt[i] += (REAL)(M_INV[0] / DZ) * (flux[i] - fluxm[i]);
   }
 
+#else
+  #error "Error in include_physics/ideal_MHD.h:Non-periodic boundarys are used but no boundary flux is specified!"
+
 #endif // USE_BOUNDARY_FLUX_HLL
+#endif // USE_PERIODIC
 }
 
 //--------------------------------------------------------------------------------------------------
