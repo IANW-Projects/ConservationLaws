@@ -561,14 +561,12 @@ inline void calc_hll_speeds(REAL* ul, REAL* ur, REAL *cl, REAL* cr, int dir) {
       break;
   }// Default?
 
-
 #else
   #error "Define speeds to use at boundaries. Options: USE_VR_BKW / USE_VR_KUSANO."
 #endif //USE_HLL_SPEED_KUSANO
 }
 
  
-
 #endif //USE_BOUNDARY_FLUX_HLL
 #endif //USE_PERIODIC
 
