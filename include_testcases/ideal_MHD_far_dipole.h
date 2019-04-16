@@ -33,7 +33,7 @@ inline REAL4 b_analytical(uint ix, uint iy, uint iz, REAL time) {
 inline REAL4 b_dipole(REAL4 X, REAL4 M) {
   REAL inorm = rsqrt(X.x*X.x + X.y*X.y + X.z*X.z);
   REAL4 n = inorm * X;
-  REAL4 H = (3 * n * (M * n) - M) * inorm * inorm * inorm;
+  REAL4 H = (3 * n * dot(M, n) - M) * inorm * inorm * inorm;
   return H;
 }
 
