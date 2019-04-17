@@ -7,16 +7,16 @@ addpath('../matlab')
 BalanceLaws.prepare_vars();
 global I_Mesh I_TI I_BalanceLaws I_Tech I_RunOps I_Results
 
-N_fac = uint32(1);
-I_Mesh('NODES_X') = N_fac*uint32(58); I_Mesh('NODES_Y') = N_fac*uint32(100); I_Mesh('NODES_Z') = uint32(12);
-I_Mesh('XMIN') = 0.0; I_Mesh('XMAX') = 1.1547005383792517; % = 2/sqrt(3)
-I_Mesh('YMIN') = 0.0; I_Mesh('YMAX') = 2.0;
+N = uint32(100);
+I_Mesh('NODES_X') = N; I_Mesh('NODES_Y') = N; I_Mesh('NODES_Z') = N;
+I_Mesh('XMIN') = 0.0; I_Mesh('XMAX') = 1.0;
+I_Mesh('YMIN') = 0.0; I_Mesh('YMAX') = 1.0;
 I_Mesh('ZMIN') = 0.0; I_Mesh('ZMAX') = 1.0;
 
-I_TI('final_time') = 5;%100;
-I_TI('cfl') = 0.65;%0.85;
+I_TI('final_time') = 1;
+I_TI('cfl') = 0.65;
 
-dt = I_TI('cfl') * 2.0 / double(I_Mesh('NODES_Y'));
+dt = I_TI('cfl') * 1.0 / double(I_Mesh('NODES_Y'));
 num_steps = ceil(I_TI('final_time')/dt);
 dt = I_TI('final_time') / num_steps;
 
@@ -47,9 +47,9 @@ end
 I_RunOps('periodic') = 'NONE'; % 'NONE', 'USE_PERIODIC'; must be set to 'USE_PERIODIC'
                                        % if periodic boundary conditions should be used
 
-I_RunOps('order') = 6; I_RunOps('operator_form') = 'classical'; % order: 2, 4, 6; operator_form: classical, extended
+I_RunOps('order') = 4; I_RunOps('operator_form') = 'classical'; % order: 2, 4, 6; operator_form: classical, extended
 I_RunOps('conservation_laws') = 'ideal_MHD';
-I_RunOps('testcase') = 'alfven_periodic';
+I_RunOps('testcase') = 'far_dipole';
 I_RunOps('plot_numerical_solution') = 'z';
 I_RunOps('save_integrals_over_time') = false;
 % Choose between L2 and LInfinity norm for error calculation
