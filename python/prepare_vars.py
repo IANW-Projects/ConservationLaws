@@ -7,7 +7,7 @@ def prepare_vars():
 
     I_TI = {'cfl':0, 'final_time':0, 'time_integrator':'\0', 'DT':0, 'num_steps':0}
 
-    I_Tech = {'device':0, 'REAL':'\0','optimizations':'\0','num_nodes_pad':0, 'num_groups':0,'W_SIZE':0, 'g_range':0, 'l_range':0}
+    I_Tech = {'device':0, 'REAL':'\0','optimizations':'\0','NUM_NODES_PAD':0, 'num_groups':0,'W_SIZE':0, 'g_range':0, 'l_range':0}
 
     I_BalanceLaws = {'hall_term':'\0', 'g_range':0, 'l_range':0, 'NUM_CONSERVED_VARS':0, 'NUM_AUXILIARY_VARS':0, 'NUM_TOTAL_VARS':0}
     

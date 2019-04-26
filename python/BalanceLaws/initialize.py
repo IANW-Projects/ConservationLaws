@@ -37,11 +37,11 @@ def initialize():
     num_nodes_pad = math.ceil(num_nodes/group_size)*group_size
     num_groups = math.ceil(num_nodes_pad/group_size)
 
-    I_Tech['num_nodes_pad'] = int(num_nodes_pad)
+    I_Tech['NUM_NODES_PAD'] = int(num_nodes_pad)
     I_Tech['num_groups'] = int(num_groups)
     I_Tech['W_SIZE'] = int(group_size)
 
-    I_Tech['g_range'] = [I_Tech['num_nodes_pad'],1,1]  
+    I_Tech['g_range'] = [I_Tech['NUM_NODES_PAD'],1,1]  
     I_Tech['l_range' ] = [I_Tech['W_SIZE'],1,1]
 
 
@@ -87,7 +87,7 @@ def initialize():
     kernel_path_list.append('../include_physics/' + I_RunOps['conservation_laws'] + '.h')
     kernel_path_list.append('../kernel/kernel_init.cl')
 
-    settings_tech = generate_settings(I_Tech, ['REAL', 'REAL4', 'optimizations', 'memory_layout'])
+    settings_tech = generate_settings(I_Tech, ['REAL', 'REAL4', 'optimizations', 'memory_layout', 'NUM_NODES_PAD'])
 
     settings_mesh = generate_settings(I_Mesh,  ['DX', 'DY', 'DZ','NODES_X', 'NODES_Y', 'NODES_Z', 'XMIN', 'XMAX', 'YMIN', 'YMAX','ZMIN', 'ZMAX'])
     settings_runops = generate_settings(I_RunOps, ['periodic'])
@@ -131,7 +131,7 @@ def initialize():
     kernel_path_list.append('../kernel/kernel_norm.cl')
 
 
-    settings_tech = generate_settings(I_Tech, ['REAL', 'REAL4', 'W_SIZE', 'optimizations', 'memory_layout'])
+    settings_tech = generate_settings(I_Tech, ['REAL', 'REAL4', 'W_SIZE', 'optimizations',  'memory_layout', 'NUM_NODES_PAD'])
 
     settings_mesh = generate_settings(I_Mesh,  ['DX', 'DY', 'DZ','NODES_X', 'NODES_Y', 'NODES_Z', 'XMIN', 'XMAX', 'YMIN', 'YMAX','ZMIN', 'ZMAX'])
     settings_time_integration = generate_settings(I_TI, ['DT'])

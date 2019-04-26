@@ -17,7 +17,7 @@ def generate_settings(map, keys):
             else:
                 settings = settings + ' -D' + key + "=" + str(map[key])
         else:
-            print('Unknown identifier ' +  keys[i])
+            print('Unknown identifier ' +  key)
     return settings
 
 

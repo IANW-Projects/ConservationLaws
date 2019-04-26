@@ -117,16 +117,16 @@ def compute_numerical_solution(field_u1, field_u2):
         components[0] = comp
         norm_output[:]= 0
         if I_RunOps['norm'] ==  'L2':
-            cl.run_kernel('norm2_diff', I_Tech['g_range'], I_Tech['l_range'],field_u1, field_u2, norm_output, components)
+#            cl.run_kernel('norm2_diff', I_Tech['g_range'], I_Tech['l_range'],field_u1, field_u2, norm_output, components)
             abs_err[comp] = math.sqrt(np.sum(norm_output))
             norm_output[:] = 0
-            cl.run_kernel('norm2', I_Tech['g_range'], I_Tech['l_range'], field_u2, norm_output, components)
+  #          cl.run_kernel('norm2', I_Tech['g_range'], I_Tech['l_range'], field_u2, norm_output, components)
             rel_err[comp] = abs_err[comp] / math.sqrt(np.sum(norm_output))
         elif I_RunOps['norm'] == 'LInf':
-            cl.run_kernel('norm_infty_diff', I_Tech['g_range'], I_Tech['l_range'],field_u1, field_u2, norm_output, components)
+#            cl.run_kernel('norm_infty_diff', I_Tech['g_range'], I_Tech['l_range'],field_u1, field_u2, norm_output, components)
             abs_err[comp] = np.max(norm_output)
             norm_output[:] = 0
-            cl.run_kernel('norm_infty', I_Tech['g_range'], I_Tech['l_range'], field_u2, norm_output, components)
+ #           cl.run_kernel('norm_infty', I_Tech['g_range'], I_Tech['l_range'], field_u2, norm_output, components)
             rel_err[comp] = abs_err[comp] / np.max(norm_output)
 
     I_Results['abs_err'] = abs_err
