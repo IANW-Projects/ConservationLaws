@@ -1933,4 +1933,24 @@ inline void analytical_solution(uint ix, uint iy, uint iz, global REAL *u, REAL 
   set_field_component(ix, iy, iz, Field_E, u, E_ana);
 }
 
+
+
+
+/*
+Compute the vorticity of the velocity in u1 and store it as the velocity of u2.
+*/
+kernel void compute_vorticity(global REAL const *u1, global REAL *u2) {
+
+  uint ix = get_global_id(0);
+  uint iy = get_global_id(1);
+  uint iz = get_global_id(2);
+
+  REAL4 vorticity = curl(ix, iy, iz, u1, Field_ux);
+  set_field_component(ix, iy, iz, Field_ux, u2, vorticity.x);
+  set_field_component(ix, iy, iz, Field_ux, u2, vorticity.y);
+  set_field_component(ix, iy, iz, Field_ux, u2, vorticity.z);
+
+  return;
+}
+
 #endif // IDEAL_GAS_EULER
