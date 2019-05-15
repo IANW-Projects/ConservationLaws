@@ -6,9 +6,9 @@
 // Add the volume terms of an SBP SAT discretisation using extended numerical fluxes to du_dt.
 inline void add_volume_terms(REAL time, uint ix, uint iy, uint iz, global REAL const* u, REAL *du_dt) {
 
-  int bound_x = get_bound_x(ix, NUM_BOUNDS);
-  int bound_y = get_bound_y(iy, NUM_BOUNDS);
-  int bound_z = get_bound_z(iz, NUM_BOUNDS);
+  int bound_x = get_bound_x(ix, NUM_BOUNDS_X);
+  int bound_y = get_bound_y(iy, NUM_BOUNDS_Y);
+  int bound_z = get_bound_z(iz, NUM_BOUNDS_Z);
 
   // the variables at the current position
   REAL um[NUM_TOTAL_VARS] = {0.0};
@@ -25,14 +25,14 @@ inline void add_volume_terms(REAL time, uint ix, uint iy, uint iz, global REAL c
 
 
   // x-direction
-  for (uint j = 0; j < STENCIL_WIDTH; j++) {
+  for (uint j = 0; j < STENCIL_WIDTH_X; j++) {
 
-    get_field(ix, iy, iz, (j - (STENCIL_WIDTH - 1)/2), 0, 0, u, uk);
+    get_field(ix, iy, iz, (j - (STENCIL_WIDTH_X - 1)/2), 0, 0, u, uk);
 
     compute_ext_num_flux_x(uk, um, ext_num_flux);
 
     for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-      du[i] = du[i] + SBP_diff[NUM_BOUNDS + bound_x][j] * ext_num_flux[i];
+      du[i] = du[i] + SBP_diff_X[NUM_BOUNDS_X + bound_x][j] * ext_num_flux[i];
       ext_num_flux[i] = (REAL)(0);
     }
 	}
@@ -42,14 +42,14 @@ inline void add_volume_terms(REAL time, uint ix, uint iy, uint iz, global REAL c
   }
 
   // y-direction
-	for (uint j = 0; j < STENCIL_WIDTH; j++) {
+	for (uint j = 0; j < STENCIL_WIDTH_Y; j++) {
 
-    get_field(ix, iy, iz, 0, (j - (STENCIL_WIDTH - 1)/2), 0, u, uk);
+    get_field(ix, iy, iz, 0, (j - (STENCIL_WIDTH_Y - 1)/2), 0, u, uk);
 
     compute_ext_num_flux_y(uk, um, ext_num_flux);
 
     for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-      du[i] = du[i] + SBP_diff[NUM_BOUNDS + bound_y][j] * ext_num_flux[i];
+      du[i] = du[i] + SBP_diff_Y[NUM_BOUNDS_Y + bound_y][j] * ext_num_flux[i];
       ext_num_flux[i] = (REAL)(0);
     }
 	}
@@ -59,14 +59,14 @@ inline void add_volume_terms(REAL time, uint ix, uint iy, uint iz, global REAL c
   }
 
   // z-direction
-	for (uint j = 0; j < STENCIL_WIDTH; j++) {
+	for (uint j = 0; j < STENCIL_WIDTH_Z; j++) {
 
-  	get_field(ix, iy, iz, 0, 0, (j - (STENCIL_WIDTH - 1)/2), u, uk);
+  	get_field(ix, iy, iz, 0, 0, (j - (STENCIL_WIDTH_Z - 1)/2), u, uk);
 
     compute_ext_num_flux_z(uk, um, ext_num_flux);
 
     for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-      du[i] = du[i] + SBP_diff[NUM_BOUNDS + bound_z][j] * ext_num_flux[i];
+      du[i] = du[i] + SBP_diff_Z[NUM_BOUNDS_Z + bound_z][j] * ext_num_flux[i];
       ext_num_flux[i] = (REAL)(0);
     }
 	}
