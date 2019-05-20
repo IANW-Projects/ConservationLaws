@@ -15,7 +15,7 @@
 }
 */
 
-#ifdef USE_PERIODIC
+
 //------------------------------------------------------------------------------
 // Periodic Derivative Operator
 //------------------------------------------------------------------------------
@@ -40,12 +40,12 @@ Coefficients of the inverse mass/norm matrix.
 
 The central coefficient corresponds to the inner nodes of the grid and is 1.
 */
-REAL constant M_INV_P[2*NUM_BOUNDS+1] = {
+REAL constant M_INV_P[2*NUM_BOUNDS_P+1] = {
   // central coefficients
   1.0,
 };
 
-#else
+
 //------------------------------------------------------------------------------
 // Non-Periodic Derivative Operator
 //------------------------------------------------------------------------------
@@ -104,4 +104,4 @@ REAL constant M_INV_B[2*NUM_BOUNDS_B+1] = {
   3.1650670378782326
 };
 
-#endif // USE_PERIODIC
+
