@@ -3,6 +3,10 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#if !(defined(USE_PERIODIC_X) && defined(USE_PERIODIC_Y) && defined(USE_PERIODIC_Z))
+#define NONPERIODIC_BOUNDARY_EXISTS
+#endif
+
 // Contains functions for boundary check, index calculation element access of scalar and vector type fields
 //--------------------------------------------------------------------------------------------------
 // Boundary checker
@@ -170,7 +174,7 @@ inline int get_bound_x(uint ix, uint num_bounds) {
   return (int)(0);
 }
 
-#else 
+#else
 inline int get_bound_x(uint ix, uint num_bounds) {
 
   int bound_x = 0;
@@ -225,7 +229,7 @@ inline int get_bound_z(uint iz, uint num_bounds) {
   return bound_z;
 }
 
-#endif 
+#endif
 // Get the value of the scalar field d_field at the 3D index (ix+bx, iy+by, iz+bz) if this index
 // is inside the bounds. Indices out of bounds are set to ix, iy, or iz, respectively.
 inline void get_field(uint ix, uint iy, uint iz, int bx, int by, int bz, global REAL const *u, REAL *field){
@@ -236,7 +240,7 @@ inline void get_field(uint ix, uint iy, uint iz, int bx, int by, int bz, global 
 #ifdef USE_PERIODIC_X
   n_ix= ix + bx + (bx < 0) * (!check_interior_l( ix, abs(bx))) * NODES_X
                       - (bx > 0) * (!check_interior_xr(ix, abs(bx))) * NODES_X;
-#else                       
+#else
   n_ix = ix + ((bx < 0)*check_interior_l(ix,abs(bx)) + (bx > 0)*check_interior_xr(ix,abs(bx)))*bx;
 #endif
 
@@ -253,7 +257,7 @@ inline void get_field(uint ix, uint iy, uint iz, int bx, int by, int bz, global 
 #else
   n_iz = iz + ((bz < 0)*check_interior_l(iz,abs(bz)) + (bz > 0)*check_interior_zr(iz,abs(bz)))*bz;
 #endif
-  
+
   for (uint i = 0; i < NUM_TOTAL_VARS; ++i) {
     field[i] = get_field_component(n_ix, n_iy, n_iz, i, u);
   }
