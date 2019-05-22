@@ -9,7 +9,7 @@
 // A dipole outside of the domain
 // paramters
 REAL4 constant M = {0.0, 0.0, 1.0, 0.0};
-REAL4 constant X_0 = {-1.0, 0.5, 0.0, 0.0};
+REAL4 constant X_0 = {-1.0, 0.5, 0.5, 0.0};
 REAL constant A0 = 0.1;
 REAL constant omega = 6.28 * 10;
 /*
