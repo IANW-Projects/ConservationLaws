@@ -613,7 +613,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
     calc_flux_f(ub, fluxb);
     calc_num_flux(alx, arx, um, ub, fluxm, fluxb, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] -= (REAL)(M_INV_B[0] / DX) * (flux[i] - fluxm[i]);
+      du_dt[i] -= (REAL)(M_INV_X[0] / DX) * (flux[i] - fluxm[i]);
   }
   else if(check_bound_l(ix,1)) {
     calc_hll_speeds(ub, um, &alx, &arx, 0);
@@ -621,7 +621,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
     calc_flux_f(ub, fluxb);
     calc_num_flux(alx, arx, ub, um, fluxb, fluxm, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] += (REAL)(M_INV_B[0] / DX) * (flux[i] - fluxm[i]);
+      du_dt[i] += (REAL)(M_INV_X[0] / DX) * (flux[i] - fluxm[i]);
   }
 #endif
 
@@ -632,7 +632,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
     calc_flux_g(ub, fluxb);
     calc_num_flux(aly, ary, um, ub, fluxm, fluxb, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] -= (REAL)(M_INV_B[0] / DY) * (flux[i] - fluxm[i]);
+      du_dt[i] -= (REAL)(M_INV_Y[0] / DY) * (flux[i] - fluxm[i]);
   }
   else if(check_bound_l(iy,1)) {
     calc_hll_speeds(ub, um, &aly, &ary, 1);
@@ -640,7 +640,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
     calc_flux_g(ub, fluxb);
     calc_num_flux(aly, ary, ub, um, fluxb, fluxm, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] += (REAL)(M_INV_B[0] / DY) * (flux[i] - fluxm[i]);
+      du_dt[i] += (REAL)(M_INV_Y[0] / DY) * (flux[i] - fluxm[i]);
   }
 #endif
 
@@ -651,7 +651,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
     calc_flux_h(ub, fluxb);
     calc_num_flux(alz, arz, um, ub, fluxm, fluxb, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] -= (REAL)(M_INV_B[0] / DZ) * (flux[i] - fluxm[i]);
+      du_dt[i] -= (REAL)(M_INV_Z[0] / DZ) * (flux[i] - fluxm[i]);
   }
   else if(check_bound_l(iz,1)) {
     calc_hll_speeds(ub, um, &alz, &arz, 2);
@@ -659,7 +659,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
     calc_flux_h(ub, fluxb);
     calc_num_flux(alz,arz, ub, um, fluxb, fluxm, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] += (REAL)(M_INV_B[0] / DZ) * (flux[i] - fluxm[i]);
+      du_dt[i] += (REAL)(M_INV_Z[0] / DZ) * (flux[i] - fluxm[i]);
   }
 #endif
 
