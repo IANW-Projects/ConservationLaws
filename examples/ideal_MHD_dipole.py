@@ -2,9 +2,6 @@ import numpy as np
 import sys
 import math
 
-from ideal_pydefines import *
-
-
 prepare_vars()
 
 
@@ -22,8 +19,9 @@ I_Mesh['XMAX'] = 1.0
 I_Mesh['YMAX'] = 1.0
 I_Mesh['ZMAX'] = 1.0
 
-I_TI['final_time'] = 10.0
+I_TI['final_time'] = 0.1
 I_TI['cfl'] = 0.2
+k = 100
 
 dt = I_TI['cfl'] * 2.0 / float(I_Mesh['NODES_Y']) # this has to be estimated
 num_steps = math.ceil(I_TI['final_time']/dt)
@@ -44,7 +42,6 @@ I_Tech['memory_layout'] = 'USE_ARRAY_OF_STRUCTURES' #'USE_STRUCTURE_OF_ARRAYS'
 I_BalanceLaws['NUM_CONSERVED_VARS'] = 8
 I_BalanceLaws['NUM_AUXILIARY_VARS'] = 4
 I_BalanceLaws['NUM_TOTAL_VARS'] = I_BalanceLaws['NUM_CONSERVED_VARS'] + I_BalanceLaws['NUM_AUXILIARY_VARS']
-print(I_BalanceLaws)
 
 # Compiler based optimizations
 
@@ -74,18 +71,20 @@ print('Testcase: ' + I_RunOps['testcase'] + '\nOrder: ' + str(I_RunOps['order'])
         ' NODES_Y: ' + str(I_Mesh['NODES_Y']) + '\nDZ: ' + str(I_Mesh['DZ'])+  ' NODES_Z: ' + str(I_Mesh['NODES_Z']) + '\nREAL: ' + \
         str(I_Tech['REAL']))
 
-compute_numerical_solution(field_u1, field_u2)
+print(str(k) + " snapshots")
+for i in range(k):
+    compute_numerical_solution(field_u1, field_u2)
+    save_all_variables(field_u1, "results/output" + str(i) + ".hdf5", ['rho', 'px', 'py', 'pz', 'E', 'Bx', 'By', 'Bz'])
+    print(i)
 
-rel_err = I_Results['rel_err']
-for comp in range(I_BalanceLaws['NUM_CONSERVED_VARS']):
-    print("Relative Error of Field Component " + str(comp) +": " + str(100*rel_err[comp]))
+#rel_err = I_Results['rel_err']
+#for comp in range(I_BalanceLaws['NUM_CONSERVED_VARS']):
+ #   print("Relative Error of Field Component " + str(comp) +": " + str(100*rel_err[comp]))
 
 
-field_u1_reshaped = np.reshape(field_u1, (I_Tech['NUM_NODES_PAD'], I_BalanceLaws['NUM_TOTAL_VARS']))
+#field_u1_reshaped = np.reshape(field_u1, (I_Tech['NUM_NODES_PAD'], I_BalanceLaws['NUM_TOTAL_VARS']))
 
-print(field_u1_reshaped.shape)
-save_all_variables(field_u1_reshaped, "output.hdf5", ['rho', 'px', 'py', 'pz', 'E', 'Bx', 'By', 'Bz'])
 
 
 #plot_fieldlines_B(field_u1_reshaped, I_RunOps['plot_numerical_solution'], I_Mesh['NODES_X'], I_Mesh['NODES_Y'], I_Mesh['NODES_Z'], 'Numerical Solution', Field_Bx, Field_By)
-plot_2D(field_u1_reshaped, I_RunOps['plot_numerical_solution'], I_Mesh['NODES_X'], I_Mesh['NODES_Y'], I_Mesh['NODES_Z'], 'Numerical Solution', Field_By,Field_By)
+#plot_2D(field_u1_reshaped, I_RunOps['plot_numerical_solution'], I_Mesh['NODES_X'], I_Mesh['NODES_Y'], I_Mesh['NODES_Z'], 'Numerical Solution', Field_By,Field_By)
