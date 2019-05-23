@@ -20,13 +20,13 @@ kernel void norm2_diff(global REAL * u1, global REAL *u2, global REAL *output, g
 
     uint4 s_idx = calc_sub_idx(gid);
 
-    int bound_x = get_bound_x(s_idx.x, NUM_BOUNDS);
-    int bound_y = get_bound_y(s_idx.y, NUM_BOUNDS);
-    int bound_z = get_bound_z(s_idx.z, NUM_BOUNDS);
+    int bound_x = get_bound_x(s_idx.x, NUM_BOUNDS_X);
+    int bound_y = get_bound_y(s_idx.y, NUM_BOUNDS_Y);
+    int bound_z = get_bound_z(s_idx.z, NUM_BOUNDS_Z);
 
-    REAL fac = ((REAL)DX / M_INV[NUM_BOUNDS + bound_x])
-             * ((REAL)DY / M_INV[NUM_BOUNDS + bound_y])
-             * ((REAL)DZ / M_INV[NUM_BOUNDS + bound_z]);
+    REAL fac = ((REAL)DX / M_INV_X[NUM_BOUNDS_X + bound_x])
+             * ((REAL)DY / M_INV_Y[NUM_BOUNDS_Y + bound_y])
+             * ((REAL)DZ / M_INV_Z[NUM_BOUNDS_Z + bound_z]);
 
     REAL diff = get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u1) - get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u2);
     partial_n[lid] = fac * diff * diff;
@@ -64,13 +64,13 @@ kernel void norm2(global REAL *u, global REAL *output, global REAL* comp) {
 
   uint4 s_idx = calc_sub_idx(gid);
 
-  int bound_x = get_bound_x(s_idx.x, NUM_BOUNDS);
-  int bound_y = get_bound_y(s_idx.y, NUM_BOUNDS);
-  int bound_z = get_bound_z(s_idx.z, NUM_BOUNDS);
+  int bound_x = get_bound_x(s_idx.x, NUM_BOUNDS_X);
+  int bound_y = get_bound_y(s_idx.y, NUM_BOUNDS_Y);
+  int bound_z = get_bound_z(s_idx.z, NUM_BOUNDS_Z);
 
-  REAL fac = ((REAL)DX / M_INV[NUM_BOUNDS + bound_x])
-           * ((REAL)DY / M_INV[NUM_BOUNDS + bound_y])
-           * ((REAL)DZ / M_INV[NUM_BOUNDS + bound_z]);
+  REAL fac = ((REAL)DX / M_INV_X[NUM_BOUNDS_X + bound_x])
+           * ((REAL)DY / M_INV_Y[NUM_BOUNDS_Y + bound_y])
+           * ((REAL)DZ / M_INV_Z[NUM_BOUNDS_Z + bound_z]);
 
 
   partial_n[lid] = fac * get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u)*get_field_component(s_idx.x, s_idx.y, s_idx.z, (uint)comp[0], u);

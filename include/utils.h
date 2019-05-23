@@ -3,6 +3,10 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#if !(defined(USE_PERIODIC_X) && defined(USE_PERIODIC_Y) && defined(USE_PERIODIC_Z))
+#define NONPERIODIC_BOUNDARY_EXISTS
+#endif
+
 // Contains functions for boundary check, index calculation element access of scalar and vector type fields
 //--------------------------------------------------------------------------------------------------
 // Boundary checker
@@ -162,45 +166,15 @@ inline void aypz_field_component(uint ix, uint iy, uint iz, uint i,  global REAL
 #endif // USE_ARRAY_OF_STRUCTURES
 
 
-#ifdef USE_PERIODIC
-
+#ifdef USE_PERIODIC_X
 // Calculate the boundary index offset of the row of the derivative etc. operator compared to the central one
-// in x,y,z direction. Since periodic boundaries are used, the central row is applied.
+// in x,y,z direction. When periodic boundaries are used, the central row is applied.
 inline int get_bound_x(uint ix, uint num_bounds) {
 
   return (int)(0);
 }
-inline int get_bound_y(uint iy, uint num_bounds) {
 
-  return (int)(0);
-}
-inline int get_bound_z(uint iz, uint num_bounds) {
-
-  return (int)(0);
-}
-
-// Store the values of the conserved and auxiliary variables given by u at (ix+bx, iy+by, iz+bz) in field.
-inline void get_field(uint ix, uint iy, uint iz, int bx, int by, int bz, global REAL const *u, REAL *field){
-
-  uint n_ix = ix + bx + (bx < 0) * (!check_interior_l( ix, abs(bx))) * NODES_X
-                      - (bx > 0) * (!check_interior_xr(ix, abs(bx))) * NODES_X;
-
-  uint n_iy = iy + by + (by < 0) * (!check_interior_l( iy, abs(by))) * NODES_Y
-                      - (by > 0) * (!check_interior_yr(iy, abs(by))) * NODES_Y;
-
-  uint n_iz = iz + bz + (bz < 0) * (!check_interior_l( iz, abs(bz))) * NODES_Z
-                      - (bz > 0) * (!check_interior_zr(iz, abs(bz))) * NODES_Z;
-
-  for (uint i = 0; i < NUM_TOTAL_VARS; ++i) {
-    field[i] = get_field_component(n_ix, n_iy, n_iz, i, u);
-  }
-}
-
-
-#else // nonperiodic boundaries
-
-// Calculate the boundary index (offset of the row of the derivative etc. operator compared to the central one)
-// in x,y,z direction.
+#else
 inline int get_bound_x(uint ix, uint num_bounds) {
 
   int bound_x = 0;
@@ -211,6 +185,18 @@ inline int get_bound_x(uint ix, uint num_bounds) {
 
   return bound_x;
 }
+
+#endif
+
+#ifdef USE_PERIODIC_Y
+
+inline int get_bound_y(uint iy, uint num_bounds) {
+
+  return (int)(0);
+}
+
+#else
+
 inline int get_bound_y(uint iy, uint num_bounds) {
 
   int bound_y = 0;
@@ -221,6 +207,17 @@ inline int get_bound_y(uint iy, uint num_bounds) {
 
   return bound_y;
 }
+
+#endif
+
+#ifdef USE_PERIODIC_Z
+
+inline int get_bound_z(uint iz, uint num_bounds) {
+
+  return (int)(0);
+}
+
+#else
 inline int get_bound_z(uint iz, uint num_bounds) {
 
   int bound_z = 0;
@@ -232,23 +229,39 @@ inline int get_bound_z(uint iz, uint num_bounds) {
   return bound_z;
 }
 
+#endif
 // Get the value of the scalar field d_field at the 3D index (ix+bx, iy+by, iz+bz) if this index
 // is inside the bounds. Indices out of bounds are set to ix, iy, or iz, respectively.
 inline void get_field(uint ix, uint iy, uint iz, int bx, int by, int bz, global REAL const *u, REAL *field){
 
-  uint n_ix = ix + ((bx < 0)*check_interior_l(ix,abs(bx)) + (bx > 0)*check_interior_xr(ix,abs(bx)))*bx;
+  uint n_ix;
+  uint n_iy;
+  uint n_iz;
+#ifdef USE_PERIODIC_X
+  n_ix= ix + bx + (bx < 0) * (!check_interior_l( ix, abs(bx))) * NODES_X
+                      - (bx > 0) * (!check_interior_xr(ix, abs(bx))) * NODES_X;
+#else
+  n_ix = ix + ((bx < 0)*check_interior_l(ix,abs(bx)) + (bx > 0)*check_interior_xr(ix,abs(bx)))*bx;
+#endif
 
-  uint n_iy = iy + ((by < 0)*check_interior_l(iy,abs(by)) + (by > 0)*check_interior_yr(iy,abs(by)))*by;
+#ifdef USE_PERIODIC_Y
+  n_iy = iy + by + (by < 0) * (!check_interior_l( iy, abs(by))) * NODES_Y
+                      - (by > 0) * (!check_interior_yr(iy, abs(by))) * NODES_Y;
+#else
+   n_iy = iy + ((by < 0)*check_interior_l(iy,abs(by)) + (by > 0)*check_interior_yr(iy,abs(by)))*by;
+#endif
 
-  uint n_iz = iz + ((bz < 0)*check_interior_l(iz,abs(bz)) + (bz > 0)*check_interior_zr(iz,abs(bz)))*bz;
+#ifdef USE_PERIODIC_Z
+  n_iz = iz + bz + (bz < 0) * (!check_interior_l( iz, abs(bz))) * NODES_Z
+                      - (bz > 0) * (!check_interior_zr(iz, abs(bz))) * NODES_Z;
+#else
+  n_iz = iz + ((bz < 0)*check_interior_l(iz,abs(bz)) + (bz > 0)*check_interior_zr(iz,abs(bz)))*bz;
+#endif
 
   for (uint i = 0; i < NUM_TOTAL_VARS; ++i) {
     field[i] = get_field_component(n_ix, n_iy, n_iz, i, u);
   }
 }
-
-#endif // USE_PERIODIC
-
 
 
 //--------------------------------------------------------------------------------------------------
