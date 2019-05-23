@@ -69,7 +69,7 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL const *u, REAL *du_dt) {
 
   // For periodic boundary conditions and a single block, no surface term has to be used.
-  #ifdef NON_PERIODIC_BOUNDARY_EXISTS
+  #ifdef NONPERIODIC_BOUNDARY_EXISTS
 
     REAL um[NUM_TOTAL_VARS] = {0};
     get_field(ix, iy, iz, 0, 0, 0, u, um);
@@ -78,18 +78,21 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
 
     // Apply the usual upwind numerical flux at the boundaries.
   #ifndef USE_PERIODIC_X
-    du_dt[Field_u] += + (REAL)(M_INV_X[0]/DX) *
-                        ((check_bound_l(ix,1) * (um[Field_ax] > 0)) * (REAL)(-1) + (check_bound_xr(ix,1) * (um[Field_ax] < 0)) * (REAL)(1)) * um[Field_ax] * (um[Field_u] - u_bound)
+    du_dt[Field_u] += (REAL)(M_INV_X[0]/DX) *
+                        ( (check_bound_l(ix,1) * (um[Field_ax] > 0)) * (REAL)(-1)
+                        + (check_bound_xr(ix,1) * (um[Field_ax] < 0)) * (REAL)(1)) * um[Field_ax] * (um[Field_u] - u_bound);
   #endif
-  #ifdef USE_PERIODIC_Y
-    du_dt[Field_u] += + (REAL)(M_INV_Y[0]/DY) *
-                        ((check_bound_l(iy,1) * (um[Field_ay] > 0)) * (REAL)(-1) + (check_bound_yr(iy,1) * (um[Field_ay] < 0)) * (REAL)(1)) * um[Field_ay] * (um[Field_u] - u_bound)
+  #ifndef USE_PERIODIC_Y
+    du_dt[Field_u] += (REAL)(M_INV_Y[0]/DY) *
+                        ((check_bound_l(iy,1) * (um[Field_ay] > 0)) * (REAL)(-1)
+                        + (check_bound_yr(iy,1) * (um[Field_ay] < 0)) * (REAL)(1)) * um[Field_ay] * (um[Field_u] - u_bound);
   #endif
-  #ifdef USE_PERIODIC_Z
-    du_dt[Field_u] += + (REAL)(M_INV_Z[0]/DZ) *
-                        ((check_bound_l(iz,1) * (um[Field_az] > 0)) * (REAL)(-1) + (check_bound_zr(iz,1) * (um[Field_az] < 0)) * (REAL)(1)) * um[Field_az] * (um[Field_u] - u_bound);
+  #ifndef USE_PERIODIC_Z
+    du_dt[Field_u] += (REAL)(M_INV_Z[0]/DZ) *
+                        ((check_bound_l(iz,1) * (um[Field_az] > 0)) * (REAL)(-1)
+                        + (check_bound_zr(iz,1) * (um[Field_az] < 0)) * (REAL)(1)) * um[Field_az] * (um[Field_u] - u_bound);
   #endif
-  #endif // NON_PERIODIC_BOUNDARY_EXISTS
+  #endif // NONPERIODIC_BOUNDARY_EXISTS
 
   return;
 }
