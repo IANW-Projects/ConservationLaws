@@ -14,7 +14,7 @@ I_Mesh('XMIN') = -1.0; I_Mesh('XMAX') = 1.0;
 I_Mesh('YMIN') = -1.0; I_Mesh('YMAX') = 1.0;
 I_Mesh('ZMIN') = -1.0; I_Mesh('ZMAX') = 1.0;
 
-I_TI('final_time') = 125;
+I_TI('final_time') = 25; %125
 I_TI('cfl') = 0.4;
 
 dt = I_TI('cfl') * 2.0 / double(I_Mesh('NODES_Y'));
@@ -45,8 +45,12 @@ else
     I_Tech('optimizations') = ' -cl-mad-enable -cl-no-signed-zeros -cl-finite-math-only';
 end
 
-I_RunOps('periodic') = 'USE_PERIODIC'; % 'NONE', 'USE_PERIODIC'; must be set to 'USE_PERIODIC'
-                                       % if periodic boundary conditions should be used
+I_RunOps('periodic_x') = 'NONE'; % 'NONE', 'USE_PERIODIC_X'; must be set to 'USE_PERIODIC_X'
+                                       % if periodic boundary conditions in x-direction should be used
+I_RunOps('periodic_y') = 'NONE'; % 'NONE', 'USE_PERIODIC_Y'; must be set to 'USE_PERIODIC_Y'
+                                       % if periodic boundary conditions in y-direction should be used
+I_RunOps('periodic_z') = 'USE_PERIODIC_Z'; % 'NONE', 'USE_PERIODIC_Z'; must be set to 'USE_PERIODIC_Z'
+                                       % if periodic boundary conditions in z-direction should be used
 
 I_RunOps('order') = 6; I_RunOps('operator_form') = 'classical'; % order: 2, 4, 6; operator_form: classical, extended
 I_RunOps('conservation_laws') = 'ideal_MHD';
