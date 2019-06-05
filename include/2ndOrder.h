@@ -15,13 +15,13 @@
 }
 */
 
-#ifdef USE_PERIODIC
+
 //------------------------------------------------------------------------------
 // Periodic Derivative Operator
 //------------------------------------------------------------------------------
 #define ORDER 2
-#define NUM_BOUNDS 0
-#define STENCIL_WIDTH 3
+#define NUM_BOUNDS_P 0
+#define STENCIL_WIDTH_P 3
 
 /*
 Coefficients of the first derivative operator.
@@ -29,7 +29,7 @@ Coefficients of the first derivative operator.
 For each row, the central coefficient corresponds to the nodes at which the
 derivative is computed.
 */
-REAL constant SBP_diff[2*NUM_BOUNDS+1][STENCIL_WIDTH] = {
+REAL constant SBP_diff_P[2*NUM_BOUNDS_P+1][STENCIL_WIDTH_P] = {
   // central coefficients
   {-1.0/2.0, 0.0, 1.0/2.0},
 };
@@ -40,19 +40,19 @@ Coefficients of the inverse mass/norm matrix.
 
 The central coefficient corresponds to the inner nodes of the grid and is 1.
 */
-REAL constant M_INV[2*NUM_BOUNDS+1] = {
+REAL constant M_INV_P[2*NUM_BOUNDS_P+1] = {
   // central coefficients
   1.0,
 };
 
-#else
+
 //------------------------------------------------------------------------------
 // Non-Periodic Derivative Operator
 //------------------------------------------------------------------------------
 
 #define ORDER 2
-#define NUM_BOUNDS 1
-#define STENCIL_WIDTH 3
+#define NUM_BOUNDS_B 1
+#define STENCIL_WIDTH_B 3
 
 /*
 Coefficients of the first derivative operator.
@@ -60,7 +60,7 @@ Coefficients of the first derivative operator.
 For each row, the central coefficient corresponds to the nodes at which the
 derivative is computed.
 */
-REAL constant SBP_diff[2*NUM_BOUNDS+1][STENCIL_WIDTH] = {
+REAL constant SBP_diff_B[2*NUM_BOUNDS_B+1][STENCIL_WIDTH_B] = {
   // left boundary coefficients
   {0.0, -1.0, 1.0},
   // central coefficients
@@ -75,7 +75,7 @@ Coefficients of the inverse mass/norm matrix.
 
 The central coefficient corresponds to the inner nodes of the grid and is 1.
 */
-REAL constant M_INV[2*NUM_BOUNDS+1] = {
+REAL constant M_INV_B[2*NUM_BOUNDS_B+1] = {
   // left boundary coefficients
   2.0,
   // central coefficients
@@ -84,4 +84,4 @@ REAL constant M_INV[2*NUM_BOUNDS+1] = {
   2.0
 };
 
-#endif // USE_PERIODIC
+

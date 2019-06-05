@@ -8,14 +8,22 @@ function [field_u1, field_u2] = initialize()
 
     global I_Mesh I_TI I_BalanceLaws I_Tech I_RunOps
 
-    if strcmp(I_RunOps('periodic'), 'USE_PERIODIC')
+    if strcmp(I_RunOps('periodic_x'), 'USE_PERIODIC_X')
         % the nodes at the right boundary are not included
         DX = double(I_Mesh('XMAX') - I_Mesh('XMIN')) / double(I_Mesh('NODES_X'));
-        DY = double(I_Mesh('YMAX') - I_Mesh('YMIN')) / double(I_Mesh('NODES_Y'));
-        DZ = double(I_Mesh('ZMAX') - I_Mesh('ZMIN')) / double(I_Mesh('NODES_Z'));
     else
         DX = double(I_Mesh('XMAX') - I_Mesh('XMIN')) / (double(I_Mesh('NODES_X'))-1);
+    end
+    if strcmp(I_RunOps('periodic_y'), 'USE_PERIODIC_Y')
+        % the nodes at the right boundary are not included
+        DY = double(I_Mesh('YMAX') - I_Mesh('YMIN')) / double(I_Mesh('NODES_Y'));
+    else
         DY = double(I_Mesh('YMAX') - I_Mesh('YMIN')) / (double(I_Mesh('NODES_Y'))-1);
+    end
+    if strcmp(I_RunOps('periodic_z'), 'USE_PERIODIC_Z')
+        % the nodes at the right boundary are not included
+        DZ = double(I_Mesh('ZMAX') - I_Mesh('ZMIN')) / double(I_Mesh('NODES_Z'));
+    else
         DZ = double(I_Mesh('ZMAX') - I_Mesh('ZMIN')) / (double(I_Mesh('NODES_Z'))-1);
     end
 
@@ -99,7 +107,7 @@ function [field_u1, field_u2] = initialize()
     settings_mesh = generate_settings(I_Mesh, {'DX'; 'DY'; 'DZ';...
                                                'NODES_X'; 'NODES_Y'; 'NODES_Z';...
                                                'XMIN'; 'XMAX'; 'YMIN'; 'YMAX'; 'ZMAX'; 'ZMIN'});
-    settings_runops = generate_settings(I_RunOps, {'periodic'});
+    settings_runops = generate_settings(I_RunOps, {'periodic_x'; 'periodic_y'; 'periodic_z'});
 
     settings = strcat(settings_tech, settings_mesh, settings_runops);
 
@@ -143,7 +151,7 @@ function [field_u1, field_u2] = initialize()
                                                'NODES_X'; 'NODES_Y'; 'NODES_Z';...
                                                'XMIN'; 'XMAX'; 'YMIN'; 'YMAX'; 'ZMAX'; 'ZMIN'});
     settings_time_integration = generate_settings(I_TI, {'DT'});
-    settings_runops = generate_settings(I_RunOps, {'periodic'});
+    settings_runops = generate_settings(I_RunOps, {'periodic_x'; 'periodic_y'; 'periodic_z'});
 
     settings = strcat(settings_tech, settings_mesh, settings_time_integration, settings_runops);
 

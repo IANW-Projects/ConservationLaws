@@ -1,4 +1,4 @@
-clc
+%clc
 clear
 close all
 
@@ -7,16 +7,16 @@ addpath('../matlab')
 BalanceLaws.prepare_vars();
 global I_Mesh I_TI I_BalanceLaws I_Tech I_RunOps I_Results
 
-N = uint32(100);
+N = uint32(64);
 I_Mesh('NODES_X') = N; I_Mesh('NODES_Y') = N; I_Mesh('NODES_Z') = N;
-I_Mesh('XMIN') = 0.0; I_Mesh('XMAX') = 1.0;
-I_Mesh('YMIN') = 0.0; I_Mesh('YMAX') = 1.0;
-I_Mesh('ZMIN') = 0.0; I_Mesh('ZMAX') = 1.0;
+I_Mesh('XMIN') = 0.0; I_Mesh('XMAX') = 6.283185307179586; % = 2*pi
+I_Mesh('YMIN') = 0.0; I_Mesh('YMAX') = 6.283185307179586;
+I_Mesh('ZMIN') = 0.0; I_Mesh('ZMAX') = 6.283185307179586;
 
-I_TI('final_time') = 1;
-I_TI('cfl') = 0.65;
+I_TI('final_time') = 10;
+I_TI('cfl') = 0.85;
 
-dt = I_TI('cfl') * 1.0 / double(I_Mesh('NODES_Y'));
+dt = I_TI('cfl') * (I_Mesh('YMAX') / double(I_Mesh('NODES_Y')-1)) / 10;
 num_steps = ceil(I_TI('final_time')/dt);
 dt = I_TI('final_time') / num_steps;
 
@@ -30,10 +30,10 @@ I_TI('num_steps') = num_steps;
 I_Tech('device') = 1;
 I_Tech('REAL') = 'double'; % float, double
 I_Tech('REAL4') = sprintf('%s4',I_Tech('REAL')); %Vector datatype
-I_Tech('memory_layout') = 'USE_STRUCTURE_OF_ARRAYS'; % USE_ARRAY_OF_STRUCTURES, USE_STRUCTURE_OF_ARRAYS
+I_Tech('memory_layout') = 'USE_ARRAY_OF_STRUCTURES'; % USE_ARRAY_OF_STRUCTURES, USE_STRUCTURE_OF_ARRAYS
 
 % Use as kernel defines to keep consistency with header files?
-I_BalanceLaws('NUM_CONSERVED_VARS') = 8;
+I_BalanceLaws('NUM_CONSERVED_VARS') = 5;
 I_BalanceLaws('NUM_AUXILIARY_VARS') = 4;
 I_BalanceLaws('NUM_TOTAL_VARS') = I_BalanceLaws('NUM_CONSERVED_VARS') + I_BalanceLaws('NUM_AUXILIARY_VARS');
 
@@ -44,16 +44,16 @@ else
     I_Tech('optimizations') = ' -cl-mad-enable -cl-no-signed-zeros -cl-finite-math-only';
 end
 
-I_RunOps('periodic_x') = 'NONE'; % 'NONE', 'USE_PERIODIC_X'; must be set to 'USE_PERIODIC_X'
+I_RunOps('periodic_x') = 'USE_PERIODIC_X'; % 'NONE', 'USE_PERIODIC_X'; must be set to 'USE_PERIODIC_X'
                                        % if periodic boundary conditions in x-direction should be used
-I_RunOps('periodic_y') = 'NONE'; % 'NONE', 'USE_PERIODIC_Y'; must be set to 'USE_PERIODIC_Y'
+I_RunOps('periodic_y') = 'USE_PERIODIC_Y'; % 'NONE', 'USE_PERIODIC_Y'; must be set to 'USE_PERIODIC_Y'
                                        % if periodic boundary conditions in y-direction should be used
-I_RunOps('periodic_z') = 'NONE'; % 'NONE', 'USE_PERIODIC_Z'; must be set to 'USE_PERIODIC_Z'
+I_RunOps('periodic_z') = 'USE_PERIODIC_Z'; % 'NONE', 'USE_PERIODIC_Z'; must be set to 'USE_PERIODIC_Z'
                                        % if periodic boundary conditions in z-direction should be used
 
-I_RunOps('order') = 4; I_RunOps('operator_form') = 'classical'; % order: 2, 4, 6; operator_form: classical, extended
-I_RunOps('conservation_laws') = 'ideal_MHD';
-I_RunOps('testcase') = 'far_dipole';
+I_RunOps('order') = 6; I_RunOps('operator_form') = 'classical'; % order: 2, 4, 6; operator_form: classical, extended
+I_RunOps('conservation_laws') = 'ideal_gas_Euler';
+I_RunOps('testcase') = 'Taylor_Green_vortex';
 I_RunOps('plot_numerical_solution') = 'z';
 I_RunOps('save_integrals_over_time') = false;
 % Choose between L2 and LInfinity norm for error calculation
@@ -74,11 +74,16 @@ end
 
 %% Plot numerical solution
 num_nodes = I_Mesh('NODES_X')*I_Mesh('NODES_Y')*I_Mesh('NODES_Z');
+field_u2(:) = field_u1;
+cl_run_kernel(I_Tech('device'), 'compute_vorticity', I_BalanceLaws('g_range'), I_BalanceLaws('l_range'), field_u1, field_u2, 0);
 if strcmp(I_Tech('memory_layout'), 'USE_ARRAY_OF_STRUCTURES')
     field_u1_plot = reshape(field_u1(1:num_nodes*I_BalanceLaws('NUM_TOTAL_VARS')), [I_BalanceLaws('NUM_TOTAL_VARS'), num_nodes]);
+    field_u2_plot = reshape(field_u2(1:num_nodes*I_BalanceLaws('NUM_TOTAL_VARS')), [I_BalanceLaws('NUM_TOTAL_VARS'), num_nodes]);
 elseif strcmp(I_Tech('memory_layout'), 'USE_STRUCTURE_OF_ARRAYS')
     field_u1_tmp = reshape(field_u1, I_Tech('NUM_NODES_PAD'), I_BalanceLaws('NUM_TOTAL_VARS'));
     field_u1_plot = field_u1_tmp(1:num_nodes, :)';
+    field_u2_tmp = reshape(field_u2, I_Tech('NUM_NODES_PAD'), I_BalanceLaws('NUM_TOTAL_VARS'));
+    field_u2_plot = field_u2_tmp(1:num_nodes, :)';
 else
     error('You must USE_ARRAY_OF_STRUCTURES or USE_STRUCTURE_OF_ARRAYS.')
 end
@@ -86,5 +91,9 @@ end
 %Optional plots
 if ismember(lower(char(I_RunOps('plot_numerical_solution'))),{'x','y','z','xy', 'xz', 'yz', 'xyz'})
     plot_2D(field_u1_plot, I_RunOps('plot_numerical_solution'),...
-        I_Mesh('NODES_X'), I_Mesh('NODES_Y'), I_Mesh('NODES_Z'), 'Numerical Solution', 6, 8);
+        I_Mesh('NODES_X'), I_Mesh('NODES_Y'), I_Mesh('NODES_Z'), 'Numerical Solution', 5, 5);
+    
+    plot_2D(field_u2_plot, I_RunOps('plot_numerical_solution'),...
+        I_Mesh('NODES_X'), I_Mesh('NODES_Y'), I_Mesh('NODES_Z'), 'Vorticity', 6, 8);
 end
+
