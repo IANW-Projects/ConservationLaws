@@ -575,13 +575,12 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
 
   // For periodic boundary conditions and a single block, no surface term has to be used.
 #ifdef NONPERIODIC_BOUNDARY_EXISTS
-#ifdef USE_BOUNDARY_FLUX_HLL
   int i;
   REAL um[NUM_TOTAL_VARS] = {0.0};
   get_field(ix, iy, iz, 0, 0, 0, u, um);
   REAL4 b_bound = b_boundary(ix, iy, iz, time);
   REAL4 u_bound = u_boundary(ix, iy, iz, time);
-  REAL rho_bound = rho_boundary(ix, iy, iz, time); //(REAL)1;
+  REAL rho_bound = rho_boundary(ix, iy, iz, time); 
   REAL p_bound = p_boundary(ix, iy, iz, time);
   REAL E_bound = compute_energy(p_bound, rho_bound, u_bound.x, u_bound.y, u_bound.z, b_bound.x, b_bound.y, b_bound.z);
 
@@ -600,6 +599,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
   ub[Field_By] = b_bound.y;
   ub[Field_Bz] = b_bound.z;
 
+#ifdef USE_BOUNDARY_FLUX_HLL
   REAL flux[NUM_CONSERVED_VARS] = {0.0};
   REAL fluxm[NUM_CONSERVED_VARS] = {0.0};
   REAL fluxb[NUM_CONSERVED_VARS] = {0.0};
@@ -663,10 +663,59 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
   }
 #endif
 
+#elif defined USE_BOUNDARY_FLUX_LFF // USE_BOUNDARY_FLUX_HLL -> USE_BOUNDARY_FLUX_HLL
+  REAL fluxm[NUM_CONSERVED_VARS] = {0.0}; // The Lax-Friedrichs Flux, named after Kurt Friedrichs and Peter Lax
+  REAL fluxb[NUM_CONSERVED_VARS] = {0.0};
+#ifndef USE_PERIODIC_X
+  if (check_bound_xr(ix, 1)) {
+    calc_flux_f(um, fluxm);
+    calc_flux_f(ub, fluxb);
+    for(i = 0; i < NUM_CONSERVED_VARS; i++)
+      du_dt[i] -= (REAL)(M_INV_X[0] / DX) * 0.5 * (fluxb[i] - fluxm[i] + LFF_DISS*DX/DT*(um[i] - ub[i]));
+  }
+  else if(check_bound_l(ix,1)) {
+    calc_flux_f(um, fluxm);
+    calc_flux_f(ub, fluxb);
+    for(i = 0; i < NUM_CONSERVED_VARS; i++)
+      du_dt[i] += (REAL)(M_INV_X[0] / DX) * 0.5 * (fluxb[i] - fluxm[i] + LFF_DISS*DX/DT*(ub[i] - um[i]));
+  }
+#endif
+
+#ifndef USE_PERIODIC_Y
+  if (check_bound_yr(iy, 1)) {
+    calc_flux_g(um, fluxm);
+    calc_flux_g(ub, fluxb);
+    for(i = 0; i < NUM_CONSERVED_VARS; i++)
+      du_dt[i] -= (REAL)(M_INV_Y[0] / DY) * 0.5 * (fluxb[i] - fluxm[i] + LFF_DISS*DY/DT*(um[i] - ub[i]));
+  }
+  else if(check_bound_l(iy,1)) {
+    calc_flux_g(um, fluxm);
+    calc_flux_g(ub, fluxb);
+    for(i = 0; i < NUM_CONSERVED_VARS; i++)
+      du_dt[i] += (REAL)(M_INV_Y[0] / DY) * 0.5 * (fluxb[i] - fluxm[i] + LFF_DISS*DY/DT*(ub[i] - um[i]));
+  }
+#endif
+
+#ifndef USE_PERIODIC_Z
+  if (check_bound_zr(iz, 1)) {
+    calc_flux_h(um, fluxm);
+    calc_flux_h(ub, fluxb);
+    for(i = 0; i < NUM_CONSERVED_VARS; i++)
+      du_dt[i] -= (REAL)(M_INV_Z[0] / DZ) * 0.5 * (fluxb[i] - fluxm[i] + LFF_DISS*DZ/DT*(um[i] - ub[i]));
+
+  }
+  else if(check_bound_l(iz,1)) {
+    calc_flux_h(um, fluxm);
+    calc_flux_h(ub, fluxb);
+    for(i = 0; i < NUM_CONSERVED_VARS; i++)
+      du_dt[i] += (REAL)(M_INV_Z[0] / DZ) * 0.5 * (fluxb[i] - fluxm[i] + LFF_DISS*DZ/DT*(ub[i] - um[i]));
+  }
+#endif
+
 #else
   #error "Error in include_physics/ideal_MHD.h:Non-periodic boundarys are used but no boundary flux is specified!"
 
-#endif // USE_BOUNDARY_FLUX_HLL
+#endif // USE_BOUNDARY_FLUX_LFF
 #endif // NONPERIODIC_BOUNDARY_EXISTS
 }
 
