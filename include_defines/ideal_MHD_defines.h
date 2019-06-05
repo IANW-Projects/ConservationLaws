@@ -64,7 +64,10 @@ TODO: JANHUNEN_CENTRAL, BRACKBILL_BARNES_CENTRAL, cf.
 // Speeds: USE_HLL_SPEED_KUSANO USE_HLL_SPEED_BKW
 #define USE_HLL_SPEED_BKW
 
+// Dissipation in the Volume
 
+#define VOLUME_DISSIPATION_ACTIVE
+#define VOL_DISS +0.01
 
 enum Fields {
              // Density

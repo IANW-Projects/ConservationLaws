@@ -84,4 +84,20 @@ REAL constant M_INV_B[2*NUM_BOUNDS_B+1] = {
   2.0
 };
 
+//------------------------------------------------------------------------------
+// Dissipation Operator
+//------------------------------------------------------------------------------
+
+/* A Dissipation Operator out of 
+ * Stable and Accurate Artificial Dissipation (2003)
+ * Ken Mattsson, Magnus Svärd, and Jan Nordström 	*/
+
+#define NUM_BOUNDS_HO 1
+#define STENCIL_WIDTH_HOD 3
+REAL constant D_HO[2 * NUM_BOUNDS_HO+1][STENCIL_WIDTH_HOD] = {
+        {0.0, 2.0, -2.0},
+        {1.0, -2.0, 1.0},
+        {-2.0, 2.0, 0.0},
+};
+
 
