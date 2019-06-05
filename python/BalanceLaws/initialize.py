@@ -6,14 +6,21 @@ def initialize():
     cl.create_ctx()
         
     # a python float is a 64bit float => float means double
-    if I_RunOps['periodic'] == 'USE_PERIODIC':
+    if I_RunOps['periodicx'] == 'USE_PERIODIC_X':
         DX = float(I_Mesh['XMAX'] - I_Mesh['XMIN']) / float(I_Mesh['NODES_X'])
-        DY = float(I_Mesh['YMAX'] - I_Mesh['YMIN']) / float(I_Mesh['NODES_Y'])
-        DZ = float(I_Mesh['ZMAX'] - I_Mesh['ZMIN']) / float(I_Mesh['NODES_Z'])
     else:
         DX = float(I_Mesh['XMAX'] - I_Mesh['XMIN']) / (float(I_Mesh['NODES_X'])-1)
+
+    if I_RunOps['periodicy'] == 'USE_PERIODIC_Y':
+        DY = float(I_Mesh['YMAX'] - I_Mesh['YMIN']) / float(I_Mesh['NODES_Y'])
+    else:
         DY = float(I_Mesh['YMAX'] - I_Mesh['YMIN']) / (float(I_Mesh['NODES_Y'])-1)
+
+    if I_RunOps['periodicz'] == 'USE_PERIODIC_Z':
+        DZ = float(I_Mesh['ZMAX'] - I_Mesh['ZMIN']) / float(I_Mesh['NODES_Z'])
+    else:
         DZ = float(I_Mesh['ZMAX'] - I_Mesh['ZMIN']) / (float(I_Mesh['NODES_Z'])-1)
+
 
     I_Mesh['DX'] = DX; I_Mesh['DY'] = DY; I_Mesh['DZ'] = DZ
 
@@ -90,9 +97,10 @@ def initialize():
     settings_tech = generate_settings(I_Tech, ['REAL', 'REAL4', 'optimizations', 'memory_layout', 'NUM_NODES_PAD'])
 
     settings_mesh = generate_settings(I_Mesh,  ['DX', 'DY', 'DZ','NODES_X', 'NODES_Y', 'NODES_Z', 'XMIN', 'XMAX', 'YMIN', 'YMAX','ZMIN', 'ZMAX'])
-    settings_runops = generate_settings(I_RunOps, ['periodic'])
+    settings_runops = generate_settings(I_RunOps, ['periodicx', 'periodicy', 'periodicz'])
+    settings_TI = generate_settings(I_TI, ['DT'])
 
-    settings = settings_tech + settings_mesh + settings_runops
+    settings = settings_tech + settings_mesh + settings_runops + settings_TI
 
     cl.compile_kernels(kernel_path_list, settings)
 
@@ -135,9 +143,10 @@ def initialize():
 
     settings_mesh = generate_settings(I_Mesh,  ['DX', 'DY', 'DZ','NODES_X', 'NODES_Y', 'NODES_Z', 'XMIN', 'XMAX', 'YMIN', 'YMAX','ZMIN', 'ZMAX'])
     settings_time_integration = generate_settings(I_TI, ['DT'])
-    settings_runops = generate_settings(I_RunOps, ['periodic'])
+    settings_runops = generate_settings(I_RunOps, ['periodicx', 'periodicy', 'periodicz'])
+    settings_TI = generate_settings(I_TI, ['DT'])
 
-    settings = settings_tech + settings_mesh + settings_time_integration +settings_runops
+    settings = settings_tech + settings_mesh + settings_time_integration +settings_runops + settings_TI
 
     cl.compile_kernels(kernel_path_list, settings)
 

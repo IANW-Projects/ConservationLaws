@@ -21,8 +21,8 @@ I_Mesh['XMAX'] = 2.0/math.sqrt(3)
 I_Mesh['YMAX'] = 2.0
 I_Mesh['ZMAX'] = 1.0
 
-I_TI['final_time'] = 1
-I_TI['cfl'] = 0.6
+I_TI['final_time'] = 5
+I_TI['cfl'] = 0.3
 
 dt = I_TI['cfl'] * 2.0 / float(I_Mesh['NODES_Y'])
 num_steps = math.ceil(I_TI['final_time']/dt)
@@ -51,7 +51,9 @@ if I_Tech['REAL'] == 'float':
 else:
     I_Tech['optimizations'] = ' -cl-mad-enable -cl-no-signed-zeros -cl-finite-math-only'
 
-I_RunOps['periodic'] = 'None'# 'USE_PERIODIC'
+I_RunOps['periodicx'] = 'None' #'USE_PERIODIC_X'
+I_RunOps['periodicy'] = 'None' #'USE_PERIODIC_Y' 
+I_RunOps['periodicz'] = 'None' #'USE_PERIODIC_Z'
 
 I_RunOps['order'] = 4
 I_RunOps['conservation_laws'] = 'ideal_MHD'
@@ -82,4 +84,4 @@ field_u1_reshaped = np.reshape(field_u1, (I_Tech['NUM_NODES_PAD'], I_BalanceLaws
 
 
 save_all_variables(field_u1_reshaped, "output.hdf5", ['rho', 'px', 'py', 'pz', 'E', 'Bx', 'By', 'Bz'])
-plot_2D(field_u1_reshaped, I_RunOps['plot_numerical_solution'], I_Mesh['NODES_X'], I_Mesh['NODES_Y'], I_Mesh['NODES_Z'], 'Numerical Solution', 3,3)
+plot_2D(field_u1_reshaped, I_RunOps['plot_numerical_solution'], I_Mesh['NODES_X'], I_Mesh['NODES_Y'], I_Mesh['NODES_Z'], 'Numerical Solution', 1,1)
