@@ -388,7 +388,7 @@ inline void init_fields(uint ix, uint iy, uint iz, global REAL* u) {
 //--------------------------------------------------------------------------------------------------
 
 
-#ifndef USE_PERIODIC
+#ifdef NONPERIODIC_BOUNDARY_EXISTS
 
 #define sq(x) ((x)*(x))
 #define PLUS(x) (fmax(x, 0.0))
@@ -572,12 +572,12 @@ inline void calc_hll_speeds(REAL* ul, REAL* ur, REAL *cl, REAL* cr, int dir) {
 
 
 #endif //USE_BOUNDARY_FLUX_HLL
-#endif //USE_PERIODIC
+#endif //NONPERIODIC_BOUNDARY_EXISTS
 
 inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global REAL *u, REAL *du_dt) {
 
   // For periodic boundary conditions and a single block, no surface term has to be used.
-#ifndef USE_PERIODIC
+#ifdef NONPERIODIC_BOUNDARY_EXISTS
 #ifdef USE_BOUNDARY_FLUX_HLL
   int i;
   REAL um[NUM_TOTAL_VARS] = {0.0};
@@ -609,6 +609,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
 
   REAL alx, arx, aly, ary, alz, arz;
 
+#ifndef USE_PERIODIC_X
   if (check_bound_xr(ix, 1)) {
     calc_hll_speeds(um, ub, &alx, &arx, 0);
 
@@ -616,7 +617,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
     calc_flux_f(ub, fluxb);
     calc_num_flux(alx, arx, um, ub, fluxm, fluxb, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] -= (REAL)(M_INV[0] / DX) * (flux[i] - fluxm[i]);
+      du_dt[i] -= (REAL)(M_INV_X[0] / DX) * (flux[i] - fluxm[i]);
   }
   else if(check_bound_l(ix,1)) {
     calc_hll_speeds(ub, um, &alx, &arx, 0);
@@ -624,16 +625,18 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
     calc_flux_f(ub, fluxb);
     calc_num_flux(alx, arx, ub, um, fluxb, fluxm, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] += (REAL)(M_INV[0] / DX) * (flux[i] - fluxm[i]);
+      du_dt[i] += (REAL)(M_INV_X[0] / DX) * (flux[i] - fluxm[i]);
   }
+#endif
 
+#ifndef USE_PERIODIC_Y
   if (check_bound_yr(iy, 1)) {
     calc_hll_speeds(um, ub, &aly, &ary, 1);
     calc_flux_g(um, fluxm);
     calc_flux_g(ub, fluxb);
     calc_num_flux(aly, ary, um, ub, fluxm, fluxb, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] -= (REAL)(M_INV[0] / DY) * (flux[i] - fluxm[i]);
+      du_dt[i] -= (REAL)(M_INV_Y[0] / DY) * (flux[i] - fluxm[i]);
   }
   else if(check_bound_l(iy,1)) {
     calc_hll_speeds(ub, um, &aly, &ary, 1);
@@ -641,17 +644,18 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
     calc_flux_g(ub, fluxb);
     calc_num_flux(aly, ary, ub, um, fluxb, fluxm, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] += (REAL)(M_INV[0] / DY) * (flux[i] - fluxm[i]);
+      du_dt[i] += (REAL)(M_INV_Y[0] / DY) * (flux[i] - fluxm[i]);
   }
+#endif
 
-
+#ifndef USE_PERIODIC_Z
   if (check_bound_zr(iz, 1)) {
     calc_hll_speeds(um, ub, &alz, &arz, 2);
     calc_flux_h(um, fluxm);
     calc_flux_h(ub, fluxb);
     calc_num_flux(alz, arz, um, ub, fluxm, fluxb, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] -= (REAL)(M_INV[0] / DZ) * (flux[i] - fluxm[i]);
+      du_dt[i] -= (REAL)(M_INV_Z[0] / DZ) * (flux[i] - fluxm[i]);
   }
   else if(check_bound_l(iz,1)) {
     calc_hll_speeds(ub, um, &alz, &arz, 2);
@@ -659,14 +663,15 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
     calc_flux_h(ub, fluxb);
     calc_num_flux(alz,arz, ub, um, fluxb, fluxm, flux);
     for(i = 0; i < NUM_CONSERVED_VARS; i++)
-      du_dt[i] += (REAL)(M_INV[0] / DZ) * (flux[i] - fluxm[i]);
+      du_dt[i] += (REAL)(M_INV_Z[0] / DZ) * (flux[i] - fluxm[i]);
   }
+#endif
 
 #else
   #error "Error in include_physics/ideal_MHD.h:Non-periodic boundarys are used but no boundary flux is specified!"
 
 #endif // USE_BOUNDARY_FLUX_HLL
-#endif // USE_PERIODIC
+#endif // NONPERIODIC_BOUNDARY_EXISTS
 }
 
 //--------------------------------------------------------------------------------------------------

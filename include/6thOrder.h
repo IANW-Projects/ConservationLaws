@@ -15,13 +15,13 @@
 }
 */
 
-#ifdef USE_PERIODIC
+
 //------------------------------------------------------------------------------
 // Periodic Derivative Operator
 //------------------------------------------------------------------------------
 #define ORDER 6
-#define NUM_BOUNDS 0
-#define STENCIL_WIDTH 7
+#define NUM_BOUNDS_P 0
+#define STENCIL_WIDTH_P 7
 
 /*
 Coefficients of the first derivative operator.
@@ -29,7 +29,7 @@ Coefficients of the first derivative operator.
 For each row, the central coefficient corresponds to the nodes at which the
 derivative is computed.
 */
-REAL constant SBP_diff[2*NUM_BOUNDS+1][STENCIL_WIDTH] = {
+REAL constant SBP_diff_P[2*NUM_BOUNDS_P+1][STENCIL_WIDTH_P] = {
   // central coefficients
   {-0.016666666666666666, 0.15, -0.75, 0.0, 0.75, -0.15, 0.016666666666666666},
 };
@@ -40,19 +40,19 @@ Coefficients of the inverse mass/norm matrix.
 
 The central coefficient corresponds to the inner nodes of the grid and is 1.
 */
-REAL constant M_INV[2*NUM_BOUNDS+1] = {
+REAL constant M_INV_P[2*NUM_BOUNDS_P+1] = {
   // central coefficients
   1.0,
 };
 
-#else
+
 //------------------------------------------------------------------------------
 // Non-Periodic Derivative Operator
 //------------------------------------------------------------------------------
 
 #define ORDER 6
-#define NUM_BOUNDS 6
-#define STENCIL_WIDTH 11
+#define NUM_BOUNDS_B 6
+#define STENCIL_WIDTH_B 11
 
 /*
 Coefficients of the first derivative operator.
@@ -60,7 +60,7 @@ Coefficients of the first derivative operator.
 For each row, the central coefficient corresponds to the nodes at which the
 derivative is computed.
 */
-REAL constant SBP_diff[2*NUM_BOUNDS+1][STENCIL_WIDTH] = {
+REAL constant SBP_diff_B[2*NUM_BOUNDS_B+1][STENCIL_WIDTH_B] = {
   // left boundary coefficients
   {0.0, 0.0, 0.0, 0.0, 0.0, -1.5825335189391163, 1.905066305223826, 0.3717366351625272, -1.2202725474393727, 0.6177375631914426, -0.09173443719930642},
   {0.0, 0.0, 0.0, 0.0, -0.4329018563223175, 0.0, -0.0043147701101584396, 0.8419628735536502, -0.5064721551652377, 0.10172590804406338, 0.0},
@@ -85,7 +85,7 @@ Coefficients of the inverse mass/norm matrix.
 
 The central coefficient corresponds to the inner nodes of the grid and is 1.
 */
-REAL constant M_INV[2*NUM_BOUNDS+1] = {
+REAL constant M_INV_B[2*NUM_BOUNDS_B+1] = {
   // left boundary coefficients
   3.1650670378782326,
   0.719220844085574,
@@ -104,4 +104,4 @@ REAL constant M_INV[2*NUM_BOUNDS+1] = {
   3.1650670378782326
 };
 
-#endif // USE_PERIODIC
+

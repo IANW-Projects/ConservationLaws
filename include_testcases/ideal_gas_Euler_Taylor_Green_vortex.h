@@ -47,3 +47,28 @@ inline REAL p_init(uint ix, uint iy, uint iz) {
 
 	return (REAL)(100.0/GAMMA + 0.0625 * (cos(2*x)*cos(2*z) + 2*cos(2*y) + 2*cos(2*x) + cos(2*y)*cos(2*z)));
 }
+
+
+/*
+There is no analytical solution of the density.
+*/
+inline REAL rho_analytical(uint ix, uint iy, uint iz, REAL time) {
+
+	return rho_init(ix, iy, iz);
+}
+
+/*
+There is no analytical solution of the velocity.
+*/
+inline REAL4 u_analytical(uint ix, uint iy, uint iz, REAL time) {
+
+	return u_init(ix, iy, iz);
+}
+
+/*
+There is no analytical solution of the pressure.
+*/
+inline REAL p_analytical(uint ix, uint iy, uint iz, REAL time) {
+
+	return p_init(ix, iy, iz);
+}

@@ -60,50 +60,50 @@ inline void compute_flux_z(REAL* u, REAL* flux) {
 
   inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.5) * k_rho * k_ux;
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.5) * (k_rho*k_ux*k_ux + k_p);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.5) * (k_rho*k_ux*k_uy);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.5) * (k_rho*k_ux*k_uz);
-      ext_num_flux[Field_E]      = (REAL)(-0.5) * k_ux * (k_E+k_p);
+    ext_num_flux[Field_rho]    = (REAL)(-0.5) * k_rho * k_ux;
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.5) * (k_rho*k_ux*k_ux + k_p);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.5) * (k_rho*k_ux*k_uy);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.5) * (k_rho*k_ux*k_uz);
+    ext_num_flux[Field_E]      = (REAL)(-0.5) * k_ux * (k_E+k_p);
   }
 
   inline void compute_ext_num_flux_y(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.5) * k_rho * k_uy;
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.5) * (k_rho*k_uy*k_ux);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.5) * (k_rho*k_uy*k_uy + k_p);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.5) * (k_rho*k_uy*k_uz);
-      ext_num_flux[Field_E]      = (REAL)(-0.5) * k_uy * (k_E+k_p);
+    ext_num_flux[Field_rho]    = (REAL)(-0.5) * k_rho * k_uy;
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.5) * (k_rho*k_uy*k_ux);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.5) * (k_rho*k_uy*k_uy + k_p);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.5) * (k_rho*k_uy*k_uz);
+    ext_num_flux[Field_E]      = (REAL)(-0.5) * k_uy * (k_E+k_p);
   }
 
   inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.5) * k_rho * k_uz;
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.5) * (k_rho*k_uz*k_ux);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.5) * (k_rho*k_uz*k_uy);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.5) * (k_rho*k_uz*k_uz + k_p);
-      ext_num_flux[Field_E]      = (REAL)(-0.5) * k_uz * (k_E+k_p);
+    ext_num_flux[Field_rho]    = (REAL)(-0.5) * k_rho * k_uz;
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.5) * (k_rho*k_uz*k_ux);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.5) * (k_rho*k_uz*k_uy);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.5) * (k_rho*k_uz*k_uz + k_p);
+    ext_num_flux[Field_E]      = (REAL)(-0.5) * k_uz * (k_E+k_p);
   }
 
 #elif defined USE_FLUX_DucrosEtAl
@@ -125,71 +125,71 @@ inline void compute_flux_z(REAL* u, REAL* flux) {
 
   inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_ux + m_ux);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.25) * (k_rho*k_ux + m_rho*m_ux) * (k_ux + m_ux) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.25) * (k_rho*k_uy + m_rho*m_uy) * (k_ux + m_ux);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.25) * (k_rho*k_uz + m_rho*m_uz) * (k_ux + m_ux);
-      ext_num_flux[Field_E]      = (REAL)(-0.25) * (k_E + k_p + m_E + m_p) * (k_ux + m_ux);
+    ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_ux + m_ux);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.25) * (k_rho*k_ux + m_rho*m_ux) * (k_ux + m_ux) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.25) * (k_rho*k_uy + m_rho*m_uy) * (k_ux + m_ux);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.25) * (k_rho*k_uz + m_rho*m_uz) * (k_ux + m_ux);
+    ext_num_flux[Field_E]      = (REAL)(-0.25) * (k_E + k_p + m_E + m_p) * (k_ux + m_ux);
   }
 
   inline void compute_ext_num_flux_y(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uy + m_uy);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.25) * (k_rho*k_ux + m_rho*m_ux) * (k_uy + m_uy);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.25) * (k_rho*k_uy + m_rho*m_uy) * (k_uy + m_uy) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.25) * (k_rho*k_uz + m_rho*m_uz) * (k_uy + m_uy);
-      ext_num_flux[Field_E]      = (REAL)(-0.25) * (k_E + k_p + m_E + m_p) * (k_uy + m_uy);
+    ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uy + m_uy);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.25) * (k_rho*k_ux + m_rho*m_ux) * (k_uy + m_uy);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.25) * (k_rho*k_uy + m_rho*m_uy) * (k_uy + m_uy) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.25) * (k_rho*k_uz + m_rho*m_uz) * (k_uy + m_uy);
+    ext_num_flux[Field_E]      = (REAL)(-0.25) * (k_E + k_p + m_E + m_p) * (k_uy + m_uy);
   }
 
   inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uz + m_uz);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.25) * (k_rho*k_ux + m_rho*m_ux) * (k_uz + m_uz);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.25) * (k_rho*k_uy + m_rho*m_uy) * (k_uz + m_uz);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.25) * (k_rho*k_uz + m_rho*m_uz) * (k_uz + m_uz) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_E]      = (REAL)(-0.25) * (k_E + k_p + m_E + m_p) * (k_uz + m_uz);
+    ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uz + m_uz);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.25) * (k_rho*k_ux + m_rho*m_ux) * (k_uz + m_uz);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.25) * (k_rho*k_uy + m_rho*m_uy) * (k_uz + m_uz);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.25) * (k_rho*k_uz + m_rho*m_uz) * (k_uz + m_uz) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_E]      = (REAL)(-0.25) * (k_E + k_p + m_E + m_p) * (k_uz + m_uz);
   }
 
 #elif defined USE_FLUX_KennedyGruber
@@ -210,77 +210,77 @@ inline void compute_flux_z(REAL* u, REAL* flux) {
 
   inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
-      REAL m_e   = m_E / m_rho;
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
+    REAL m_e   = m_E / m_rho;
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
-      REAL k_e   = k_E / k_rho;
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
+    REAL k_e   = k_E / k_rho;
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_ux + m_ux);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_ux + m_ux) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uy + m_uy);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uz + m_uz);
-      ext_num_flux[Field_E]      = (REAL)(-0.25) * ((REAL)(0.5) * (k_rho + m_rho) * (k_e + m_e) + (k_p + m_p)) * (k_ux + m_ux);
+    ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_ux + m_ux);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_ux + m_ux) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uy + m_uy);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uz + m_uz);
+    ext_num_flux[Field_E]      = (REAL)(-0.25) * ((REAL)(0.5) * (k_rho + m_rho) * (k_e + m_e) + (k_p + m_p)) * (k_ux + m_ux);
   }
 
   inline void compute_ext_num_flux_y(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
-      REAL m_e   = m_E / m_rho;
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
+    REAL m_e   = m_E / m_rho;
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
-      REAL k_e   = k_E / k_rho;
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
+    REAL k_e   = k_E / k_rho;
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uy + m_uy);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_ux + m_ux);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uy + m_uy) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uz + m_uz);
-      ext_num_flux[Field_E]      = (REAL)(-0.25) * ((REAL)(0.5) * (k_rho + m_rho) * (k_e + m_e) + (k_p + m_p)) * (k_uy + m_uy);
+    ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uy + m_uy);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_ux + m_ux);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uy + m_uy) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uz + m_uz);
+    ext_num_flux[Field_E]      = (REAL)(-0.25) * ((REAL)(0.5) * (k_rho + m_rho) * (k_e + m_e) + (k_p + m_p)) * (k_uy + m_uy);
   }
 
   inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
-      REAL m_e   = m_E / m_rho;
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
+    REAL m_e   = m_E / m_rho;
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
-      REAL k_e   = k_E / k_rho;
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
+    REAL k_e   = k_E / k_rho;
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uz + m_uz);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_ux + m_ux);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uy + m_uy);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uz + m_uz) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_E]      = (REAL)(-0.25) * ((REAL)(0.5) * (k_rho + m_rho) * (k_e + m_e) + (k_p + m_p)) * (k_uz + m_uz);
+    ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uz + m_uz);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_ux + m_ux);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uy + m_uy);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uz + m_uz) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_E]      = (REAL)(-0.25) * ((REAL)(0.5) * (k_rho + m_rho) * (k_e + m_e) + (k_p + m_p)) * (k_uz + m_uz);
   }
 
 #elif defined USE_FLUX_Morinishi
@@ -301,83 +301,83 @@ inline void compute_flux_z(REAL* u, REAL* flux) {
 
   inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.5) * (k_rho*k_ux + m_rho*m_ux);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.25) * (k_rho*k_ux + m_rho*m_ux) * (k_ux + m_ux) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.25) * (k_rho*k_ux + m_rho*m_ux) * (k_uy + m_uy);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.25) * (k_rho*k_ux + m_rho*m_ux) * (k_uz + m_uz);
-      ext_num_flux[Field_E]      = (REAL)(GAMMA/(GAMMA-1)) * (REAL)(-0.5) * (k_p*k_ux + m_p*m_ux)
-                                  + (REAL)(-0.25) * (k_rho*k_ux*k_ux + m_rho*m_ux*m_ux) * (k_ux + m_ux)
-                                  + (REAL)(-0.25) * (k_rho*k_ux*k_uy + m_rho*m_ux*m_uy) * (k_uy + m_uy)
-                                  + (REAL)(-0.25) * (k_rho*k_ux*k_uz + m_rho*m_ux*m_uz) * (k_uz + m_uz)
-                                  - (REAL)(-0.25) * (k_rho*k_ux*(k_ux*k_ux+k_uy*k_uy+k_uz*k_uz) + m_rho*m_ux*(m_ux*m_ux+m_uy*m_uy+m_uz*m_uz));
+    ext_num_flux[Field_rho]    = (REAL)(-0.5) * (k_rho*k_ux + m_rho*m_ux);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.25) * (k_rho*k_ux + m_rho*m_ux) * (k_ux + m_ux) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.25) * (k_rho*k_ux + m_rho*m_ux) * (k_uy + m_uy);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.25) * (k_rho*k_ux + m_rho*m_ux) * (k_uz + m_uz);
+    ext_num_flux[Field_E]      = (REAL)(GAMMA/(GAMMA-1)) * (REAL)(-0.5) * (k_p*k_ux + m_p*m_ux)
+                                + (REAL)(-0.25) * (k_rho*k_ux*k_ux + m_rho*m_ux*m_ux) * (k_ux + m_ux)
+                                + (REAL)(-0.25) * (k_rho*k_ux*k_uy + m_rho*m_ux*m_uy) * (k_uy + m_uy)
+                                + (REAL)(-0.25) * (k_rho*k_ux*k_uz + m_rho*m_ux*m_uz) * (k_uz + m_uz)
+                                - (REAL)(-0.25) * (k_rho*k_ux*(k_ux*k_ux+k_uy*k_uy+k_uz*k_uz) + m_rho*m_ux*(m_ux*m_ux+m_uy*m_uy+m_uz*m_uz));
   }
 
   inline void compute_ext_num_flux_y(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.5) * (k_rho*k_uy + m_rho*m_uy);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.25) * (k_rho*k_uy + m_rho*m_uy) * (k_ux + m_ux);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.25) * (k_rho*k_uy + m_rho*m_uy) * (k_uy + m_uy) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.25) * (k_rho*k_uy + m_rho*m_uy) * (k_uz + m_uz);
-      ext_num_flux[Field_E]      = (REAL)(GAMMA/(GAMMA-1)) * (REAL)(-0.5) * (k_p*k_uy + m_p*m_uy)
-                                  + (REAL)(-0.25) * (k_rho*k_uy*k_ux + m_rho*m_uy*m_ux) * (k_ux + m_ux)
-                                  + (REAL)(-0.25) * (k_rho*k_uy*k_uy + m_rho*m_uy*m_uy) * (k_uy + m_uy)
-                                  + (REAL)(-0.25) * (k_rho*k_uy*k_uz + m_rho*m_uy*m_uz) * (k_uz + m_uz)
-                                  - (REAL)(-0.25) * (k_rho*k_uy*(k_ux*k_ux+k_uy*k_uy+k_uz*k_uz) + m_rho*m_uy*(m_ux*m_ux+m_uy*m_uy+m_uz*m_uz));
+    ext_num_flux[Field_rho]    = (REAL)(-0.5) * (k_rho*k_uy + m_rho*m_uy);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.25) * (k_rho*k_uy + m_rho*m_uy) * (k_ux + m_ux);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.25) * (k_rho*k_uy + m_rho*m_uy) * (k_uy + m_uy) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.25) * (k_rho*k_uy + m_rho*m_uy) * (k_uz + m_uz);
+    ext_num_flux[Field_E]      = (REAL)(GAMMA/(GAMMA-1)) * (REAL)(-0.5) * (k_p*k_uy + m_p*m_uy)
+                                + (REAL)(-0.25) * (k_rho*k_uy*k_ux + m_rho*m_uy*m_ux) * (k_ux + m_ux)
+                                + (REAL)(-0.25) * (k_rho*k_uy*k_uy + m_rho*m_uy*m_uy) * (k_uy + m_uy)
+                                + (REAL)(-0.25) * (k_rho*k_uy*k_uz + m_rho*m_uy*m_uz) * (k_uz + m_uz)
+                                - (REAL)(-0.25) * (k_rho*k_uy*(k_ux*k_ux+k_uy*k_uy+k_uz*k_uz) + m_rho*m_uy*(m_ux*m_ux+m_uy*m_uy+m_uz*m_uz));
   }
 
   inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.5) * (k_rho*k_uz + m_rho*m_uz);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.25) * (k_rho*k_uz + m_rho*m_uz) * (k_ux + m_ux);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.25) * (k_rho*k_uz + m_rho*m_uz) * (k_uy + m_uy);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.25) * (k_rho*k_uz + m_rho*m_uz) * (k_uz + m_uz) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_E]      = (REAL)(GAMMA/(GAMMA-1)) * (REAL)(-0.5) * (k_p*k_uz + m_p*m_uz)
-                                  + (REAL)(-0.25) * (k_rho*k_uz*k_ux + m_rho*m_uz*m_ux) * (k_ux + m_ux)
-                                  + (REAL)(-0.25) * (k_rho*k_uz*k_uy + m_rho*m_uz*m_uy) * (k_uy + m_uy)
-                                  + (REAL)(-0.25) * (k_rho*k_uz*k_uz + m_rho*m_uz*m_uz) * (k_uz + m_uz)
-                                  - (REAL)(-0.25) * (k_rho*k_uz*(k_ux*k_ux+k_uy*k_uy+k_uz*k_uz) + m_rho*m_uz*(m_ux*m_ux+m_uy*m_uy+m_uz*m_uz));
+    ext_num_flux[Field_rho]    = (REAL)(-0.5) * (k_rho*k_uz + m_rho*m_uz);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.25) * (k_rho*k_uz + m_rho*m_uz) * (k_ux + m_ux);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.25) * (k_rho*k_uz + m_rho*m_uz) * (k_uy + m_uy);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.25) * (k_rho*k_uz + m_rho*m_uz) * (k_uz + m_uz) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_E]      = (REAL)(GAMMA/(GAMMA-1)) * (REAL)(-0.5) * (k_p*k_uz + m_p*m_uz)
+                                + (REAL)(-0.25) * (k_rho*k_uz*k_ux + m_rho*m_uz*m_ux) * (k_ux + m_ux)
+                                + (REAL)(-0.25) * (k_rho*k_uz*k_uy + m_rho*m_uz*m_uy) * (k_uy + m_uy)
+                                + (REAL)(-0.25) * (k_rho*k_uz*k_uz + m_rho*m_uz*m_uz) * (k_uz + m_uz)
+                                - (REAL)(-0.25) * (k_rho*k_uz*(k_ux*k_ux+k_uy*k_uy+k_uz*k_uz) + m_rho*m_uz*(m_ux*m_ux+m_uy*m_uy+m_uz*m_uz));
   }
 
 #elif defined USE_FLUX_Pirozzoli
@@ -396,71 +396,71 @@ inline void compute_flux_z(REAL* u, REAL* flux) {
 
   inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_ux + m_ux);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_ux + m_ux) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uy + m_uy);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uz + m_uz);
-      ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * ((k_E+k_p)/k_rho + (m_E+m_p)/m_rho) * (k_ux + m_ux);
+    ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_ux + m_ux);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_ux + m_ux) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uy + m_uy);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uz + m_uz);
+    ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * ((k_E+k_p)/k_rho + (m_E+m_p)/m_rho) * (k_ux + m_ux);
   }
 
   inline void compute_ext_num_flux_y(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uy + m_uy);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_ux + m_ux);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uy + m_uy) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uz + m_uz);
-      ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * ((k_E+k_p)/k_rho + (m_E+m_p)/m_rho) * (k_uy + m_uy);
+    ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uy + m_uy);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_ux + m_ux);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uy + m_uy) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uz + m_uz);
+    ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * ((k_E+k_p)/k_rho + (m_E+m_p)/m_rho) * (k_uy + m_uy);
   }
 
   inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uz + m_uz);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_ux + m_ux);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uy + m_uy);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uz + m_uz) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * ((k_E+k_p)/k_rho + (m_E+m_p)/m_rho) * (k_uz + m_uz);
+    ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uz + m_uz);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_ux + m_ux);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uy + m_uy);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uz + m_uz) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * ((k_E+k_p)/k_rho + (m_E+m_p)/m_rho) * (k_uz + m_uz);
   }
 
 #elif defined USE_FLUX_KuyaTotaniKawai_QCC
@@ -480,77 +480,77 @@ inline void compute_flux_z(REAL* u, REAL* flux) {
 
   inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_ux + m_ux);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_ux + m_ux) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_ux + m_ux);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_ux + m_ux);
-      ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux)
-                                                  * (k_ux*m_ux + k_uy*m_uy + k_uz*m_uz + (k_p/k_rho + m_p/m_rho)/(GAMMA-1))
-                                 + (REAL)(-0.5) * (k_ux*m_p + m_ux*k_p);
+    ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_ux + m_ux);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_ux + m_ux) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_ux + m_ux);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_ux + m_ux);
+    ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux)
+                                                * (k_ux*m_ux + k_uy*m_uy + k_uz*m_uz + (k_p/k_rho + m_p/m_rho)/(GAMMA-1))
+                                + (REAL)(-0.5) * (k_ux*m_p + m_ux*k_p);
   }
 
   inline void compute_ext_num_flux_y(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uy + m_uy);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uy + m_uy);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uy + m_uy) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uy + m_uy);
-      ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy)
-                                                  * (k_ux*m_ux + k_uy*m_uy + k_uz*m_uz + (k_p/k_rho + m_p/m_rho)/(GAMMA-1))
-                                 + (REAL)(-0.5) * (k_uy*m_p + m_uy*k_p);
+    ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uy + m_uy);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uy + m_uy);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uy + m_uy) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uy + m_uy);
+    ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy)
+                                                * (k_ux*m_ux + k_uy*m_uy + k_uz*m_uz + (k_p/k_rho + m_p/m_rho)/(GAMMA-1))
+                                + (REAL)(-0.5) * (k_uy*m_p + m_uy*k_p);
   }
 
   inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
 
-      ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uz + m_uz);
-      ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uz + m_uz);
-      ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uz + m_uz);
-      ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uz + m_uz) + (REAL)(-0.5) * (k_p + m_p);
-      ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz)
-                                                  * (k_ux*m_ux + k_uy*m_uy + k_uz*m_uz + (k_p/k_rho + m_p/m_rho)/(GAMMA-1))
-                                 + (REAL)(-0.5) * (k_uz*m_p + m_uz*k_p);
+    ext_num_flux[Field_rho]    = (REAL)(-0.25) * (k_rho + m_rho) * (k_uz + m_uz);
+    ext_num_flux[Field_rho_ux] = (REAL)(-0.125) * (k_rho + m_rho) * (k_ux + m_ux) * (k_uz + m_uz);
+    ext_num_flux[Field_rho_uy] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uy + m_uy) * (k_uz + m_uz);
+    ext_num_flux[Field_rho_uz] = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz) * (k_uz + m_uz) + (REAL)(-0.5) * (k_p + m_p);
+    ext_num_flux[Field_E]      = (REAL)(-0.125) * (k_rho + m_rho) * (k_uz + m_uz)
+                                                * (k_ux*m_ux + k_uy*m_uy + k_uz*m_uz + (k_p/k_rho + m_p/m_rho)/(GAMMA-1))
+                                + (REAL)(-0.5) * (k_uz*m_p + m_uz*k_p);
   }
 
 #elif defined USE_FLUX_Chandrashekar
@@ -570,122 +570,122 @@ inline void compute_flux_z(REAL* u, REAL* flux) {
 
   inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
-      REAL m_beta= m_rho / (2 * m_p);
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
+    REAL m_beta= m_rho / (2 * m_p);
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
-      REAL k_beta= k_rho / (2 * k_p);
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
+    REAL k_beta= k_rho / (2 * k_p);
 
-      REAL rho     = (REAL)(0.5) * (m_rho + k_rho);
-      REAL rho_log = logmean(m_rho, k_rho);
-      REAL ux      = (REAL)(0.5) * (m_ux + k_ux);
-      REAL uy      = (REAL)(0.5) * (m_uy + k_uy);
-      REAL uz      = (REAL)(0.5) * (m_uz + k_uz);
-      REAL u2      = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
-      REAL beta    = (REAL)(0.5) * (m_beta + k_beta);
-      REAL beta_log= logmean(m_beta, k_beta);
+    REAL rho     = (REAL)(0.5) * (m_rho + k_rho);
+    REAL rho_log = logmean(m_rho, k_rho);
+    REAL ux      = (REAL)(0.5) * (m_ux + k_ux);
+    REAL uy      = (REAL)(0.5) * (m_uy + k_uy);
+    REAL uz      = (REAL)(0.5) * (m_uz + k_uz);
+    REAL u2      = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
+    REAL beta    = (REAL)(0.5) * (m_beta + k_beta);
+    REAL beta_log= logmean(m_beta, k_beta);
 
-      REAL f_rho   = rho_log*ux;
-      REAL f_rhoux = ux*f_rho + rho/(2*beta);
-      REAL f_rhouy = uy*f_rho;
-      REAL f_rhouz = uz*f_rho;
-      REAL f_E     = (REAL)(1/(2*GAMMA-2))*f_rho/beta_log - (REAL)(0.5)*u2*f_rho + ux*f_rhoux + uy*f_rhouy + uz*f_rhouz;
+    REAL f_rho   = rho_log*ux;
+    REAL f_rhoux = ux*f_rho + rho/(2*beta);
+    REAL f_rhouy = uy*f_rho;
+    REAL f_rhouz = uz*f_rho;
+    REAL f_E     = (REAL)(1/(2*GAMMA-2))*f_rho/beta_log - (REAL)(0.5)*u2*f_rho + ux*f_rhoux + uy*f_rhouy + uz*f_rhouz;
 
-      ext_num_flux[Field_rho]    = - f_rho;
-      ext_num_flux[Field_rho_ux] = - f_rhoux;
-      ext_num_flux[Field_rho_uy] = - f_rhouy;
-      ext_num_flux[Field_rho_uz] = - f_rhouz;
-      ext_num_flux[Field_E]      = - f_E;
+    ext_num_flux[Field_rho]    = - f_rho;
+    ext_num_flux[Field_rho_ux] = - f_rhoux;
+    ext_num_flux[Field_rho_uy] = - f_rhouy;
+    ext_num_flux[Field_rho_uz] = - f_rhouz;
+    ext_num_flux[Field_E]      = - f_E;
   }
 
   inline void compute_ext_num_flux_y(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
-      REAL m_beta= m_rho / (2 * m_p);
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
+    REAL m_beta= m_rho / (2 * m_p);
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
-      REAL k_beta= k_rho / (2 * k_p);
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
+    REAL k_beta= k_rho / (2 * k_p);
 
-      REAL rho     = (REAL)(0.5) * (m_rho + k_rho);
-      REAL rho_log = logmean(m_rho, k_rho);
-      REAL ux      = (REAL)(0.5) * (m_ux + k_ux);
-      REAL uy      = (REAL)(0.5) * (m_uy + k_uy);
-      REAL uz      = (REAL)(0.5) * (m_uz + k_uz);
-      REAL u2      = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
-      REAL beta    = (REAL)(0.5) * (m_beta + k_beta);
-      REAL beta_log= logmean(m_beta, k_beta);
+    REAL rho     = (REAL)(0.5) * (m_rho + k_rho);
+    REAL rho_log = logmean(m_rho, k_rho);
+    REAL ux      = (REAL)(0.5) * (m_ux + k_ux);
+    REAL uy      = (REAL)(0.5) * (m_uy + k_uy);
+    REAL uz      = (REAL)(0.5) * (m_uz + k_uz);
+    REAL u2      = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
+    REAL beta    = (REAL)(0.5) * (m_beta + k_beta);
+    REAL beta_log= logmean(m_beta, k_beta);
 
-      REAL f_rho   = rho_log*uy;
-      REAL f_rhoux = ux*f_rho;
-      REAL f_rhouy = uy*f_rho + rho/(2*beta);
-      REAL f_rhouz = uz*f_rho;
-      REAL f_E     = (REAL)(1/(2*GAMMA-2))*f_rho/beta_log - (REAL)(0.5)*u2*f_rho + ux*f_rhoux + uy*f_rhouy + uz*f_rhouz;
+    REAL f_rho   = rho_log*uy;
+    REAL f_rhoux = ux*f_rho;
+    REAL f_rhouy = uy*f_rho + rho/(2*beta);
+    REAL f_rhouz = uz*f_rho;
+    REAL f_E     = (REAL)(1/(2*GAMMA-2))*f_rho/beta_log - (REAL)(0.5)*u2*f_rho + ux*f_rhoux + uy*f_rhouy + uz*f_rhouz;
 
-      ext_num_flux[Field_rho]    = - f_rho;
-      ext_num_flux[Field_rho_ux] = - f_rhoux;
-      ext_num_flux[Field_rho_uy] = - f_rhouy;
-      ext_num_flux[Field_rho_uz] = - f_rhouz;
-      ext_num_flux[Field_E]      = - f_E;
+    ext_num_flux[Field_rho]    = - f_rho;
+    ext_num_flux[Field_rho_ux] = - f_rhoux;
+    ext_num_flux[Field_rho_uy] = - f_rhouy;
+    ext_num_flux[Field_rho_uz] = - f_rhouz;
+    ext_num_flux[Field_E]      = - f_E;
   }
 
   inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
-      REAL m_beta= m_rho / (2 * m_p);
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
+    REAL m_beta= m_rho / (2 * m_p);
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
-      REAL k_beta= k_rho / (2 * k_p);
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
+    REAL k_beta= k_rho / (2 * k_p);
 
-      REAL rho     = (REAL)(0.5) * (m_rho + k_rho);
-      REAL rho_log = logmean(m_rho, k_rho);
-      REAL ux      = (REAL)(0.5) * (m_ux + k_ux);
-      REAL uy      = (REAL)(0.5) * (m_uy + k_uy);
-      REAL uz      = (REAL)(0.5) * (m_uz + k_uz);
-      REAL u2      = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
-      REAL beta    = (REAL)(0.5) * (m_beta + k_beta);
-      REAL beta_log= logmean(m_beta, k_beta);
+    REAL rho     = (REAL)(0.5) * (m_rho + k_rho);
+    REAL rho_log = logmean(m_rho, k_rho);
+    REAL ux      = (REAL)(0.5) * (m_ux + k_ux);
+    REAL uy      = (REAL)(0.5) * (m_uy + k_uy);
+    REAL uz      = (REAL)(0.5) * (m_uz + k_uz);
+    REAL u2      = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
+    REAL beta    = (REAL)(0.5) * (m_beta + k_beta);
+    REAL beta_log= logmean(m_beta, k_beta);
 
-      REAL f_rho   = rho_log*uz;
-      REAL f_rhoux = ux*f_rho;
-      REAL f_rhouy = uy*f_rho;
-      REAL f_rhouz = uz*f_rho + rho/(2*beta);
-      REAL f_E     = (REAL)(1/(2*GAMMA-2))*f_rho/beta_log - (REAL)(0.5)*u2*f_rho + ux*f_rhoux + uy*f_rhouy + uz*f_rhouz;
+    REAL f_rho   = rho_log*uz;
+    REAL f_rhoux = ux*f_rho;
+    REAL f_rhouy = uy*f_rho;
+    REAL f_rhouz = uz*f_rho + rho/(2*beta);
+    REAL f_E     = (REAL)(1/(2*GAMMA-2))*f_rho/beta_log - (REAL)(0.5)*u2*f_rho + ux*f_rhoux + uy*f_rhouy + uz*f_rhouz;
 
-      ext_num_flux[Field_rho]    = - f_rho;
-      ext_num_flux[Field_rho_ux] = - f_rhoux;
-      ext_num_flux[Field_rho_uy] = - f_rhouy;
-      ext_num_flux[Field_rho_uz] = - f_rhouz;
-      ext_num_flux[Field_E]      = - f_E;
+    ext_num_flux[Field_rho]    = - f_rho;
+    ext_num_flux[Field_rho_ux] = - f_rhoux;
+    ext_num_flux[Field_rho_uy] = - f_rhouy;
+    ext_num_flux[Field_rho_uz] = - f_rhouz;
+    ext_num_flux[Field_E]      = - f_E;
   }
 
 #elif defined USE_FLUX_IsmailRoe
@@ -706,167 +706,167 @@ inline void compute_flux_z(REAL* u, REAL* flux) {
 
   inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
-      REAL m_z1  = sqrt(m_rho / m_p);
-      REAL m_z2  = m_z1 * m_ux;
-      REAL m_z3  = m_z1 * m_uy;
-      REAL m_z4  = m_z1 * m_uz;
-      REAL m_z5  = m_z1 * m_p;
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
+    REAL m_z1  = sqrt(m_rho / m_p);
+    REAL m_z2  = m_z1 * m_ux;
+    REAL m_z3  = m_z1 * m_uy;
+    REAL m_z4  = m_z1 * m_uz;
+    REAL m_z5  = m_z1 * m_p;
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
-      REAL k_z1  = sqrt(k_rho / k_p);
-      REAL k_z2  = k_z1 * k_ux;
-      REAL k_z3  = k_z1 * k_uy;
-      REAL k_z4  = k_z1 * k_uz;
-      REAL k_z5  = k_z1 * k_p;
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
+    REAL k_z1  = sqrt(k_rho / k_p);
+    REAL k_z2  = k_z1 * k_ux;
+    REAL k_z3  = k_z1 * k_uy;
+    REAL k_z4  = k_z1 * k_uz;
+    REAL k_z5  = k_z1 * k_p;
 
-      REAL z1     = (REAL)(0.5) * (m_z1 + k_z1);
-      REAL z1_log = logmean(m_z1, k_z1);
-      REAL z2     = (REAL)(0.5) * (m_z2 + k_z2);
-      REAL z3     = (REAL)(0.5) * (m_z3 + k_z3);
-      REAL z4     = (REAL)(0.5) * (m_z4 + k_z4);
-      REAL z5     = (REAL)(0.5) * (m_z5 + k_z5);
-      REAL z5_log = logmean(m_z5, k_z5);
+    REAL z1     = (REAL)(0.5) * (m_z1 + k_z1);
+    REAL z1_log = logmean(m_z1, k_z1);
+    REAL z2     = (REAL)(0.5) * (m_z2 + k_z2);
+    REAL z3     = (REAL)(0.5) * (m_z3 + k_z3);
+    REAL z4     = (REAL)(0.5) * (m_z4 + k_z4);
+    REAL z5     = (REAL)(0.5) * (m_z5 + k_z5);
+    REAL z5_log = logmean(m_z5, k_z5);
 
-      REAL rho = z1 * z5_log;
-      REAL ux = z2 / z1;
-      REAL uy = z3 / z1;
-      REAL uz = z4 / z1;
-      REAL p1 = z5 / z1;
-      REAL p2 = ((REAL)(GAMMA+1)*z5_log/z1_log + (REAL)(GAMMA-1)*z5/z1) / (REAL)(2*GAMMA);
-      REAL h  = (REAL)(GAMMA/(GAMMA-1)) * p2/rho + (REAL)(0.5) * (ux*ux + uy*uy + uz*uz);
+    REAL rho = z1 * z5_log;
+    REAL ux = z2 / z1;
+    REAL uy = z3 / z1;
+    REAL uz = z4 / z1;
+    REAL p1 = z5 / z1;
+    REAL p2 = ((REAL)(GAMMA+1)*z5_log/z1_log + (REAL)(GAMMA-1)*z5/z1) / (REAL)(2*GAMMA);
+    REAL h  = (REAL)(GAMMA/(GAMMA-1)) * p2/rho + (REAL)(0.5) * (ux*ux + uy*uy + uz*uz);
 
-      REAL f_rho   = rho*ux;
-      REAL f_rhoux = ux*f_rho + p1;
-      REAL f_rhouy = uy*f_rho;
-      REAL f_rhouz = uz*f_rho;
-      REAL f_E     =  h*f_rho;
+    REAL f_rho   = rho*ux;
+    REAL f_rhoux = ux*f_rho + p1;
+    REAL f_rhouy = uy*f_rho;
+    REAL f_rhouz = uz*f_rho;
+    REAL f_E     =  h*f_rho;
 
-      ext_num_flux[Field_rho]    = - f_rho;
-      ext_num_flux[Field_rho_ux] = - f_rhoux;
-      ext_num_flux[Field_rho_uy] = - f_rhouy;
-      ext_num_flux[Field_rho_uz] = - f_rhouz;
-      ext_num_flux[Field_E]      = - f_E;
+    ext_num_flux[Field_rho]    = - f_rho;
+    ext_num_flux[Field_rho_ux] = - f_rhoux;
+    ext_num_flux[Field_rho_uy] = - f_rhouy;
+    ext_num_flux[Field_rho_uz] = - f_rhouz;
+    ext_num_flux[Field_E]      = - f_E;
   }
 
   inline void compute_ext_num_flux_y(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
-      REAL m_z1  = sqrt(m_rho / m_p);
-      REAL m_z2  = m_z1 * m_ux;
-      REAL m_z3  = m_z1 * m_uy;
-      REAL m_z4  = m_z1 * m_uz;
-      REAL m_z5  = m_z1 * m_p;
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
+    REAL m_z1  = sqrt(m_rho / m_p);
+    REAL m_z2  = m_z1 * m_ux;
+    REAL m_z3  = m_z1 * m_uy;
+    REAL m_z4  = m_z1 * m_uz;
+    REAL m_z5  = m_z1 * m_p;
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
-      REAL k_z1  = sqrt(k_rho / k_p);
-      REAL k_z2  = k_z1 * k_ux;
-      REAL k_z3  = k_z1 * k_uy;
-      REAL k_z4  = k_z1 * k_uz;
-      REAL k_z5  = k_z1 * k_p;
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
+    REAL k_z1  = sqrt(k_rho / k_p);
+    REAL k_z2  = k_z1 * k_ux;
+    REAL k_z3  = k_z1 * k_uy;
+    REAL k_z4  = k_z1 * k_uz;
+    REAL k_z5  = k_z1 * k_p;
 
-      REAL z1     = (REAL)(0.5) * (m_z1 + k_z1);
-      REAL z1_log = logmean(m_z1, k_z1);
-      REAL z2     = (REAL)(0.5) * (m_z2 + k_z2);
-      REAL z3     = (REAL)(0.5) * (m_z3 + k_z3);
-      REAL z4     = (REAL)(0.5) * (m_z4 + k_z4);
-      REAL z5     = (REAL)(0.5) * (m_z5 + k_z5);
-      REAL z5_log = logmean(m_z5, k_z5);
+    REAL z1     = (REAL)(0.5) * (m_z1 + k_z1);
+    REAL z1_log = logmean(m_z1, k_z1);
+    REAL z2     = (REAL)(0.5) * (m_z2 + k_z2);
+    REAL z3     = (REAL)(0.5) * (m_z3 + k_z3);
+    REAL z4     = (REAL)(0.5) * (m_z4 + k_z4);
+    REAL z5     = (REAL)(0.5) * (m_z5 + k_z5);
+    REAL z5_log = logmean(m_z5, k_z5);
 
-      REAL rho = z1 * z5_log;
-      REAL ux = z2 / z1;
-      REAL uy = z3 / z1;
-      REAL uz = z4 / z1;
-      REAL p1 = z5 / z1;
-      REAL p2 = ((REAL)(GAMMA+1)*z5_log/z1_log + (REAL)(GAMMA-1)*z5/z1) / (REAL)(2*GAMMA);
-      REAL h  = (REAL)(GAMMA/(GAMMA-1)) * p2/rho + (REAL)(0.5) * (ux*ux + uy*uy + uz*uz);
+    REAL rho = z1 * z5_log;
+    REAL ux = z2 / z1;
+    REAL uy = z3 / z1;
+    REAL uz = z4 / z1;
+    REAL p1 = z5 / z1;
+    REAL p2 = ((REAL)(GAMMA+1)*z5_log/z1_log + (REAL)(GAMMA-1)*z5/z1) / (REAL)(2*GAMMA);
+    REAL h  = (REAL)(GAMMA/(GAMMA-1)) * p2/rho + (REAL)(0.5) * (ux*ux + uy*uy + uz*uz);
 
-      REAL f_rho   = rho*uy;
-      REAL f_rhoux = ux*f_rho;
-      REAL f_rhouy = uy*f_rho + p1;
-      REAL f_rhouz = uz*f_rho;
-      REAL f_E     =  h*f_rho;
+    REAL f_rho   = rho*uy;
+    REAL f_rhoux = ux*f_rho;
+    REAL f_rhouy = uy*f_rho + p1;
+    REAL f_rhouz = uz*f_rho;
+    REAL f_E     =  h*f_rho;
 
-      ext_num_flux[Field_rho]    = - f_rho;
-      ext_num_flux[Field_rho_ux] = - f_rhoux;
-      ext_num_flux[Field_rho_uy] = - f_rhouy;
-      ext_num_flux[Field_rho_uz] = - f_rhouz;
-      ext_num_flux[Field_E]      = - f_E;
+    ext_num_flux[Field_rho]    = - f_rho;
+    ext_num_flux[Field_rho_ux] = - f_rhoux;
+    ext_num_flux[Field_rho_uy] = - f_rhouy;
+    ext_num_flux[Field_rho_uz] = - f_rhouz;
+    ext_num_flux[Field_E]      = - f_E;
   }
 
   inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho = um[Field_rho];
-      REAL m_E   = um[Field_E];
-      REAL m_ux  = um[Field_ux];
-      REAL m_uy  = um[Field_uy];
-      REAL m_uz  = um[Field_uz];
-      REAL m_p   = um[Field_p];
-      REAL m_z1  = sqrt(m_rho / m_p);
-      REAL m_z2  = m_z1 * m_ux;
-      REAL m_z3  = m_z1 * m_uy;
-      REAL m_z4  = m_z1 * m_uz;
-      REAL m_z5  = m_z1 * m_p;
+    REAL m_rho = um[Field_rho];
+    REAL m_E   = um[Field_E];
+    REAL m_ux  = um[Field_ux];
+    REAL m_uy  = um[Field_uy];
+    REAL m_uz  = um[Field_uz];
+    REAL m_p   = um[Field_p];
+    REAL m_z1  = sqrt(m_rho / m_p);
+    REAL m_z2  = m_z1 * m_ux;
+    REAL m_z3  = m_z1 * m_uy;
+    REAL m_z4  = m_z1 * m_uz;
+    REAL m_z5  = m_z1 * m_p;
 
-      REAL k_rho = uk[Field_rho];
-      REAL k_E   = uk[Field_E];
-      REAL k_ux  = uk[Field_ux];
-      REAL k_uy  = uk[Field_uy];
-      REAL k_uz  = uk[Field_uz];
-      REAL k_p   = uk[Field_p];
-      REAL k_z1  = sqrt(k_rho / k_p);
-      REAL k_z2  = k_z1 * k_ux;
-      REAL k_z3  = k_z1 * k_uy;
-      REAL k_z4  = k_z1 * k_uz;
-      REAL k_z5  = k_z1 * k_p;
+    REAL k_rho = uk[Field_rho];
+    REAL k_E   = uk[Field_E];
+    REAL k_ux  = uk[Field_ux];
+    REAL k_uy  = uk[Field_uy];
+    REAL k_uz  = uk[Field_uz];
+    REAL k_p   = uk[Field_p];
+    REAL k_z1  = sqrt(k_rho / k_p);
+    REAL k_z2  = k_z1 * k_ux;
+    REAL k_z3  = k_z1 * k_uy;
+    REAL k_z4  = k_z1 * k_uz;
+    REAL k_z5  = k_z1 * k_p;
 
-      REAL z1     = (REAL)(0.5) * (m_z1 + k_z1);
-      REAL z1_log = logmean(m_z1, k_z1);
-      REAL z2     = (REAL)(0.5) * (m_z2 + k_z2);
-      REAL z3     = (REAL)(0.5) * (m_z3 + k_z3);
-      REAL z4     = (REAL)(0.5) * (m_z4 + k_z4);
-      REAL z5     = (REAL)(0.5) * (m_z5 + k_z5);
-      REAL z5_log = logmean(m_z5, k_z5);
+    REAL z1     = (REAL)(0.5) * (m_z1 + k_z1);
+    REAL z1_log = logmean(m_z1, k_z1);
+    REAL z2     = (REAL)(0.5) * (m_z2 + k_z2);
+    REAL z3     = (REAL)(0.5) * (m_z3 + k_z3);
+    REAL z4     = (REAL)(0.5) * (m_z4 + k_z4);
+    REAL z5     = (REAL)(0.5) * (m_z5 + k_z5);
+    REAL z5_log = logmean(m_z5, k_z5);
 
-      REAL rho = z1 * z5_log;
-      REAL ux = z2 / z1;
-      REAL uy = z3 / z1;
-      REAL uz = z4 / z1;
-      REAL p1 = z5 / z1;
-      REAL p2 = ((REAL)(GAMMA+1)*z5_log/z1_log + (REAL)(GAMMA-1)*z5/z1) / (REAL)(2*GAMMA);
-      REAL h  = (REAL)(GAMMA/(GAMMA-1)) * p2/rho + (REAL)(0.5) * (ux*ux + uy*uy + uz*uz);
+    REAL rho = z1 * z5_log;
+    REAL ux = z2 / z1;
+    REAL uy = z3 / z1;
+    REAL uz = z4 / z1;
+    REAL p1 = z5 / z1;
+    REAL p2 = ((REAL)(GAMMA+1)*z5_log/z1_log + (REAL)(GAMMA-1)*z5/z1) / (REAL)(2*GAMMA);
+    REAL h  = (REAL)(GAMMA/(GAMMA-1)) * p2/rho + (REAL)(0.5) * (ux*ux + uy*uy + uz*uz);
 
-      REAL f_rho   = rho*uz;
-      REAL f_rhoux = ux*f_rho;
-      REAL f_rhouy = uy*f_rho;
-      REAL f_rhouz = uz*f_rho + p1;
-      REAL f_E     =  h*f_rho;
+    REAL f_rho   = rho*uz;
+    REAL f_rhoux = ux*f_rho;
+    REAL f_rhouy = uy*f_rho;
+    REAL f_rhouz = uz*f_rho + p1;
+    REAL f_E     =  h*f_rho;
 
-      ext_num_flux[Field_rho]    = - f_rho;
-      ext_num_flux[Field_rho_ux] = - f_rhoux;
-      ext_num_flux[Field_rho_uy] = - f_rhouy;
-      ext_num_flux[Field_rho_uz] = - f_rhouz;
-      ext_num_flux[Field_E]      = - f_E;
+    ext_num_flux[Field_rho]    = - f_rho;
+    ext_num_flux[Field_rho_ux] = - f_rhoux;
+    ext_num_flux[Field_rho_uy] = - f_rhouy;
+    ext_num_flux[Field_rho_uz] = - f_rhouz;
+    ext_num_flux[Field_E]      = - f_E;
   }
 
 #elif defined USE_FLUX_Ranocha
@@ -884,127 +884,126 @@ section 7.4.2 of
 
   inline void compute_ext_num_flux_x(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho   = um[Field_rho];
-      REAL m_E     = um[Field_E];
-      REAL m_ux    = um[Field_ux];
-      REAL m_uy    = um[Field_uy];
-      REAL m_uz    = um[Field_uz];
-      REAL m_p     = um[Field_p];
-      REAL m_rho_p = m_rho / m_p;
+    REAL m_rho   = um[Field_rho];
+    REAL m_E     = um[Field_E];
+    REAL m_ux    = um[Field_ux];
+    REAL m_uy    = um[Field_uy];
+    REAL m_uz    = um[Field_uz];
+    REAL m_p     = um[Field_p];
+    REAL m_rho_p = m_rho / m_p;
 
-      REAL k_rho   = uk[Field_rho];
-      REAL k_E     = uk[Field_E];
-      REAL k_ux    = uk[Field_ux];
-      REAL k_uy    = uk[Field_uy];
-      REAL k_uz    = uk[Field_uz];
-      REAL k_p     = uk[Field_p];
-      REAL k_rho_p = k_rho / k_p;
+    REAL k_rho   = uk[Field_rho];
+    REAL k_E     = uk[Field_E];
+    REAL k_ux    = uk[Field_ux];
+    REAL k_uy    = uk[Field_uy];
+    REAL k_uz    = uk[Field_uz];
+    REAL k_p     = uk[Field_p];
+    REAL k_rho_p = k_rho / k_p;
 
-      REAL rho       = (REAL)(0.5) * (m_rho + k_rho);
-      REAL rho_log   = logmean(m_rho, k_rho);
-      REAL ux        = (REAL)(0.5) * (m_ux + k_ux);
-      REAL uy        = (REAL)(0.5) * (m_uy + k_uy);
-      REAL uz        = (REAL)(0.5) * (m_uz + k_uz);
-      REAL u2        = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
-      REAL p         = (REAL)(0.5) * (m_p + k_p);
-      REAL rho_p_log = logmean(m_rho_p, k_rho_p);
+    REAL rho       = (REAL)(0.5) * (m_rho + k_rho);
+    REAL rho_log   = logmean(m_rho, k_rho);
+    REAL ux        = (REAL)(0.5) * (m_ux + k_ux);
+    REAL uy        = (REAL)(0.5) * (m_uy + k_uy);
+    REAL uz        = (REAL)(0.5) * (m_uz + k_uz);
+    REAL u2        = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
+    REAL p         = (REAL)(0.5) * (m_p + k_p);
+    REAL rho_p_log = logmean(m_rho_p, k_rho_p);
 
-      REAL f_rho   = rho_log*ux;
-      REAL f_rhoux = ux*f_rho + p;
-      REAL f_rhouy = uy*f_rho;
-      REAL f_rhouz = uz*f_rho;
-      REAL f_E     = (rho_log * (ux*ux + uy*uy + uz*uz - (REAL)(0.5)*u2) + (REAL)(1)/(GAMMA-1)*rho_log/rho_p_log) * ux
-                      - (REAL)(0.25) * (m_p - k_p) * (m_ux - k_ux);
+    REAL f_rho   = rho_log*ux;
+    REAL f_rhoux = ux*f_rho + p;
+    REAL f_rhouy = uy*f_rho;
+    REAL f_rhouz = uz*f_rho;
+    REAL f_E     = (rho_log * (ux*ux + uy*uy + uz*uz - (REAL)(0.5)*u2) + (REAL)(1)/(GAMMA-1)*rho_log/rho_p_log) * ux
+                    - (REAL)(0.25) * (m_p - k_p) * (m_ux - k_ux);
 
-      ext_num_flux[Field_rho]    = - f_rho;
-      ext_num_flux[Field_rho_ux] = - f_rhoux;
-      ext_num_flux[Field_rho_uy] = - f_rhouy;
-      ext_num_flux[Field_rho_uz] = - f_rhouz;
-      ext_num_flux[Field_E]      = - f_E;
+    ext_num_flux[Field_rho]    = - f_rho;
+    ext_num_flux[Field_rho_ux] = - f_rhoux;
+    ext_num_flux[Field_rho_uy] = - f_rhouy;
+    ext_num_flux[Field_rho_uz] = - f_rhouz;
+    ext_num_flux[Field_E]      = - f_E;
   }
 
   inline void compute_ext_num_flux_y(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho   = um[Field_rho];
-      REAL m_E     = um[Field_E];
-      REAL m_ux    = um[Field_ux];
-      REAL m_uy    = um[Field_uy];
-      REAL m_uz    = um[Field_uz];
-      REAL m_p     = um[Field_p];
-      REAL m_rho_p = m_rho / m_p;
+    REAL m_rho   = um[Field_rho];
+    REAL m_E     = um[Field_E];
+    REAL m_ux    = um[Field_ux];
+    REAL m_uy    = um[Field_uy];
+    REAL m_uz    = um[Field_uz];
+    REAL m_p     = um[Field_p];
+    REAL m_rho_p = m_rho / m_p;
 
-      REAL k_rho   = uk[Field_rho];
-      REAL k_E     = uk[Field_E];
-      REAL k_ux    = uk[Field_ux];
-      REAL k_uy    = uk[Field_uy];
-      REAL k_uz    = uk[Field_uz];
-      REAL k_p     = uk[Field_p];
-      REAL k_rho_p = k_rho / k_p;
+    REAL k_rho   = uk[Field_rho];
+    REAL k_E     = uk[Field_E];
+    REAL k_ux    = uk[Field_ux];
+    REAL k_uy    = uk[Field_uy];
+    REAL k_uz    = uk[Field_uz];
+    REAL k_p     = uk[Field_p];
+    REAL k_rho_p = k_rho / k_p;
 
-      REAL rho       = (REAL)(0.5) * (m_rho + k_rho);
-      REAL rho_log   = logmean(m_rho, k_rho);
-      REAL ux        = (REAL)(0.5) * (m_ux + k_ux);
-      REAL uy        = (REAL)(0.5) * (m_uy + k_uy);
-      REAL uz        = (REAL)(0.5) * (m_uz + k_uz);
-      REAL u2        = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
-      REAL p         = (REAL)(0.5) * (m_p + k_p);
-      REAL rho_p_log = logmean(m_rho_p, k_rho_p);
+    REAL rho       = (REAL)(0.5) * (m_rho + k_rho);
+    REAL rho_log   = logmean(m_rho, k_rho);
+    REAL ux        = (REAL)(0.5) * (m_ux + k_ux);
+    REAL uy        = (REAL)(0.5) * (m_uy + k_uy);
+    REAL uz        = (REAL)(0.5) * (m_uz + k_uz);
+    REAL u2        = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
+    REAL p         = (REAL)(0.5) * (m_p + k_p);
+    REAL rho_p_log = logmean(m_rho_p, k_rho_p);
 
-      REAL f_rho   = rho_log*uy;
-      REAL f_rhoux = ux*f_rho;
-      REAL f_rhouy = uy*f_rho + p;
-      REAL f_rhouz = uz*f_rho;
-      REAL f_E     = (rho_log * (ux*ux + uy*uy + uz*uz - (REAL)(0.5)*u2) + (REAL)(1)/(GAMMA-1)*rho_log/rho_p_log) * uy
-                      - (REAL)(0.25) * (m_p - k_p) * (m_ux - k_ux);
+    REAL f_rho   = rho_log*uy;
+    REAL f_rhoux = ux*f_rho;
+    REAL f_rhouy = uy*f_rho + p;
+    REAL f_rhouz = uz*f_rho;
+    REAL f_E     = (rho_log * (ux*ux + uy*uy + uz*uz - (REAL)(0.5)*u2) + (REAL)(1)/(GAMMA-1)*rho_log/rho_p_log) * uy
+                    - (REAL)(0.25) * (m_p - k_p) * (m_ux - k_ux);
 
-      ext_num_flux[Field_rho]    = - f_rho;
-      ext_num_flux[Field_rho_ux] = - f_rhoux;
-      ext_num_flux[Field_rho_uy] = - f_rhouy;
-      ext_num_flux[Field_rho_uz] = - f_rhouz;
-      ext_num_flux[Field_E]      = - f_E;
+    ext_num_flux[Field_rho]    = - f_rho;
+    ext_num_flux[Field_rho_ux] = - f_rhoux;
+    ext_num_flux[Field_rho_uy] = - f_rhouy;
+    ext_num_flux[Field_rho_uz] = - f_rhouz;
+    ext_num_flux[Field_E]      = - f_E;
   }
 
   inline void compute_ext_num_flux_z(REAL const* uk, REAL const* um, REAL* ext_num_flux) {
 
-      REAL m_rho   = um[Field_rho];
-      REAL m_E     = um[Field_E];
-      REAL m_ux    = um[Field_ux];
-      REAL m_uy    = um[Field_uy];
-      REAL m_uz    = um[Field_uz];
-      REAL m_p     = um[Field_p];
-      REAL m_rho_p = m_rho / m_p;
+    REAL m_rho   = um[Field_rho];
+    REAL m_E     = um[Field_E];
+    REAL m_ux    = um[Field_ux];
+    REAL m_uy    = um[Field_uy];
+    REAL m_uz    = um[Field_uz];
+    REAL m_p     = um[Field_p];
+    REAL m_rho_p = m_rho / m_p;
 
-      REAL k_rho   = uk[Field_rho];
-      REAL k_E     = uk[Field_E];
-      REAL k_ux    = uk[Field_ux];
-      REAL k_uy    = uk[Field_uy];
-      REAL k_uz    = uk[Field_uz];
-      REAL k_p     = uk[Field_p];
-      REAL k_rho_p = k_rho / k_p;
+    REAL k_rho   = uk[Field_rho];
+    REAL k_E     = uk[Field_E];
+    REAL k_ux    = uk[Field_ux];
+    REAL k_uy    = uk[Field_uy];
+    REAL k_uz    = uk[Field_uz];
+    REAL k_p     = uk[Field_p];
+    REAL k_rho_p = k_rho / k_p;
 
-      REAL rho       = (REAL)(0.5) * (m_rho + k_rho);
-      REAL rho_log   = logmean(m_rho, k_rho);
-      REAL ux        = (REAL)(0.5) * (m_ux + k_ux);
-      REAL uy        = (REAL)(0.5) * (m_uy + k_uy);
-      REAL uz        = (REAL)(0.5) * (m_uz + k_uz);
-      REAL u2        = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
-      REAL p         = (REAL)(0.5) * (m_p + k_p);
-      REAL rho_p_log = logmean(m_rho_p, k_rho_p);
+    REAL rho       = (REAL)(0.5) * (m_rho + k_rho);
+    REAL rho_log   = logmean(m_rho, k_rho);
+    REAL ux        = (REAL)(0.5) * (m_ux + k_ux);
+    REAL uy        = (REAL)(0.5) * (m_uy + k_uy);
+    REAL uz        = (REAL)(0.5) * (m_uz + k_uz);
+    REAL u2        = (REAL)(0.5) * (m_ux*m_ux+m_uy*m_uy+m_uz*m_uz + k_ux*k_ux+k_uy*k_uy+k_uz*k_uz);
+    REAL p         = (REAL)(0.5) * (m_p + k_p);
+    REAL rho_p_log = logmean(m_rho_p, k_rho_p);
 
-      REAL f_rho   = rho_log*uz;
-      REAL f_rhoux = ux*f_rho;
-      REAL f_rhouy = uy*f_rho;
-      REAL f_rhouz = uz*f_rho + p;
-      REAL f_E     = (rho_log * (ux*ux + uy*uy + uz*uz - (REAL)(0.5)*u2) + (REAL)(1)/(GAMMA-1)*rho_log/rho_p_log) * uz
-                      - (REAL)(0.25) * (m_p - k_p) * (m_ux - k_ux);
+    REAL f_rho   = rho_log*uz;
+    REAL f_rhoux = ux*f_rho;
+    REAL f_rhouy = uy*f_rho;
+    REAL f_rhouz = uz*f_rho + p;
+    REAL f_E     = (rho_log * (ux*ux + uy*uy + uz*uz - (REAL)(0.5)*u2) + (REAL)(1)/(GAMMA-1)*rho_log/rho_p_log) * uz
+                    - (REAL)(0.25) * (m_p - k_p) * (m_ux - k_ux);
 
-      ext_num_flux[Field_rho]    = - f_rho;
-      ext_num_flux[Field_rho_ux] = - f_rhoux;
-      ext_num_flux[Field_rho_uy] = - f_rhouy;
-      ext_num_flux[Field_rho_uz] = - f_rhouz;
-      ext_num_flux[Field_E]      = - f_E;
+    ext_num_flux[Field_rho]    = - f_rho;
+    ext_num_flux[Field_rho_ux] = - f_rhoux;
+    ext_num_flux[Field_rho_uy] = - f_rhouy;
+    ext_num_flux[Field_rho_uz] = - f_rhouz;
+    ext_num_flux[Field_E]      = - f_E;
   }
-
 
 #else
 
@@ -1084,434 +1083,434 @@ For `USE_BOUNDARY_FLUX_Suliciu` and `USE_SURFACE_TERMS_IF`:
 
   inline void compute_boundary_num_flux_x(REAL const* u_l, REAL const* u_r, REAL* num_flux) {
 
-      // "left" state
-      REAL l_rho = u_l[Field_rho];
-      REAL l_E   = u_l[Field_E];
-      REAL l_ux  = u_l[Field_ux];
-      REAL l_uy  = u_l[Field_uy];
-      REAL l_uz  = u_l[Field_uz];
-      REAL l_p   = u_l[Field_p];
-      REAL l_c = sqrt(GAMMA * l_p / l_rho);
-      REAL l_eps = l_p / ((GAMMA-1) * l_rho);
+    // "left" state
+    REAL l_rho = u_l[Field_rho];
+    REAL l_E   = u_l[Field_E];
+    REAL l_ux  = u_l[Field_ux];
+    REAL l_uy  = u_l[Field_uy];
+    REAL l_uz  = u_l[Field_uz];
+    REAL l_p   = u_l[Field_p];
+    REAL l_c = sqrt(GAMMA * l_p / l_rho);
+    REAL l_eps = l_p / ((GAMMA-1) * l_rho);
 
-      // "right" state
-      REAL r_rho = u_r[Field_rho];
-      REAL r_E   = u_r[Field_E];
-      REAL r_ux  = u_r[Field_ux];
-      REAL r_uy  = u_r[Field_uy];
-      REAL r_uz  = u_r[Field_uz];
-      REAL r_p   = u_r[Field_p];
-      REAL r_c = sqrt(GAMMA * r_p / r_rho);
-      REAL r_eps = r_p / ((GAMMA-1) * r_rho);
+    // "right" state
+    REAL r_rho = u_r[Field_rho];
+    REAL r_E   = u_r[Field_E];
+    REAL r_ux  = u_r[Field_ux];
+    REAL r_uy  = u_r[Field_uy];
+    REAL r_uz  = u_r[Field_uz];
+    REAL r_p   = u_r[Field_p];
+    REAL r_c = sqrt(GAMMA * r_p / r_rho);
+    REAL r_eps = r_p / ((GAMMA-1) * r_rho);
 
-      REAL alpha = 0.5 * (GAMMA+1);
+    REAL alpha = 0.5 * (GAMMA+1);
 
-      // compute speeds
-      REAL l_c_rho = 0;
-      REAL r_c_rho = 0;
-      if ((l_p <= r_p) && (0 < r_p)) {
-        l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_rho * r_c) + l_ux - r_ux);
-        r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_c_rho * l_rho) + l_ux - r_ux);
-      }
-      else if ((r_p <= l_p) && (0 < l_p)) {
-        r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_rho * l_c) + l_ux - r_ux);
-        l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_c_rho * r_rho) + l_ux - r_ux);
-      }
+    // compute speeds
+    REAL l_c_rho = 0;
+    REAL r_c_rho = 0;
+    if ((l_p <= r_p) && (0 < r_p)) {
+      l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_rho * r_c) + l_ux - r_ux);
+      r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_c_rho * l_rho) + l_ux - r_ux);
+    }
+    else if ((r_p <= l_p) && (0 < l_p)) {
+      r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_rho * l_c) + l_ux - r_ux);
+      l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_c_rho * r_rho) + l_ux - r_ux);
+    }
 
-      // compute intermediate values
-      l_c = l_c_rho * l_rho;
-      r_c = r_c_rho * r_rho;
-      REAL s_ux = ( l_c*l_ux + r_c*r_ux + l_p - r_p) / (l_c + r_c);
-      // = ifelse(isnan(... ?
-      REAL s_p = (r_c*l_p + l_c*r_p - l_c*r_c*(r_ux - l_ux)) / (l_c + r_c);
-      // = ifelse(isnan(... ?
-      REAL ls_rho = (REAL)(1) / ( 1/l_rho + (r_c*(r_ux-l_ux) + l_p - r_p) / (l_c*(l_c+r_c)) );
-      // = ifelse(isnan(... ?
-      REAL rs_rho = (REAL)(1) / ( 1/r_rho + (l_c*(r_ux-l_ux) + r_p - l_p) / (r_c*(l_c+r_c)) );
-      // = ifelse(isnan(... ?
-      REAL ls_eps = l_eps + (s_p*s_p - l_p*l_p) / (2*l_c*l_c);
-      REAL rs_eps = r_eps + (s_p*s_p - r_p*r_p) / (2*r_c*r_c);
+    // compute intermediate values
+    l_c = l_c_rho * l_rho;
+    r_c = r_c_rho * r_rho;
+    REAL s_ux = ( l_c*l_ux + r_c*r_ux + l_p - r_p) / (l_c + r_c);
+    // = ifelse(isnan(... ?
+    REAL s_p = (r_c*l_p + l_c*r_p - l_c*r_c*(r_ux - l_ux)) / (l_c + r_c);
+    // = ifelse(isnan(... ?
+    REAL ls_rho = (REAL)(1) / ( 1/l_rho + (r_c*(r_ux-l_ux) + l_p - r_p) / (l_c*(l_c+r_c)) );
+    // = ifelse(isnan(... ?
+    REAL rs_rho = (REAL)(1) / ( 1/r_rho + (l_c*(r_ux-l_ux) + r_p - l_p) / (r_c*(l_c+r_c)) );
+    // = ifelse(isnan(... ?
+    REAL ls_eps = l_eps + (s_p*s_p - l_p*l_p) / (2*l_c*l_c);
+    REAL rs_eps = r_eps + (s_p*s_p - r_p*r_p) / (2*r_c*r_c);
 
-      // compute fluxes
+    // compute fluxes
 #if defined USE_BOUNDARY_FLUX_TERMS_MULTIPLICATION_BY_BOOLS
 
-      REAL f_rho   = (0 <= l_ux-l_c_rho) *
-                      (l_rho * l_ux)
-                   + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
-                      (ls_rho * s_ux)
-                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
-                      (rs_rho * s_ux)
-                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
-                      (r_rho * r_ux);
-      REAL f_rhoux = (0 <= l_ux-l_c_rho) *
-                      (l_rho * l_ux * l_ux + l_p)
-                   + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
-                      (ls_rho * s_ux * s_ux + s_p)
-                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
-                      (rs_rho * s_ux * s_ux + s_p)
-                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
-                      (r_rho * r_ux * r_ux + r_p);
-      REAL f_rhouy = (0 <= l_ux-l_c_rho) *
-                      (l_rho * l_ux * l_uy)
-                   + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
-                      (ls_rho * s_ux * l_uy)
-                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
-                      (rs_rho * s_ux * r_uy)
-                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
-                      (r_rho * r_ux * r_uy);
-      REAL f_rhouz = (0 <= l_ux-l_c_rho) *
-                      (l_rho * l_ux * l_uz)
-                   + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
-                      (ls_rho * s_ux * l_uz)
-                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
-                      (rs_rho * s_ux * r_uz)
-                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
-                      (r_rho * r_ux * r_uz);
-      REAL f_E     = (0 <= l_ux-l_c_rho) *
-                      (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_ux
-                   + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
-                      (0.5 * ls_rho * (s_ux*s_ux + l_uy*l_uy + l_uz*l_uz) + ls_rho*ls_eps + s_p) * s_ux
-                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
-                      (0.5 * ls_rho * (s_ux*s_ux + r_uy*r_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_ux
-                   + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
-                      (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_ux;
+    REAL f_rho   = (0 <= l_ux-l_c_rho) *
+                    (l_rho * l_ux)
+                  + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
+                    (ls_rho * s_ux)
+                  + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
+                    (rs_rho * s_ux)
+                  + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
+                    (r_rho * r_ux);
+    REAL f_rhoux = (0 <= l_ux-l_c_rho) *
+                    (l_rho * l_ux * l_ux + l_p)
+                  + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
+                    (ls_rho * s_ux * s_ux + s_p)
+                  + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
+                    (rs_rho * s_ux * s_ux + s_p)
+                  + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
+                    (r_rho * r_ux * r_ux + r_p);
+    REAL f_rhouy = (0 <= l_ux-l_c_rho) *
+                    (l_rho * l_ux * l_uy)
+                  + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
+                    (ls_rho * s_ux * l_uy)
+                  + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
+                    (rs_rho * s_ux * r_uy)
+                  + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
+                    (r_rho * r_ux * r_uy);
+    REAL f_rhouz = (0 <= l_ux-l_c_rho) *
+                    (l_rho * l_ux * l_uz)
+                  + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
+                    (ls_rho * s_ux * l_uz)
+                  + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
+                    (rs_rho * s_ux * r_uz)
+                  + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
+                    (r_rho * r_ux * r_uz);
+    REAL f_E     = (0 <= l_ux-l_c_rho) *
+                    (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_ux
+                  + (l_ux-l_c_rho < 0) * (0 <= s_ux) *
+                    (0.5 * ls_rho * (s_ux*s_ux + l_uy*l_uy + l_uz*l_uz) + ls_rho*ls_eps + s_p) * s_ux
+                  + (l_ux-l_c_rho < 0) *(s_ux < 0) * (0 <= r_ux+r_c_rho) *
+                    (0.5 * ls_rho * (s_ux*s_ux + r_uy*r_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_ux
+                  + (l_ux-l_c_rho < 0) *(s_ux < 0) * (r_ux+r_c_rho < 0) *
+                    (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_ux;
 
 #elif defined USE_BOUNDARY_FLUX_TERMS_IF
 
-        REAL f_rho   = 0;
-        REAL f_rhoux = 0;
-        REAL f_rhouy = 0;
-        REAL f_rhouz = 0;
-        REAL f_E     = 0;
+    REAL f_rho   = 0;
+    REAL f_rhoux = 0;
+    REAL f_rhouy = 0;
+    REAL f_rhouz = 0;
+    REAL f_E     = 0;
 
-        if (0 <= l_ux-l_c_rho) {
-          f_rho   = l_rho * l_ux;
-          f_rhoux = l_rho * l_ux * l_ux + l_p;
-          f_rhouy = l_rho * l_ux * l_uy;
-          f_rhouz = l_rho * l_ux * l_uz;
-          f_E     = (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_ux;
-        }
-        else if (0 <= s_ux) {
-          f_rho   = ls_rho * s_ux;
-          f_rhoux = ls_rho * s_ux * s_ux + s_p;
-          f_rhouy = ls_rho * s_ux * l_uy;
-          f_rhouz = ls_rho * s_ux * l_uz;
-          f_E     = (0.5 * ls_rho * (s_ux*s_ux + l_uy*l_uy + l_uz*l_uz) + ls_rho*ls_eps + s_p) * s_ux;
-        }
-        else if (0 <= r_ux+r_c_rho) {
-          f_rho   = rs_rho * s_ux;
-          f_rhoux = rs_rho * s_ux * s_ux + s_p;
-          f_rhouy = rs_rho * s_ux * r_uy;
-          f_rhouz = rs_rho * s_ux * r_uz;
-          f_E     = (0.5 * ls_rho * (s_ux*s_ux + r_uy*r_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_ux;
-        }
-        else {
-          f_rho   = r_rho * r_ux;
-          f_rhoux = r_rho * r_ux * r_ux + r_p;
-          f_rhouy = r_rho * r_ux * r_uy;
-          f_rhouz = r_rho * r_ux * r_uz;
-          f_E     = (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_ux;
-        }
+    if (0 <= l_ux-l_c_rho) {
+      f_rho   = l_rho * l_ux;
+      f_rhoux = l_rho * l_ux * l_ux + l_p;
+      f_rhouy = l_rho * l_ux * l_uy;
+      f_rhouz = l_rho * l_ux * l_uz;
+      f_E     = (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_ux;
+    }
+    else if (0 <= s_ux) {
+      f_rho   = ls_rho * s_ux;
+      f_rhoux = ls_rho * s_ux * s_ux + s_p;
+      f_rhouy = ls_rho * s_ux * l_uy;
+      f_rhouz = ls_rho * s_ux * l_uz;
+      f_E     = (0.5 * ls_rho * (s_ux*s_ux + l_uy*l_uy + l_uz*l_uz) + ls_rho*ls_eps + s_p) * s_ux;
+    }
+    else if (0 <= r_ux+r_c_rho) {
+      f_rho   = rs_rho * s_ux;
+      f_rhoux = rs_rho * s_ux * s_ux + s_p;
+      f_rhouy = rs_rho * s_ux * r_uy;
+      f_rhouz = rs_rho * s_ux * r_uz;
+      f_E     = (0.5 * ls_rho * (s_ux*s_ux + r_uy*r_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_ux;
+    }
+    else {
+      f_rho   = r_rho * r_ux;
+      f_rhoux = r_rho * r_ux * r_ux + r_p;
+      f_rhouy = r_rho * r_ux * r_uy;
+      f_rhouz = r_rho * r_ux * r_uz;
+      f_E     = (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_ux;
+    }
 
 #else
 
-  #error "Error in ideal_gas_Euler.cl: No `USE_BOUNDARY_FLUX_TERMS_...` specified!"
+    #error "Error in ideal_gas_Euler.cl: No `USE_BOUNDARY_FLUX_TERMS_...` specified!"
 
 #endif // USE_BOUNDARY_FLUX_TERMS_...
 
-      num_flux[Field_rho]    = f_rho;
-      num_flux[Field_rho_ux] = f_rhoux;
-      num_flux[Field_rho_uy] = f_rhouy;
-      num_flux[Field_rho_uz] = f_rhouz;
-      num_flux[Field_E]      = f_E;
+    num_flux[Field_rho]    = f_rho;
+    num_flux[Field_rho_ux] = f_rhoux;
+    num_flux[Field_rho_uy] = f_rhouy;
+    num_flux[Field_rho_uz] = f_rhouz;
+    num_flux[Field_E]      = f_E;
   }
 
   inline void compute_boundary_num_flux_y(REAL const* u_l, REAL const* u_r, REAL* num_flux) {
 
-      // "left" state
-      REAL l_rho = u_l[Field_rho];
-      REAL l_E   = u_l[Field_E];
-      REAL l_ux  = u_l[Field_ux];
-      REAL l_uy  = u_l[Field_uy];
-      REAL l_uz  = u_l[Field_uz];
-      REAL l_p   = u_l[Field_p];
-      REAL l_c = sqrt(GAMMA * l_p / l_rho);
-      REAL l_eps = l_p / ((GAMMA-1) * l_rho);
+    // "left" state
+    REAL l_rho = u_l[Field_rho];
+    REAL l_E   = u_l[Field_E];
+    REAL l_ux  = u_l[Field_ux];
+    REAL l_uy  = u_l[Field_uy];
+    REAL l_uz  = u_l[Field_uz];
+    REAL l_p   = u_l[Field_p];
+    REAL l_c = sqrt(GAMMA * l_p / l_rho);
+    REAL l_eps = l_p / ((GAMMA-1) * l_rho);
 
-      // "right" state
-      REAL r_rho = u_r[Field_rho];
-      REAL r_E   = u_r[Field_E];
-      REAL r_ux  = u_r[Field_ux];
-      REAL r_uy  = u_r[Field_uy];
-      REAL r_uz  = u_r[Field_uz];
-      REAL r_p   = u_r[Field_p];
-      REAL r_c = sqrt(GAMMA * r_p / r_rho);
-      REAL r_eps = r_p / ((GAMMA-1) * r_rho);
+    // "right" state
+    REAL r_rho = u_r[Field_rho];
+    REAL r_E   = u_r[Field_E];
+    REAL r_ux  = u_r[Field_ux];
+    REAL r_uy  = u_r[Field_uy];
+    REAL r_uz  = u_r[Field_uz];
+    REAL r_p   = u_r[Field_p];
+    REAL r_c = sqrt(GAMMA * r_p / r_rho);
+    REAL r_eps = r_p / ((GAMMA-1) * r_rho);
 
-      REAL alpha = 0.5 * (GAMMA+1);
+    REAL alpha = 0.5 * (GAMMA+1);
 
-      // compute speeds
-      REAL l_c_rho = 0;
-      REAL r_c_rho = 0;
-      if ((l_p <= r_p) && (0 < r_p)) {
-        l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_rho * r_c) + l_uy - r_uy);
-        r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_c_rho * l_rho) + l_uy - r_uy);
-      }
-      else if ((r_p <= l_p) && (0 < l_p)) {
-        r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_rho * l_c) + l_uy - r_uy);
-        l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_c_rho * r_rho) + l_uy - r_uy);
-      }
+    // compute speeds
+    REAL l_c_rho = 0;
+    REAL r_c_rho = 0;
+    if ((l_p <= r_p) && (0 < r_p)) {
+      l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_rho * r_c) + l_uy - r_uy);
+      r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_c_rho * l_rho) + l_uy - r_uy);
+    }
+    else if ((r_p <= l_p) && (0 < l_p)) {
+      r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_rho * l_c) + l_uy - r_uy);
+      l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_c_rho * r_rho) + l_uy - r_uy);
+    }
 
-      // compute intermediate values
-      l_c = l_c_rho * l_rho;
-      r_c = r_c_rho * r_rho;
-      REAL s_uy = ( l_c*l_uy + r_c*r_uy + l_p - r_p) / (l_c + r_c);
-      // = ifelse(isnan(... ?
-      REAL s_p = (r_c*l_p + l_c*r_p - l_c*r_c*(r_uy - l_uy)) / (l_c + r_c);
-      //= ifelse(isnan(... ?
-      REAL ls_rho = (REAL)(1) / ( 1/l_rho + (r_c*(r_uy-l_uy) + l_p - r_p) / (l_c*(l_c+r_c)) );
-      // = ifelse(isnan(... ?
-      REAL rs_rho = (REAL)(1) / ( 1/r_rho + (l_c*(r_uy-l_uy) + r_p - l_p) / (r_c*(l_c+r_c)) );
-      // = ifelse(isnan(... ?
-      REAL ls_eps = l_eps + (s_p*s_p - l_p*l_p) / (2*l_c*l_c);
-      REAL rs_eps = r_eps + (s_p*s_p - r_p*r_p) / (2*r_c*r_c);
+    // compute intermediate values
+    l_c = l_c_rho * l_rho;
+    r_c = r_c_rho * r_rho;
+    REAL s_uy = ( l_c*l_uy + r_c*r_uy + l_p - r_p) / (l_c + r_c);
+    // = ifelse(isnan(... ?
+    REAL s_p = (r_c*l_p + l_c*r_p - l_c*r_c*(r_uy - l_uy)) / (l_c + r_c);
+    //= ifelse(isnan(... ?
+    REAL ls_rho = (REAL)(1) / ( 1/l_rho + (r_c*(r_uy-l_uy) + l_p - r_p) / (l_c*(l_c+r_c)) );
+    // = ifelse(isnan(... ?
+    REAL rs_rho = (REAL)(1) / ( 1/r_rho + (l_c*(r_uy-l_uy) + r_p - l_p) / (r_c*(l_c+r_c)) );
+    // = ifelse(isnan(... ?
+    REAL ls_eps = l_eps + (s_p*s_p - l_p*l_p) / (2*l_c*l_c);
+    REAL rs_eps = r_eps + (s_p*s_p - r_p*r_p) / (2*r_c*r_c);
 
-      // compute fluxes
+    // compute fluxes
 #if defined USE_BOUNDARY_FLUX_TERMS_MULTIPLICATION_BY_BOOLS
 
-      REAL f_rho   = (0 <= l_uy-l_c_rho) *
-                      (l_rho * l_uy)
-                   + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
-                      (ls_rho * s_uy)
-                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
-                      (rs_rho * s_uy)
-                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
-                      (r_rho * r_uy);
-      REAL f_rhoux = (0 <= l_uy-l_c_rho) *
-                      (l_rho * l_uy * l_ux)
-                   + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
-                      (ls_rho * s_uy * l_ux)
-                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
-                      (rs_rho * s_uy * r_ux)
-                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
-                      (r_rho * r_uy * r_ux);
-      REAL f_rhouy = (0 <= l_uy-l_c_rho) *
-                      (l_rho * l_uy * l_uy + l_p)
-                   + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
-                      (ls_rho * s_uy * s_uy + s_p)
-                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
-                      (rs_rho * s_uy * s_uy + s_p)
-                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
-                      (r_rho * r_uy * r_uy + r_p);
-      REAL f_rhouz = (0 <= l_uy-l_c_rho) *
-                      (l_rho * l_uy * l_uz)
-                   + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
-                      (ls_rho * s_uy * l_uz)
-                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
-                      (rs_rho * s_uy * r_uz)
-                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
-                      (r_rho * r_uy * r_uz);
-      REAL f_E     = (0 <= l_uy-l_c_rho) *
-                      (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_uy
-                   + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
-                      (0.5 * ls_rho * (l_ux*l_ux + s_uy*s_uy + l_uz*l_uz) + ls_rho*ls_eps + s_p) * s_uy
-                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
-                      (0.5 * ls_rho * (r_ux*r_ux + s_uy*s_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_uy
-                   + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
-                      (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uy;
+    REAL f_rho   = (0 <= l_uy-l_c_rho) *
+                    (l_rho * l_uy)
+                  + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
+                    (ls_rho * s_uy)
+                  + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
+                    (rs_rho * s_uy)
+                  + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
+                    (r_rho * r_uy);
+    REAL f_rhoux = (0 <= l_uy-l_c_rho) *
+                    (l_rho * l_uy * l_ux)
+                  + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
+                    (ls_rho * s_uy * l_ux)
+                  + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
+                    (rs_rho * s_uy * r_ux)
+                  + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
+                    (r_rho * r_uy * r_ux);
+    REAL f_rhouy = (0 <= l_uy-l_c_rho) *
+                    (l_rho * l_uy * l_uy + l_p)
+                  + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
+                    (ls_rho * s_uy * s_uy + s_p)
+                  + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
+                    (rs_rho * s_uy * s_uy + s_p)
+                  + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
+                    (r_rho * r_uy * r_uy + r_p);
+    REAL f_rhouz = (0 <= l_uy-l_c_rho) *
+                    (l_rho * l_uy * l_uz)
+                  + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
+                    (ls_rho * s_uy * l_uz)
+                  + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
+                    (rs_rho * s_uy * r_uz)
+                  + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
+                    (r_rho * r_uy * r_uz);
+    REAL f_E     = (0 <= l_uy-l_c_rho) *
+                    (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_uy
+                  + (l_uy-l_c_rho < 0) * (0 <= s_uy) *
+                    (0.5 * ls_rho * (l_ux*l_ux + s_uy*s_uy + l_uz*l_uz) + ls_rho*ls_eps + s_p) * s_uy
+                  + (l_uy-l_c_rho < 0) *(s_uy < 0) * (0 <= r_uy+r_c_rho) *
+                    (0.5 * ls_rho * (r_ux*r_ux + s_uy*s_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_uy
+                  + (l_uy-l_c_rho < 0) *(s_uy < 0) * (r_uy+r_c_rho < 0) *
+                    (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uy;
 
 #elif defined USE_BOUNDARY_FLUX_TERMS_IF
 
-        REAL f_rho   = 0;
-        REAL f_rhoux = 0;
-        REAL f_rhouy = 0;
-        REAL f_rhouz = 0;
-        REAL f_E     = 0;
+    REAL f_rho   = 0;
+    REAL f_rhoux = 0;
+    REAL f_rhouy = 0;
+    REAL f_rhouz = 0;
+    REAL f_E     = 0;
 
-        if (0 <= l_uy-l_c_rho) {
-          f_rho   = l_rho * l_uy;
-          f_rhoux = l_rho * l_uy * l_ux;
-          f_rhouy = l_rho * l_uy * l_uy + l_p;
-          f_rhouz = l_rho * l_uy * l_uz;
-          f_E     = (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_uy;
-        }
-        else if (0 <= s_uy) {
-          f_rho   = ls_rho * s_uy;
-          f_rhoux = ls_rho * s_uy * l_ux;
-          f_rhouy = ls_rho * s_uy * s_uy + s_p;
-          f_rhouz = ls_rho * s_uy * l_uz;
-          f_E     = (0.5 * ls_rho * (l_ux*l_ux + s_uy*s_uy + l_uz*l_uz) + ls_rho*ls_eps + s_p) * s_uy;
-        }
-        else if (0 <= r_uy+r_c_rho) {
-          f_rho   = rs_rho * s_uy;
-          f_rhoux = rs_rho * s_uy * r_ux;
-          f_rhouy = rs_rho * s_uy * s_uy + s_p;
-          f_rhouz = rs_rho * s_uy * r_uz;
-          f_E     = (0.5 * ls_rho * (r_ux*r_ux + s_uy*s_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_uy;
-        }
-        else {
-          f_rho   = r_rho * r_uy;
-          f_rhoux = r_rho * r_uy * r_ux;
-          f_rhouy = r_rho * r_uy * r_uy + r_p;
-          f_rhouz = r_rho * r_uy * r_uz;
-          f_E     = (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uy;
-        }
+    if (0 <= l_uy-l_c_rho) {
+      f_rho   = l_rho * l_uy;
+      f_rhoux = l_rho * l_uy * l_ux;
+      f_rhouy = l_rho * l_uy * l_uy + l_p;
+      f_rhouz = l_rho * l_uy * l_uz;
+      f_E     = (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_uy;
+    }
+    else if (0 <= s_uy) {
+      f_rho   = ls_rho * s_uy;
+      f_rhoux = ls_rho * s_uy * l_ux;
+      f_rhouy = ls_rho * s_uy * s_uy + s_p;
+      f_rhouz = ls_rho * s_uy * l_uz;
+      f_E     = (0.5 * ls_rho * (l_ux*l_ux + s_uy*s_uy + l_uz*l_uz) + ls_rho*ls_eps + s_p) * s_uy;
+    }
+    else if (0 <= r_uy+r_c_rho) {
+      f_rho   = rs_rho * s_uy;
+      f_rhoux = rs_rho * s_uy * r_ux;
+      f_rhouy = rs_rho * s_uy * s_uy + s_p;
+      f_rhouz = rs_rho * s_uy * r_uz;
+      f_E     = (0.5 * ls_rho * (r_ux*r_ux + s_uy*s_uy + r_uz*r_uz) + ls_rho*ls_eps + s_p) * s_uy;
+    }
+    else {
+      f_rho   = r_rho * r_uy;
+      f_rhoux = r_rho * r_uy * r_ux;
+      f_rhouy = r_rho * r_uy * r_uy + r_p;
+      f_rhouz = r_rho * r_uy * r_uz;
+      f_E     = (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uy;
+    }
 
 #else
 
-  #error "Error in ideal_gas_Euler.cl: No `USE_BOUNDARY_FLUX_TERMS_...` specified!"
+    #error "Error in ideal_gas_Euler.cl: No `USE_BOUNDARY_FLUX_TERMS_...` specified!"
 
 #endif // USE_BOUNDARY_FLUX_TERMS_...
 
-      num_flux[Field_rho]    = f_rho;
-      num_flux[Field_rho_ux] = f_rhoux;
-      num_flux[Field_rho_uy] = f_rhouy;
-      num_flux[Field_rho_uz] = f_rhouz;
-      num_flux[Field_E]      = f_E;
+    num_flux[Field_rho]    = f_rho;
+    num_flux[Field_rho_ux] = f_rhoux;
+    num_flux[Field_rho_uy] = f_rhouy;
+    num_flux[Field_rho_uz] = f_rhouz;
+    num_flux[Field_E]      = f_E;
   }
 
   inline void compute_boundary_num_flux_z(REAL const* u_l, REAL const* u_r, REAL* num_flux) {
 
-      // "left" state
-      REAL l_rho = u_l[Field_rho];
-      REAL l_E   = u_l[Field_E];
-      REAL l_ux  = u_l[Field_ux];
-      REAL l_uy  = u_l[Field_uy];
-      REAL l_uz  = u_l[Field_uz];
-      REAL l_p   = u_l[Field_p];
-      REAL l_c = sqrt(GAMMA * l_p / l_rho);
-      REAL l_eps = l_p / ((GAMMA-1) * l_rho);
+    // "left" state
+    REAL l_rho = u_l[Field_rho];
+    REAL l_E   = u_l[Field_E];
+    REAL l_ux  = u_l[Field_ux];
+    REAL l_uy  = u_l[Field_uy];
+    REAL l_uz  = u_l[Field_uz];
+    REAL l_p   = u_l[Field_p];
+    REAL l_c = sqrt(GAMMA * l_p / l_rho);
+    REAL l_eps = l_p / ((GAMMA-1) * l_rho);
 
-      // "right" state
-      REAL r_rho = u_r[Field_rho];
-      REAL r_E   = u_r[Field_E];
-      REAL r_ux  = u_r[Field_ux];
-      REAL r_uy  = u_r[Field_uy];
-      REAL r_uz  = u_r[Field_uz];
-      REAL r_p   = u_r[Field_p];
-      REAL r_c = sqrt(GAMMA * r_p / r_rho);
-      REAL r_eps = r_p / ((GAMMA-1) * r_rho);
+    // "right" state
+    REAL r_rho = u_r[Field_rho];
+    REAL r_E   = u_r[Field_E];
+    REAL r_ux  = u_r[Field_ux];
+    REAL r_uy  = u_r[Field_uy];
+    REAL r_uz  = u_r[Field_uz];
+    REAL r_p   = u_r[Field_p];
+    REAL r_c = sqrt(GAMMA * r_p / r_rho);
+    REAL r_eps = r_p / ((GAMMA-1) * r_rho);
 
-      REAL alpha = 0.5 * (GAMMA+1);
+    REAL alpha = 0.5 * (GAMMA+1);
 
-      // compute speeds
-      REAL l_c_rho = 0;
-      REAL r_c_rho = 0;
-      if ((l_p <= r_p) && (0 < r_p)) {
-        l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_rho * r_c) + l_uz - r_uz);
-        r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_c_rho * l_rho) + l_uz - r_uz);
-      }
-      else if ((r_p <= l_p) && (0 < l_p)) {
-        r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_rho * l_c) + l_uz - r_uz);
-        l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_c_rho * r_rho) + l_uz - r_uz);
-      }
+    // compute speeds
+    REAL l_c_rho = 0;
+    REAL r_c_rho = 0;
+    if ((l_p <= r_p) && (0 < r_p)) {
+      l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_rho * r_c) + l_uz - r_uz);
+      r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_c_rho * l_rho) + l_uz - r_uz);
+    }
+    else if ((r_p <= l_p) && (0 < l_p)) {
+      r_c_rho = r_c + alpha * fmax((REAL)(0), (l_p - r_p) / (l_rho * l_c) + l_uz - r_uz);
+      l_c_rho = l_c + alpha * fmax((REAL)(0), (r_p - l_p) / (r_c_rho * r_rho) + l_uz - r_uz);
+    }
 
-      // compute intermediate values
-      l_c = l_c_rho * l_rho;
-      r_c = r_c_rho * r_rho;
-      REAL s_uz = ( l_c*l_uz + r_c*r_uz + l_p - r_p) / (l_c + r_c);
-      // = ifelse(isnan(... ?
-      REAL s_p = (r_c*l_p + l_c*r_p - l_c*r_c*(r_uz - l_uz)) / (l_c + r_c);
-      //= ifelse(isnan(... ?
-      REAL ls_rho = (REAL)(1) / ( 1/l_rho + (r_c*(r_uz-l_uz) + l_p - r_p) / (l_c*(l_c+r_c)) );
-      // = ifelse(isnan(... ?
-      REAL rs_rho = (REAL)(1) / ( 1/r_rho + (l_c*(r_uz-l_uz) + r_p - l_p) / (r_c*(l_c+r_c)) );
-      // = ifelse(isnan(... ?
-      REAL ls_eps = l_eps + (s_p*s_p - l_p*l_p) / (2*l_c*l_c);
-      REAL rs_eps = r_eps + (s_p*s_p - r_p*r_p) / (2*r_c*r_c);
+    // compute intermediate values
+    l_c = l_c_rho * l_rho;
+    r_c = r_c_rho * r_rho;
+    REAL s_uz = ( l_c*l_uz + r_c*r_uz + l_p - r_p) / (l_c + r_c);
+    // = ifelse(isnan(... ?
+    REAL s_p = (r_c*l_p + l_c*r_p - l_c*r_c*(r_uz - l_uz)) / (l_c + r_c);
+    //= ifelse(isnan(... ?
+    REAL ls_rho = (REAL)(1) / ( 1/l_rho + (r_c*(r_uz-l_uz) + l_p - r_p) / (l_c*(l_c+r_c)) );
+    // = ifelse(isnan(... ?
+    REAL rs_rho = (REAL)(1) / ( 1/r_rho + (l_c*(r_uz-l_uz) + r_p - l_p) / (r_c*(l_c+r_c)) );
+    // = ifelse(isnan(... ?
+    REAL ls_eps = l_eps + (s_p*s_p - l_p*l_p) / (2*l_c*l_c);
+    REAL rs_eps = r_eps + (s_p*s_p - r_p*r_p) / (2*r_c*r_c);
 
-      // compute fluxes
+    // compute fluxes
 #if defined USE_BOUNDARY_FLUX_TERMS_MULTIPLICATION_BY_BOOLS
 
-      REAL f_rho   = (0 <= l_uz-l_c_rho) *
-                      (l_rho * l_uz)
-                   + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
-                      (ls_rho * s_uz)
-                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
-                      (rs_rho * s_uz)
-                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
-                      (r_rho * r_uz);
-      REAL f_rhoux = (0 <= l_uz-l_c_rho) *
-                      (l_rho * l_uz * l_ux)
-                   + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
-                      (ls_rho * s_uz * l_ux)
-                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
-                      (rs_rho * s_uz * r_ux)
-                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
-                      (r_rho * r_uz * r_ux);
-      REAL f_rhouy = (0 <= l_uz-l_c_rho) *
-                      (l_rho * l_uz * l_uy)
-                   + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
-                      (ls_rho * s_uz * l_uy)
-                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
-                      (rs_rho * s_uz * r_uy)
-                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
-                      (r_rho * r_uz * r_uy);
-      REAL f_rhouz = (0 <= l_uz-l_c_rho) *
-                      (l_rho * l_uz * l_uz + l_p)
-                   + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
-                      (ls_rho * s_uz * s_uz + s_p)
-                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
-                      (rs_rho * s_uz * s_uz + s_p)
-                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
-                      (r_rho * r_uz * r_uz + r_p);
-      REAL f_E     = (0 <= l_uz-l_c_rho) *
-                      (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_uz
-                   + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
-                      (0.5 * ls_rho * (l_ux*l_ux + l_uy*l_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz
-                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
-                      (0.5 * ls_rho * (r_ux*r_ux + r_uy*r_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz
-                   + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
-                      (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uz;
+    REAL f_rho   = (0 <= l_uz-l_c_rho) *
+                    (l_rho * l_uz)
+                  + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
+                    (ls_rho * s_uz)
+                  + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
+                    (rs_rho * s_uz)
+                  + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
+                    (r_rho * r_uz);
+    REAL f_rhoux = (0 <= l_uz-l_c_rho) *
+                    (l_rho * l_uz * l_ux)
+                  + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
+                    (ls_rho * s_uz * l_ux)
+                  + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
+                    (rs_rho * s_uz * r_ux)
+                  + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
+                    (r_rho * r_uz * r_ux);
+    REAL f_rhouy = (0 <= l_uz-l_c_rho) *
+                    (l_rho * l_uz * l_uy)
+                  + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
+                    (ls_rho * s_uz * l_uy)
+                  + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
+                    (rs_rho * s_uz * r_uy)
+                  + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
+                    (r_rho * r_uz * r_uy);
+    REAL f_rhouz = (0 <= l_uz-l_c_rho) *
+                    (l_rho * l_uz * l_uz + l_p)
+                  + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
+                    (ls_rho * s_uz * s_uz + s_p)
+                  + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
+                    (rs_rho * s_uz * s_uz + s_p)
+                  + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
+                    (r_rho * r_uz * r_uz + r_p);
+    REAL f_E     = (0 <= l_uz-l_c_rho) *
+                    (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_uz
+                  + (l_uz-l_c_rho < 0) * (0 <= s_uz) *
+                    (0.5 * ls_rho * (l_ux*l_ux + l_uy*l_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz
+                  + (l_uz-l_c_rho < 0) *(s_uz < 0) * (0 <= r_uz+r_c_rho) *
+                    (0.5 * ls_rho * (r_ux*r_ux + r_uy*r_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz
+                  + (l_uz-l_c_rho < 0) *(s_uz < 0) * (r_uz+r_c_rho < 0) *
+                    (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uz;
 
 #elif defined USE_BOUNDARY_FLUX_TERMS_IF
 
-        REAL f_rho   = 0;
-        REAL f_rhoux = 0;
-        REAL f_rhouy = 0;
-        REAL f_rhouz = 0;
-        REAL f_E     = 0;
+    REAL f_rho   = 0;
+    REAL f_rhoux = 0;
+    REAL f_rhouy = 0;
+    REAL f_rhouz = 0;
+    REAL f_E     = 0;
 
-        if (0 <= l_uz-l_c_rho) {
-          f_rho   = l_rho * l_uz;
-          f_rhoux = l_rho * l_uz * l_ux;
-          f_rhouy = l_rho * l_uz * l_uy;
-          f_rhouz = l_rho * l_uz * l_uz + l_p;
-          f_E     = (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_uz;
-        }
-        else if (0 <= s_uz) {
-          f_rho   = ls_rho * s_uz;
-          f_rhoux = ls_rho * s_uz * l_ux;
-          f_rhouy = ls_rho * s_uz * l_uy;
-          f_rhouz = ls_rho * s_uz * s_uz + s_p;
-          f_E     = (0.5 * ls_rho * (l_ux*l_ux + l_uy*l_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz;
-        }
-        else if (0 <= r_uz+r_c_rho) {
-          f_rho   = rs_rho * s_uz;
-          f_rhoux = rs_rho * s_uz * r_ux;
-          f_rhouy = rs_rho * s_uz * r_uy;
-          f_rhouz = rs_rho * s_uz * s_uz + s_p;
-          f_E     = (0.5 * ls_rho * (r_ux*r_ux + r_uy*r_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz;
-        }
-        else {
-          f_rho   = r_rho * r_uz;
-          f_rhoux = r_rho * r_uz * r_ux;
-          f_rhouy = r_rho * r_uz * r_uy;
-          f_rhouz = r_rho * r_uz * r_uz + r_p;
-          f_E     = (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uz;
-        }
+    if (0 <= l_uz-l_c_rho) {
+      f_rho   = l_rho * l_uz;
+      f_rhoux = l_rho * l_uz * l_ux;
+      f_rhouy = l_rho * l_uz * l_uy;
+      f_rhouz = l_rho * l_uz * l_uz + l_p;
+      f_E     = (0.5 * l_rho * (l_ux*l_ux + l_uy*l_uy + l_uz*l_uz) + l_rho*l_eps + l_p) * l_uz;
+    }
+    else if (0 <= s_uz) {
+      f_rho   = ls_rho * s_uz;
+      f_rhoux = ls_rho * s_uz * l_ux;
+      f_rhouy = ls_rho * s_uz * l_uy;
+      f_rhouz = ls_rho * s_uz * s_uz + s_p;
+      f_E     = (0.5 * ls_rho * (l_ux*l_ux + l_uy*l_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz;
+    }
+    else if (0 <= r_uz+r_c_rho) {
+      f_rho   = rs_rho * s_uz;
+      f_rhoux = rs_rho * s_uz * r_ux;
+      f_rhouy = rs_rho * s_uz * r_uy;
+      f_rhouz = rs_rho * s_uz * s_uz + s_p;
+      f_E     = (0.5 * ls_rho * (r_ux*r_ux + r_uy*r_uy + s_uz*s_uz) + ls_rho*ls_eps + s_p) * s_uz;
+    }
+    else {
+      f_rho   = r_rho * r_uz;
+      f_rhoux = r_rho * r_uz * r_ux;
+      f_rhouy = r_rho * r_uz * r_uy;
+      f_rhouz = r_rho * r_uz * r_uz + r_p;
+      f_E     = (0.5 * r_rho * (r_ux*r_ux + r_uy*r_uy + r_uz*r_uz) + r_rho*r_eps + r_p) * r_uz;
+    }
 
 #else
 
-  #error "Error in ideal_gas_Euler.cl: No `USE_BOUNDARY_FLUX_TERMS_...` specified!"
+    #error "Error in ideal_gas_Euler.cl: No `USE_BOUNDARY_FLUX_TERMS_...` specified!"
 
 #endif // USE_BOUNDARY_FLUX_TERMS_...
 
-      num_flux[Field_rho]    = f_rho;
-      num_flux[Field_rho_ux] = f_rhoux;
-      num_flux[Field_rho_uy] = f_rhouy;
-      num_flux[Field_rho_uz] = f_rhouz;
-      num_flux[Field_E]      = f_E;
+    num_flux[Field_rho]    = f_rho;
+    num_flux[Field_rho_ux] = f_rhoux;
+    num_flux[Field_rho_uy] = f_rhouy;
+    num_flux[Field_rho_uz] = f_rhouz;
+    num_flux[Field_E]      = f_E;
   }
 
 #elif defined USE_BOUNDARY_FLUX_HLL
@@ -1544,176 +1543,176 @@ with wave speed estimates of
 
   inline void compute_boundary_num_flux_x(REAL const* u_l, REAL const* u_r, REAL* num_flux) {
 
-      // "left" state
-      REAL l_rho = u_l[Field_rho];
-      REAL l_E   = u_l[Field_E];
-      REAL l_ux  = u_l[Field_ux];
-      REAL l_uy  = u_l[Field_uy];
-      REAL l_uz  = u_l[Field_uz];
-      REAL l_p   = u_l[Field_p];
-      REAL l_a = sqrt(GAMMA * l_p / l_rho);
+    // "left" state
+    REAL l_rho = u_l[Field_rho];
+    REAL l_E   = u_l[Field_E];
+    REAL l_ux  = u_l[Field_ux];
+    REAL l_uy  = u_l[Field_uy];
+    REAL l_uz  = u_l[Field_uz];
+    REAL l_p   = u_l[Field_p];
+    REAL l_a = sqrt(GAMMA * l_p / l_rho);
 
-      // "right" state
-      REAL r_rho = u_r[Field_rho];
-      REAL r_E   = u_r[Field_E];
-      REAL r_ux  = u_r[Field_ux];
-      REAL r_uy  = u_r[Field_uy];
-      REAL r_uz  = u_r[Field_uz];
-      REAL r_p   = u_r[Field_p];
-      REAL r_a = sqrt(GAMMA * r_p / r_rho);
+    // "right" state
+    REAL r_rho = u_r[Field_rho];
+    REAL r_E   = u_r[Field_E];
+    REAL r_ux  = u_r[Field_ux];
+    REAL r_uy  = u_r[Field_uy];
+    REAL r_uz  = u_r[Field_uz];
+    REAL r_p   = u_r[Field_p];
+    REAL r_a = sqrt(GAMMA * r_p / r_rho);
 
-      REAL m_p = pow( ( l_a + r_a + 0.5*(GAMMA-1)*(l_ux-r_ux) )
-                      / ( l_a/pow(l_p, 0.5*(GAMMA-1)/GAMMA) + r_a/pow(r_p, 0.5*(GAMMA-1)/GAMMA) ),
-                      2.*GAMMA/(GAMMA-1.));
+    REAL m_p = pow( ( l_a + r_a + 0.5*(GAMMA-1)*(l_ux-r_ux) )
+                    / ( l_a/pow(l_p, 0.5*(GAMMA-1)/GAMMA) + r_a/pow(r_p, 0.5*(GAMMA-1)/GAMMA) ),
+                    2.*GAMMA/(GAMMA-1.));
 
-      REAL lambda_m = (m_p <= l_p) ?
-                      // approximated by rarefaction wave
-                      (l_ux - l_a) :
-                      // approximated by shock wave
-                      (l_ux - l_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/l_p - 1)));
-      REAL lambda_p = (m_p <= r_p) ?
-                      // approximated by rarefaction wave
-                      (r_ux + r_a) :
-                      // approximated by shock wave
-                      (r_ux + r_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/r_p - 1)));
+    REAL lambda_m = (m_p <= l_p) ?
+                    // approximated by rarefaction wave
+                    (l_ux - l_a) :
+                    // approximated by shock wave
+                    (l_ux - l_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/l_p - 1)));
+    REAL lambda_p = (m_p <= r_p) ?
+                    // approximated by rarefaction wave
+                    (r_ux + r_a) :
+                    // approximated by shock wave
+                    (r_ux + r_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/r_p - 1)));
 
-      // compute fluxes
-      REAL flux_l[NUM_CONSERVED_VARS] = {0};
-      compute_flux_x(u_l, flux_l);
-      REAL flux_r[NUM_CONSERVED_VARS] = {0};
-      compute_flux_x(u_r, flux_r);
+    // compute fluxes
+    REAL flux_l[NUM_CONSERVED_VARS] = {0};
+    compute_flux_x(u_l, flux_l);
+    REAL flux_r[NUM_CONSERVED_VARS] = {0};
+    compute_flux_x(u_r, flux_r);
 
-      if (0 <= lambda_m) {
-        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-          num_flux[i] = flux_l[i];
-        }
+    if (0 <= lambda_m) {
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        num_flux[i] = flux_l[i];
       }
-      else if (0 < lambda_p) {
-        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-          num_flux[i] = ( -lambda_m * flux_r[i] + lambda_p * flux_l[i] + lambda_m*lambda_p * (u_r[i] - u_l[i]) ) / (lambda_p - lambda_m);
-        }
+    }
+    else if (0 < lambda_p) {
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        num_flux[i] = ( -lambda_m * flux_r[i] + lambda_p * flux_l[i] + lambda_m*lambda_p * (u_r[i] - u_l[i]) ) / (lambda_p - lambda_m);
       }
-      else {
-        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-          num_flux[i] = flux_r[i];
-        }
+    }
+    else {
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        num_flux[i] = flux_r[i];
       }
+    }
   }
 
   inline void compute_boundary_num_flux_y(REAL const* u_l, REAL const* u_r, REAL* num_flux) {
 
-      // "left" state
-      REAL l_rho = u_l[Field_rho];
-      REAL l_E   = u_l[Field_E];
-      REAL l_ux  = u_l[Field_ux];
-      REAL l_uy  = u_l[Field_uy];
-      REAL l_uz  = u_l[Field_uz];
-      REAL l_p   = u_l[Field_p];
-      REAL l_a = sqrt(GAMMA * l_p / l_rho);
+    // "left" state
+    REAL l_rho = u_l[Field_rho];
+    REAL l_E   = u_l[Field_E];
+    REAL l_ux  = u_l[Field_ux];
+    REAL l_uy  = u_l[Field_uy];
+    REAL l_uz  = u_l[Field_uz];
+    REAL l_p   = u_l[Field_p];
+    REAL l_a = sqrt(GAMMA * l_p / l_rho);
 
-      // "right" state
-      REAL r_rho = u_r[Field_rho];
-      REAL r_E   = u_r[Field_E];
-      REAL r_ux  = u_r[Field_ux];
-      REAL r_uy  = u_r[Field_uy];
-      REAL r_uz  = u_r[Field_uz];
-      REAL r_p   = u_r[Field_p];
-      REAL r_a = sqrt(GAMMA * r_p / r_rho);
+    // "right" state
+    REAL r_rho = u_r[Field_rho];
+    REAL r_E   = u_r[Field_E];
+    REAL r_ux  = u_r[Field_ux];
+    REAL r_uy  = u_r[Field_uy];
+    REAL r_uz  = u_r[Field_uz];
+    REAL r_p   = u_r[Field_p];
+    REAL r_a = sqrt(GAMMA * r_p / r_rho);
 
-      REAL m_p = pow( ( l_a + r_a + 0.5*(GAMMA-1)*(l_uy-r_uy) )
-                      / ( l_a/pow(l_p, 0.5*(GAMMA-1)/GAMMA) + r_a/pow(r_p, 0.5*(GAMMA-1)/GAMMA) ),
-                      2.*GAMMA/(GAMMA-1.));
+    REAL m_p = pow( ( l_a + r_a + 0.5*(GAMMA-1)*(l_uy-r_uy) )
+                    / ( l_a/pow(l_p, 0.5*(GAMMA-1)/GAMMA) + r_a/pow(r_p, 0.5*(GAMMA-1)/GAMMA) ),
+                    2.*GAMMA/(GAMMA-1.));
 
-      REAL lambda_m = (m_p <= l_p) ?
-                      // approximated by rarefaction wave
-                      (l_uy - l_a) :
-                      // approximated by shock wave
-                      (l_uy - l_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/l_p - 1)));
-      REAL lambda_p = (m_p <= r_p) ?
-                      // approximated by rarefaction wave
-                      (r_uy + r_a) :
-                      // approximated by shock wave
-                      (r_uy + r_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/r_p - 1)));
+    REAL lambda_m = (m_p <= l_p) ?
+                    // approximated by rarefaction wave
+                    (l_uy - l_a) :
+                    // approximated by shock wave
+                    (l_uy - l_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/l_p - 1)));
+    REAL lambda_p = (m_p <= r_p) ?
+                    // approximated by rarefaction wave
+                    (r_uy + r_a) :
+                    // approximated by shock wave
+                    (r_uy + r_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/r_p - 1)));
 
-      // compute fluxes
-      REAL flux_l[NUM_CONSERVED_VARS] = {0};
-      compute_flux_y(u_l, flux_l);
-      REAL flux_r[NUM_CONSERVED_VARS] = {0};
-      compute_flux_y(u_r, flux_r);
+    // compute fluxes
+    REAL flux_l[NUM_CONSERVED_VARS] = {0};
+    compute_flux_y(u_l, flux_l);
+    REAL flux_r[NUM_CONSERVED_VARS] = {0};
+    compute_flux_y(u_r, flux_r);
 
-      if (0 <= lambda_m) {
-        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-          num_flux[i] = flux_l[i];
-        }
+    if (0 <= lambda_m) {
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        num_flux[i] = flux_l[i];
       }
-      else if (0 < lambda_p) {
-        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-          num_flux[i] = ( -lambda_m * flux_r[i] + lambda_p * flux_l[i] + lambda_m*lambda_p * (u_r[i] - u_l[i]) ) / (lambda_p - lambda_m);
-        }
+    }
+    else if (0 < lambda_p) {
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        num_flux[i] = ( -lambda_m * flux_r[i] + lambda_p * flux_l[i] + lambda_m*lambda_p * (u_r[i] - u_l[i]) ) / (lambda_p - lambda_m);
       }
-      else {
-        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-          num_flux[i] = flux_r[i];
-        }
+    }
+    else {
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        num_flux[i] = flux_r[i];
       }
+    }
   }
 
   inline void compute_boundary_num_flux_z(REAL const* u_l, REAL const* u_r, REAL* num_flux) {
 
-      // "left" state
-      REAL l_rho = u_l[Field_rho];
-      REAL l_E   = u_l[Field_E];
-      REAL l_ux  = u_l[Field_ux];
-      REAL l_uy  = u_l[Field_uy];
-      REAL l_uz  = u_l[Field_uz];
-      REAL l_p   = u_l[Field_p];
-      REAL l_a = sqrt(GAMMA * l_p / l_rho);
+    // "left" state
+    REAL l_rho = u_l[Field_rho];
+    REAL l_E   = u_l[Field_E];
+    REAL l_ux  = u_l[Field_ux];
+    REAL l_uy  = u_l[Field_uy];
+    REAL l_uz  = u_l[Field_uz];
+    REAL l_p   = u_l[Field_p];
+    REAL l_a = sqrt(GAMMA * l_p / l_rho);
 
-      // "right" state
-      REAL r_rho = u_r[Field_rho];
-      REAL r_E   = u_r[Field_E];
-      REAL r_ux  = u_r[Field_ux];
-      REAL r_uy  = u_r[Field_uy];
-      REAL r_uz  = u_r[Field_uz];
-      REAL r_p   = u_r[Field_p];
-      REAL r_a = sqrt(GAMMA * r_p / r_rho);
+    // "right" state
+    REAL r_rho = u_r[Field_rho];
+    REAL r_E   = u_r[Field_E];
+    REAL r_ux  = u_r[Field_ux];
+    REAL r_uy  = u_r[Field_uy];
+    REAL r_uz  = u_r[Field_uz];
+    REAL r_p   = u_r[Field_p];
+    REAL r_a = sqrt(GAMMA * r_p / r_rho);
 
-      REAL m_p = pow( ( l_a + r_a + 0.5*(GAMMA-1)*(l_uz-r_uz) )
-                      / ( l_a/pow(l_p, 0.5*(GAMMA-1)/GAMMA) + r_a/pow(r_p, 0.5*(GAMMA-1)/GAMMA) ),
-                      2.*GAMMA/(GAMMA-1.));
+    REAL m_p = pow( ( l_a + r_a + 0.5*(GAMMA-1)*(l_uz-r_uz) )
+                    / ( l_a/pow(l_p, 0.5*(GAMMA-1)/GAMMA) + r_a/pow(r_p, 0.5*(GAMMA-1)/GAMMA) ),
+                    2.*GAMMA/(GAMMA-1.));
 
-      REAL lambda_m = (m_p <= l_p) ?
-                      // approximated by rarefaction wave
-                      (l_uz - l_a) :
-                      // approximated by shock wave
-                      (l_uz - l_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/l_p - 1)));
-      REAL lambda_p = (m_p <= r_p) ?
-                      // approximated by rarefaction wave
-                      (r_uz + r_a) :
-                      // approximated by shock wave
-                      (r_uz + r_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/r_p - 1)));
+    REAL lambda_m = (m_p <= l_p) ?
+                    // approximated by rarefaction wave
+                    (l_uz - l_a) :
+                    // approximated by shock wave
+                    (l_uz - l_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/l_p - 1)));
+    REAL lambda_p = (m_p <= r_p) ?
+                    // approximated by rarefaction wave
+                    (r_uz + r_a) :
+                    // approximated by shock wave
+                    (r_uz + r_a * sqrt(1 + 0.5*(GAMMA+1)/GAMMA * (m_p/r_p - 1)));
 
-      // compute fluxes
-      REAL flux_l[NUM_CONSERVED_VARS] = {0};
-      compute_flux_z(u_l, flux_l);
-      REAL flux_r[NUM_CONSERVED_VARS] = {0};
-      compute_flux_z(u_r, flux_r);
+    // compute fluxes
+    REAL flux_l[NUM_CONSERVED_VARS] = {0};
+    compute_flux_z(u_l, flux_l);
+    REAL flux_r[NUM_CONSERVED_VARS] = {0};
+    compute_flux_z(u_r, flux_r);
 
-      if (0 <= lambda_m) {
-        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-          num_flux[i] = flux_l[i];
-        }
+    if (0 <= lambda_m) {
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        num_flux[i] = flux_l[i];
       }
-      else if (0 < lambda_p) {
-        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-          num_flux[i] = ( -lambda_m * flux_r[i] + lambda_p * flux_l[i] + lambda_m*lambda_p * (u_r[i] - u_l[i]) ) / (lambda_p - lambda_m);
-        }
+    }
+    else if (0 < lambda_p) {
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        num_flux[i] = ( -lambda_m * flux_r[i] + lambda_p * flux_l[i] + lambda_m*lambda_p * (u_r[i] - u_l[i]) ) / (lambda_p - lambda_m);
       }
-      else {
-        for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-          num_flux[i] = flux_r[i];
-        }
+    }
+    else {
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        num_flux[i] = flux_r[i];
       }
+    }
   }
 
 #else
@@ -1752,7 +1751,7 @@ TODO: Cleanup?
 inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL *u, REAL *du_dt) {
 
   // For periodic boundary conditions and a single block, no surface term has to be used.
-#ifndef USE_PERIODIC
+#ifdef NONPERIODIC_BOUNDARY_EXISTS
 
   REAL u_inner[NUM_TOTAL_VARS] = {0};
   REAL u_outer[NUM_TOTAL_VARS] = {0};
@@ -1780,96 +1779,108 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, global REAL 
 #if defined USE_SURFACE_TERMS_MULTIPLICATION_BY_BOOLS
 
   // flux x
-  compute_flux_x(u_inner, flux);
-  // left
-  compute_boundary_num_flux_x(u_outer, u_inner, num_flux);
-  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-    du_dt[i] += check_bound_l(ix, 1) * (REAL)(M_INV[0] / DX) * (num_flux[i] - flux[i]);
-  }
-  // right
-  compute_boundary_num_flux_x(u_inner, u_outer, num_flux);
-  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-    du_dt[i] -= check_bound_xr(ix, 1) * (REAL)(M_INV[0] / DX) * (num_flux[i] - flux[i]);
-  }
+  #ifndef USE_PERIODIC_X
+    compute_flux_x(u_inner, flux);
+    // left
+    compute_boundary_num_flux_x(u_outer, u_inner, num_flux);
+    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+      du_dt[i] += check_bound_l(ix, 1) * (REAL)(M_INV_X[0] / DX) * (num_flux[i] - flux[i]);
+    }
+    // right
+    compute_boundary_num_flux_x(u_inner, u_outer, num_flux);
+    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+      du_dt[i] -= check_bound_xr(ix, 1) * (REAL)(M_INV_X[0] / DX) * (num_flux[i] - flux[i]);
+    }
+  #endif
 
   // flux y
-  compute_flux_y(u_inner, flux);
-  // bottom
-  compute_boundary_num_flux_y(u_outer, u_inner, num_flux);
-  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-    du_dt[i] += check_bound_l(iy, 1) * (REAL)(M_INV[0] / DY) * (num_flux[i] - flux[i]);
-  }
-  // top
-  compute_boundary_num_flux_y(u_inner, u_outer, num_flux);
-  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-    du_dt[i] -= check_bound_yr(iy, 1) * (REAL)(M_INV[0] / DY) * (num_flux[i] - flux[i]);
-  }
+  #ifndef USE_PERIODIC_Y
+    compute_flux_y(u_inner, flux);
+    // bottom
+    compute_boundary_num_flux_y(u_outer, u_inner, num_flux);
+    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+      du_dt[i] += check_bound_l(iy, 1) * (REAL)(M_INV_Y[0] / DY) * (num_flux[i] - flux[i]);
+    }
+    // top
+    compute_boundary_num_flux_y(u_inner, u_outer, num_flux);
+    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+      du_dt[i] -= check_bound_yr(iy, 1) * (REAL)(M_INV_Y[0] / DY) * (num_flux[i] - flux[i]);
+    }
+  #endif
 
   // flux z
-  compute_flux_z(u_inner, flux);
-  // left
-  compute_boundary_num_flux_z(u_outer, u_inner, num_flux);
-  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-    du_dt[i] += check_bound_l(iz, 1) * (REAL)(M_INV[0] / DZ) * (num_flux[i] - flux[i]);
-  }
-  // right
-  compute_boundary_num_flux_z(u_inner, u_outer, num_flux);
-  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-    du_dt[i] -= check_bound_zr(iz, 1) * (REAL)(M_INV[0] / DZ) * (num_flux[i] - flux[i]);
-  }
+  #ifndef USE_PERIODIC_Z
+    compute_flux_z(u_inner, flux);
+    // left
+    compute_boundary_num_flux_z(u_outer, u_inner, num_flux);
+    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+      du_dt[i] += check_bound_l(iz, 1) * (REAL)(M_INV_Z[0] / DZ) * (num_flux[i] - flux[i]);
+    }
+    // right
+    compute_boundary_num_flux_z(u_inner, u_outer, num_flux);
+    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+      du_dt[i] -= check_bound_zr(iz, 1) * (REAL)(M_INV_Z[0] / DZ) * (num_flux[i] - flux[i]);
+    }
+  #endif
 
 #elif defined USE_SURFACE_TERMS_IF
 
   // flux x
-  compute_flux_x(u_inner, flux);
-  // left
-  if (check_bound_l(ix, 1)) {
-    compute_boundary_num_flux_x(u_outer, u_inner, num_flux);
-    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-      du_dt[i] += (REAL)(M_INV[0] / DX) * (num_flux[i] - flux[i]);
+  #ifndef USE_PERIODIC_X
+    compute_flux_x(u_inner, flux);
+    // left
+    if (check_bound_l(ix, 1)) {
+      compute_boundary_num_flux_x(u_outer, u_inner, num_flux);
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        du_dt[i] += (REAL)(M_INV_X[0] / DX) * (num_flux[i] - flux[i]);
+      }
     }
-  }
-  // right
-  if (check_bound_xr(ix, 1)) {
-    compute_boundary_num_flux_x(u_inner, u_outer, num_flux);
-    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-      du_dt[i] -= (REAL)(M_INV[0] / DX) * (num_flux[i] - flux[i]);
+    // right
+    if (check_bound_xr(ix, 1)) {
+      compute_boundary_num_flux_x(u_inner, u_outer, num_flux);
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        du_dt[i] -= (REAL)(M_INV_X[0] / DX) * (num_flux[i] - flux[i]);
+      }
     }
-  }
+  #endif
 
   // flux y
-  compute_flux_y(u_inner, flux);
-  // bottom
-  if (check_bound_l(iy, 1)) {
-    compute_boundary_num_flux_y(u_outer, u_inner, num_flux);
-    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-      du_dt[i] +=  (REAL)(M_INV[0] / DY) * (num_flux[i] - flux[i]);
+  #ifndef USE_PERIODIC_Y
+    compute_flux_y(u_inner, flux);
+    // bottom
+    if (check_bound_l(iy, 1)) {
+      compute_boundary_num_flux_y(u_outer, u_inner, num_flux);
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        du_dt[i] +=  (REAL)(M_INV_Y[0] / DY) * (num_flux[i] - flux[i]);
+      }
     }
-  }
-  // top
-  if (check_bound_yr(iy, 1)) {
-    compute_boundary_num_flux_y(u_inner, u_outer, num_flux);
-    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-      du_dt[i] -= (REAL)(M_INV[0] / DY) * (num_flux[i] - flux[i]);
+    // top
+    if (check_bound_yr(iy, 1)) {
+      compute_boundary_num_flux_y(u_inner, u_outer, num_flux);
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        du_dt[i] -= (REAL)(M_INV_Y[0] / DY) * (num_flux[i] - flux[i]);
+      }
     }
-  }
+  #endif
 
   // flux z
-  compute_flux_z(u_inner, flux);
-  // left
-  if (check_bound_l(iz, 1)) {
-    compute_boundary_num_flux_z(u_outer, u_inner, num_flux);
-    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-      du_dt[i] += (REAL)(M_INV[0] / DZ) * (num_flux[i] - flux[i]);
+  #ifndef USE_PERIODIC_Z
+    compute_flux_z(u_inner, flux);
+    // left
+    if (check_bound_l(iz, 1)) {
+      compute_boundary_num_flux_z(u_outer, u_inner, num_flux);
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        du_dt[i] += (REAL)(M_INV_Z[0] / DZ) * (num_flux[i] - flux[i]);
+      }
     }
-  }
-  // right
-  if (check_bound_zr(iz, 1)) {
-    compute_boundary_num_flux_z(u_inner, u_outer, num_flux);
-    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-      du_dt[i] -= (REAL)(M_INV[0] / DZ) * (num_flux[i] - flux[i]);
+    // right
+    if (check_bound_zr(iz, 1)) {
+      compute_boundary_num_flux_z(u_inner, u_outer, num_flux);
+      for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
+        du_dt[i] -= (REAL)(M_INV_Z[0] / DZ) * (num_flux[i] - flux[i]);
+      }
     }
-  }
+  #endif
 
 #else
 
@@ -1915,12 +1926,6 @@ inline void compute_auxiliary_variables(REAL time, uint ix, uint iy, uint iz, gl
 
 inline void analytical_solution(uint ix, uint iy, uint iz, global REAL *u, REAL time) {
 
-  /*
-  // No analytical solution
-  for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-    set_field_component(ix, iy, iz, i, u, (REAL)(0));
-  }*/
-
   REAL rho_ana = rho_analytical(ix, iy, iz, time);
   REAL4 u_ana = u_analytical(ix, iy, iz, time);
   REAL p_ana = p_analytical(ix, iy, iz, time);
@@ -1931,6 +1936,26 @@ inline void analytical_solution(uint ix, uint iy, uint iz, global REAL *u, REAL 
   set_field_component(ix, iy, iz, Field_rho_uy, u, rho_ana*u_ana.y);
   set_field_component(ix, iy, iz, Field_rho_uz, u, rho_ana*u_ana.z);
   set_field_component(ix, iy, iz, Field_E, u, E_ana);
+}
+
+
+
+
+/*
+Compute the vorticity of the velocity in u1 and store it as the velocity of u2.
+*/
+kernel void compute_vorticity(global REAL const *u1, global REAL *u2) {
+
+  uint ix = get_global_id(0);
+  uint iy = get_global_id(1);
+  uint iz = get_global_id(2);
+
+  REAL4 vorticity = curl(ix, iy, iz, u1, Field_ux);
+  set_field_component(ix, iy, iz, Field_ux, u2, vorticity.x);
+  set_field_component(ix, iy, iz, Field_ux, u2, vorticity.y);
+  set_field_component(ix, iy, iz, Field_ux, u2, vorticity.z);
+
+  return;
 }
 
 #endif // IDEAL_GAS_EULER
