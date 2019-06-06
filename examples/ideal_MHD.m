@@ -44,11 +44,11 @@ else
     I_Tech('optimizations') = ' -cl-mad-enable -cl-no-signed-zeros -cl-finite-math-only';
 end
 
-I_RunOps('periodic_x') = 'USE_PERIODIC_X'; % 'NONE', 'USE_PERIODIC_X'; must be set to 'USE_PERIODIC_X'
+I_RunOps('periodic_x') = 'NONE'; % 'NONE', 'USE_PERIODIC_X'; must be set to 'USE_PERIODIC_X'
                                        % if periodic boundary conditions in x-direction should be used
-I_RunOps('periodic_y') = 'USE_PERIODIC_Y'; % 'NONE', 'USE_PERIODIC_Y'; must be set to 'USE_PERIODIC_Y'
+I_RunOps('periodic_y') = 'NONE'; % 'NONE', 'USE_PERIODIC_Y'; must be set to 'USE_PERIODIC_Y'
                                        % if periodic boundary conditions in y-direction should be used
-I_RunOps('periodic_z') = 'USE_PERIODIC_Z'; % 'NONE', 'USE_PERIODIC_Z'; must be set to 'USE_PERIODIC_Z'
+I_RunOps('periodic_z') = 'NONE'; % 'NONE', 'USE_PERIODIC_Z'; must be set to 'USE_PERIODIC_Z'
                                        % if periodic boundary conditions in z-direction should be used
 
 I_RunOps('order') = 4; I_RunOps('operator_form') = 'classical'; % order: 2, 4, 6; operator_form: classical, extended
