@@ -108,8 +108,9 @@ function [field_u1, field_u2] = initialize()
                                                'NODES_X'; 'NODES_Y'; 'NODES_Z';...
                                                'XMIN'; 'XMAX'; 'YMIN'; 'YMAX'; 'ZMAX'; 'ZMIN'});
     settings_runops = generate_settings(I_RunOps, {'periodic_x'; 'periodic_y'; 'periodic_z'});
+    settings_time_integration = generate_settings(I_TI, {'DT'});
 
-    settings = strcat(settings_tech, settings_mesh, settings_runops);
+    settings = strcat(settings_tech, settings_mesh, settings_runops, settings_time_integration);
 
     [~] = cl_run_kernel(I_Tech('device'), kernel_path_list, settings);
 
