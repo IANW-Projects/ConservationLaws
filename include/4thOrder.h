@@ -103,7 +103,7 @@ REAL constant M_INV_B[2*NUM_BOUNDS_B+1] = {
 #define NUM_BOUNDS_HOD 4
 
 
-REAL constant D_HO[2*NUM_BOUNDS+1][STENCIL_WIDTH_HOD] = {
+REAL constant D_HO[2*NUM_BOUNDS_HOD+1][STENCIL_WIDTH_HOD] = {
   // left boundary coefficients
   { 0.0, 0.0, -1.0},
   { 0.0, 2.0, -1.0},

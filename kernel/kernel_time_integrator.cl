@@ -75,51 +75,6 @@ inline void add_volume_terms(REAL time, uint ix, uint iy, uint iz, global REAL c
   }
 }
 
-#ifdef VOLUME_DISSIPATION_ACTIVE
-inline void add_dissipative_terms(REAL time, uint ix, uint iy, uint iz, global REAL const* u, REAL *du_dt) {
-  int bound_x = get_bound_x(ix, NUM_BOUNDS_X);
-  int bound_y = get_bound_y(iy, NUM_BOUNDS_Y);
-  int bound_z = get_bound_z(iz, NUM_BOUNDS_Z);
-
-  // the variables at remote positions used to compute the time derivative at (ix, iy, iz)
-  REAL um[NUM_TOTAL_VARS] = {0.0};
-
-  // the time derivative of the conserved variables, initalised as zero
-  REAL du[NUM_CONSERVED_VARS] = {0.0};
-
-  // x-direction
-  for (uint j = 0; j < STENCIL_WIDTH_HOD; j++) {
-
-    get_field(ix, iy, iz, (j - (STENCIL_WIDTH_HOD - 1)/2), 0, 0, u, um);
-    
-    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-    	du_dt[i] = du_dt[i] + (REAL)(2.0/DX) * D_HO[NUM_BOUNDS_HO + bound_x][j] * um[i] * VOL_DISS;
-    }
-  }
-
-  // y-direction
-  for (uint j = 0; j < STENCIL_WIDTH_HOD; j++) {
-
-    get_field(ix, iy, iz, 0, (j - (STENCIL_WIDTH_HOD - 1) / 2), 0, u, um);
-
-    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-	du_dt[i] = du_dt[i] + (REAL)(2.0/DY) * D_HO[NUM_BOUNDS_HO + bound_x][j] * um[i] * VOL_DISS;
-    }
-  }
-
-  // z-direction
-  for (uint j = 0; j < STENCIL_WIDTH_HOD; j++) {
-
-    get_field(ix, iy, iz, 0, 0, (j - (STENCIL_WIDTH_HOD - 1) / 2), u, um);
-
-    for (uint i = 0; i < NUM_CONSERVED_VARS; ++i) {
-        du_dt[i] = du_dt[i] + (REAL)(2.0/DZ) * D_HO[NUM_BOUNDS_HO + bound_x][j] * um[i] * VOL_DISS;
-    }
-  }
-
-
-}
-#endif // VOLUME_DISSIPATION_ACTIVE
 
 // Compute the time derivative du_dt using an SBP SAT discretisation with extended numerical fluxes.
 inline void compute_du_dt(REAL time, uint ix, uint iy, uint iz, global REAL const* u, REAL *du_dt) {
@@ -131,7 +86,7 @@ inline void compute_du_dt(REAL time, uint ix, uint iy, uint iz, global REAL cons
   add_volume_terms(time, ix, iy, iz, u, du_dt);
   add_surface_terms(time, ix, iy, iz, u, du_dt);
   #ifdef VOLUME_DISSIPATION_ACTIVE
-    add_dissipative_terms(time, ix, iy, iz, u, du_dt);
+    high_order_dissipation(ix, iy, iz, u, du_dt);
   #endif // VOLUME_DISSIPATION_ACTIVE
 }
 
