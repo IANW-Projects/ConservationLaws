@@ -67,7 +67,7 @@ TODO: JANHUNEN_CENTRAL, BRACKBILL_BARNES_CENTRAL, cf.
 // Dissipation in the Volume
 
 #define VOLUME_DISSIPATION_ACTIVE
-#define HO_DISSIPATION_FACTOR 1.0
+#define HO_DISSIPATION_FACTOR {0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01}
 
 enum Fields {
              // Density

@@ -70,7 +70,7 @@ void inline diff_HOD_z(uint ix, uint iy, uint iz, int bound_z, int start, global
 void inline high_order_dissipation(uint ix, uint iy, uint iz, global REAL const *u, REAL *HOD) {
   int i, j;
   uint idx = calc_idx(ix,iy,iz);
-
+  REAL ho_dissipation_factor[NUM_CONSERVED_VARS] = HO_DISSIPATION_FACTOR; 
   int bound_x = get_bound_x(ix, NUM_BOUNDS_HOD);
   int bound_y = get_bound_y(iy, NUM_BOUNDS_HOD);
   int bound_z = get_bound_z(iz, NUM_BOUNDS_HOD);
@@ -83,9 +83,9 @@ void inline high_order_dissipation(uint ix, uint iy, uint iz, global REAL const 
     diff_HOD_y(ix, iy, iz, bound_x, i, u, HOD_Y);
     diff_HOD_z(ix, iy, iz, bound_x, i, u, HOD_Z);
     for(j = 0; j < NUM_CONSERVED_VARS;j++) {
-      HOD[j] = HOD[j] + (REAL)(HO_DISSIPATION_FACTOR) * HOD_X[j]
-                      + (REAL)(HO_DISSIPATION_FACTOR) * HOD_Y[j]
-                      + (REAL)(HO_DISSIPATION_FACTOR) * HOD_Z[j];
+      HOD[j] = HOD[j] + (REAL)(ho_dissipation_factor[j]) * HOD_X[j]
+                      + (REAL)(ho_dissipation_factor[j]) * HOD_Y[j]
+                      + (REAL)(ho_dissipation_factor[j]) * HOD_Z[j];
 		}
         }
 
