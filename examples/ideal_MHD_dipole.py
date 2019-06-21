@@ -67,6 +67,9 @@ I_RunOps['norm'] = 'LInf'
 
 field_u1, field_u2 = initialize()
 
+if len(sys.argv) > 1:
+    field_u1 = reload_all_variables(field_u1, sys.argv[1], ['rho', 'px', 'py', 'pz', 'E', 'Bx', 'By', 'Bz'])
+    print(f"reloaded the conserved variables out of {sys.argv[1]}")
 
 print('Testcase: ' + I_RunOps['testcase'] + '\nOrder: ' + str(I_RunOps['order']) + '\nTime integrator: ' + \
         I_TI['time_integrator'] +' \nDT: ' + str(I_TI['DT']) + '\nN_STEPS: ' +str(I_TI['num_steps']) + " FINAL_TIME: " + \
@@ -76,6 +79,7 @@ print('Testcase: ' + I_RunOps['testcase'] + '\nOrder: ' + str(I_RunOps['order'])
 
 print(str(k) + " snapshots")
 ct = False
+
 for i in range(k):
     ct = compute_numerical_solution(field_u1, field_u2, ct)
     save_all_variables(field_u1, "results/output" + str(i) + ".hdf5", ['rho', 'px', 'py', 'pz', 'E', 'Bx', 'By', 'Bz'])
