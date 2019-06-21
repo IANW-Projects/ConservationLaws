@@ -135,6 +135,7 @@ def initialize():
     kernel_path_list.append('../kernel/SBP_operator.cl')
     kernel_path_list.append('../include_testcases/' +  I_RunOps['conservation_laws'] + '_' +  I_RunOps['testcase']+ '.h')
     kernel_path_list.append('../include_physics/' + I_RunOps['conservation_laws'] + '.h')
+    kernel_path_list.append('../kernel/artificial_dissipation.cl')
     kernel_path_list.append('../kernel/kernel_time_integrator.cl')
     kernel_path_list.append('../kernel/kernel_norm.cl')
 

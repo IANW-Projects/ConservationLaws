@@ -1,5 +1,6 @@
-def compute_numerical_solution(field_u1, field_u2):
+def compute_numerical_solution(field_u1, field_u2, c_time = 'none'):
     global I_mesh, I_TI, I_BalanceLaws, I_Tech, I_RunOps, I_Results
+    
     
     if I_Tech['REAL'] == 'float':
         current_time = np.zeros(2, dtype=np.float32)
@@ -11,7 +12,9 @@ def compute_numerical_solution(field_u1, field_u2):
         components = np.zeros(2, dtype=np.float64)
         norm_output = np.zeros((I_Tech['num_groups'], 1), dtype=np.float64)
         Lerror = np.zeros((I_TI['num_steps']+1, I_BalanceLaws['NUM_CONSERVED_VARS']), dtype=np.float64)
-
+    
+    if c_time != 'none'
+        current_time = c_time
 
     if I_TI['time_integrator'] == 'CarpenterKennedy2N54':
         RK_Step_a = ['CarpenterKennedy2N54_1a', 'CarpenterKennedy2N54_2a', \
@@ -108,6 +111,7 @@ def compute_numerical_solution(field_u1, field_u2):
     if I_RunOps['save_fields']:
         I_Results['field_u'] = field_u1
 
+    print(f"current_time[0] = {current_time[0]} current_time[1] = {current_time[1]}")
     current_time[1] = I_TI['final_time']
     cl.run_kernel('analytical_u', I_BalanceLaws['g_range'], I_BalanceLaws['l_range'], field_u2, current_time)
     abs_err = np.zeros((I_BalanceLaws['NUM_CONSERVED_VARS'],1), dtype = np.float64)
@@ -136,4 +140,4 @@ def compute_numerical_solution(field_u1, field_u2):
         Lerror[I_TI['num_steps'],:] = I_Results['abs_err']
         I_Results['Lerror_over_time'] = Lerror
         I_Results['time'] = np.linspace(0, I_TI['final_time'], len(Lerror)*2)
-
+    return current_time

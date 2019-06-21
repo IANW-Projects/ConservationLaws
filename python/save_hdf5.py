@@ -22,4 +22,19 @@ def save_all_variables(array, filename, dataset_names):
         f.attrs[key] = I_BalanceLaws[key]
 
     f.close()
-         
+
+def reload_all_variables(array, filenmae, dataset_names):
+    NODES_X = I_Mesh['NODES_X']
+    NODES_Y = I_Mesh['NODES_Y']
+    NODES_Z = I_Mesh['NODES_Z']
+    f = h5py.File(filename, "r")
+    ar_shape = array.shape
+    ar = np.reshape(array, (I_Tech['NUM_NODES_PAD'], I_BalanceLaws['NUM_TOTAL_VARS']))
+
+    for i in range(len(dataset_names)):
+        dset = f[dataset_names[i]]
+        ar[0:NODES_X*NODES_Y*NODES_Z, i] = np.reshape(dset, NODES_Z * NODES_Y* NODES_Z)
+
+    array = np.reshape(ar, ar_shape)
+    return array
+    

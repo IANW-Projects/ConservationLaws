@@ -6,5 +6,5 @@ cp ../python/cl/cl.py cl.py
 cat $1 >> runfile.py
 python3 runfile.py
 rm cl.py
-rm runfile.py
+#rm runfile.py
 

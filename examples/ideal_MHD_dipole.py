@@ -72,8 +72,9 @@ print('Testcase: ' + I_RunOps['testcase'] + '\nOrder: ' + str(I_RunOps['order'])
         str(I_Tech['REAL']))
 
 print(str(k) + " snapshots")
+ct = "none"
 for i in range(k):
-    compute_numerical_solution(field_u1, field_u2)
+    ct = compute_numerical_solution(field_u1, field_u2, ct)
     save_all_variables(field_u1, "results/output" + str(i) + ".hdf5", ['rho', 'px', 'py', 'pz', 'E', 'Bx', 'By', 'Bz'])
     print(i)
 

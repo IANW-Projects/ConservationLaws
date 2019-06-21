@@ -29,7 +29,7 @@ def plot_2D(u, CSs, NODES_X, NODES_Y, NODES_Z, plot_title, field_idx1, field_idx
             ytext = 'Y'
             xtext = 'X'
             title = plot_title + ' Z-Cross-Section'
-            v = field_cs[int(math.floor(NODES_Z)/2), :, :]
+            v = field_cs[int(math.floor(NODES_Z)/2),:,:]
 
         a = plt.pcolor(v)
         plt.colorbar(a)
