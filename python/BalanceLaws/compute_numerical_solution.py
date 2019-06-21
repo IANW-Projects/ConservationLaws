@@ -13,7 +13,7 @@ def compute_numerical_solution(field_u1, field_u2, c_time = 'none'):
         norm_output = np.zeros((I_Tech['num_groups'], 1), dtype=np.float64)
         Lerror = np.zeros((I_TI['num_steps']+1, I_BalanceLaws['NUM_CONSERVED_VARS']), dtype=np.float64)
     
-    if c_time != 'none'
+    if type(c_time) == type(np.array([0.0, 0.0])):
         current_time = c_time
 
     if I_TI['time_integrator'] == 'CarpenterKennedy2N54':

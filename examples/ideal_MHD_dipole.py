@@ -34,7 +34,7 @@ I_TI['num_steps'] = num_steps
 
 # I_Tech['device'] = 1
 
-I_Tech['REAL'] = 'double'
+I_Tech['REAL'] = 'float' #'double'
 I_Tech['REAL4'] = I_Tech['REAL'] + "4"
 I_Tech['memory_layout'] = 'USE_ARRAY_OF_STRUCTURES' #'USE_STRUCTURE_OF_ARRAYS'
 
@@ -50,7 +50,10 @@ if I_Tech['REAL'] == 'float':
 else:
     I_Tech['optimizations'] = ' -cl-mad-enable -cl-no-signed-zeros -cl-finite-math-only'
 
-I_RunOps['periodic'] = 'none'# 'USE_PERIODIC'
+I_RunOps['periodicx'] = 'none'# 'USE_PERIODIC'
+I_RunOps['periodicy'] = 'none'
+I_RunOps['periodicz'] = 'none'
+
 I_RunOps['vr'] = 'none'#'USE_VR_KUSANO'
 
 I_RunOps['order'] = 4
@@ -72,7 +75,7 @@ print('Testcase: ' + I_RunOps['testcase'] + '\nOrder: ' + str(I_RunOps['order'])
         str(I_Tech['REAL']))
 
 print(str(k) + " snapshots")
-ct = "none"
+ct = False
 for i in range(k):
     ct = compute_numerical_solution(field_u1, field_u2, ct)
     save_all_variables(field_u1, "results/output" + str(i) + ".hdf5", ['rho', 'px', 'py', 'pz', 'E', 'Bx', 'By', 'Bz'])
