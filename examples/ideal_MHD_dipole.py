@@ -21,7 +21,7 @@ I_Mesh['ZMAX'] = 1.0
 
 I_TI['final_time'] = 0.1
 I_TI['cfl'] = 0.2
-k = 100
+k = 10
 
 dt = I_TI['cfl'] * 2.0 / float(I_Mesh['NODES_Y']) # this has to be estimated
 num_steps = math.ceil(I_TI['final_time']/dt)
@@ -56,7 +56,7 @@ I_RunOps['periodicz'] = 'none'
 
 I_RunOps['vr'] = 'none'#'USE_VR_KUSANO'
 
-I_RunOps['order'] = 4
+I_RunOps['order'] = 2
 I_RunOps['conservation_laws'] = 'ideal_MHD'
 I_RunOps['testcase'] = 'far_dipole'
 I_RunOps['plot_numerical_solution'] = 'z'

@@ -23,7 +23,7 @@ def save_all_variables(array, filename, dataset_names):
 
     f.close()
 
-def reload_all_variables(array, filenmae, dataset_names):
+def reload_all_variables(array, filename, dataset_names):
     NODES_X = I_Mesh['NODES_X']
     NODES_Y = I_Mesh['NODES_Y']
     NODES_Z = I_Mesh['NODES_Z']
