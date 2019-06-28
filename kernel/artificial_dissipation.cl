@@ -80,8 +80,8 @@ void inline high_order_dissipation(uint ix, uint iy, uint iz, global REAL const 
 
   for (i = -STENCIL_WIDTH_HOD + 1; i < 1; i++) {
     diff_HOD_x(ix, iy, iz, bound_x, i, u, HOD_X);
-    diff_HOD_y(ix, iy, iz, bound_x, i, u, HOD_Y);
-    diff_HOD_z(ix, iy, iz, bound_x, i, u, HOD_Z);
+    diff_HOD_y(ix, iy, iz, bound_y, i, u, HOD_Y);
+    diff_HOD_z(ix, iy, iz, bound_z, i, u, HOD_Z);
     for(j = 0; j < NUM_CONSERVED_VARS;j++) {
       HOD[j] = HOD[j] + (REAL)(ho_dissipation_factor[j]) * HOD_X[j]
                       + (REAL)(ho_dissipation_factor[j]) * HOD_Y[j]
