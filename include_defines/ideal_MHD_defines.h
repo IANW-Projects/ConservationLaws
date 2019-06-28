@@ -68,7 +68,10 @@ TODO: JANHUNEN_CENTRAL, BRACKBILL_BARNES_CENTRAL, cf.
 // Speeds for the HLL flux: USE_HLL_SPEED_KUSANO USE_HLL_SPEED_BKW
 //#define USE_HLL_SPEED_BKW
 
+// Dissipation in the Volume
 
+#define VOLUME_DISSIPATION_ACTIVE
+#define HO_DISSIPATION_FACTOR {0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01}
 
 enum Fields {
              // Density

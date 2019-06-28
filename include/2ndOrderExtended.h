@@ -91,3 +91,24 @@ REAL constant M_INV_B[2*NUM_BOUNDS_B+1] = {
   12.0/5.0
 };
 
+
+//------------------------------------------------------------------------------
+// Dissipation Operator
+//------------------------------------------------------------------------------
+
+#define NUM_BOUNDS_HOD 3
+#define STENCIL_WIDTH_HOD 2
+
+REAL constant D_HO[2*NUM_BOUNDS_HOD+1][STENCIL_WIDTH_HOD] = {
+  // left boundary coefficients
+  { 0.0, 1.0},
+  {-1.0, 1.0},
+  {-1.0, 1.0},
+  // central coefficients
+  {-1.0, 1.0},
+  // right boundary coefficients
+  {-1.0, 1.0},
+  {-1.0, 1.0},
+  {-1.0, 0.0}
+};
+

@@ -85,6 +85,9 @@ inline void compute_du_dt(REAL time, uint ix, uint iy, uint iz, global REAL cons
 
   add_volume_terms(time, ix, iy, iz, u, du_dt);
   add_surface_terms(time, ix, iy, iz, u, du_dt);
+  #ifdef VOLUME_DISSIPATION_ACTIVE
+    high_order_dissipation(ix, iy, iz, u, du_dt);
+  #endif // VOLUME_DISSIPATION_ACTIVE
 }
 
 //--------------------------------------------------------------------------------------------------
