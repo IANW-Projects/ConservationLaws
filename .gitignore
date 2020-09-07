@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+# Python files
+=======
 # MatCL files
 matlab/*.mexa64
 matlab/*.mexmaci64
@@ -8,6 +11,7 @@ matlab/*.mexw64
 */*.m~
 
 # python files
+>>>>>>> 98f26b21b4
 __pycache__/
 *.py[cod]
 *$py.class

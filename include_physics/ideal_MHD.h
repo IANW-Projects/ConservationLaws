@@ -406,6 +406,7 @@ inline void calc_flux_f(const REAL *u, REAL *flux) {
   return;
 }
 
+
 inline void calc_flux_g(const REAL *u, REAL *flux){
   REAL BB = u[Field_Bx]*u[Field_Bx] + u[Field_By]*u[Field_By] + u[Field_Bz]*u[Field_Bz];
   flux[Field_rho] = u[Field_rho_uy];
@@ -434,6 +435,7 @@ inline void calc_flux_h(const REAL *u, REAL *flux){
 
 
 
+
 #if defined USE_BOUNDARY_FLUX_HLL
 
 inline void calc_num_flux(REAL al, REAL ar, REAL *ul, REAL *ur, REAL *fluxl, REAL *fluxr, REAL *num_flux){
@@ -451,6 +453,7 @@ inline void calc_num_flux(REAL al, REAL ar, REAL *ul, REAL *ur, REAL *fluxl, REA
       num_flux[i] = fluxr[i];
   }
 }
+
 
 
 inline void calc_hll_speeds(REAL* ul, REAL* ur, REAL *cl, REAL* cr, int dir) {
@@ -609,6 +612,7 @@ inline void add_surface_terms(REAL time, uint ix, uint iy, uint iz, const global
 #ifndef USE_PERIODIC_X
   if (check_bound_xr(ix, 1)) {
     calc_hll_speeds(um, ub, &alx, &arx, 0);
+
     calc_flux_f(um, fluxm);
     calc_flux_f(ub, fluxb);
     calc_num_flux(alx, arx, um, ub, fluxm, fluxb, flux);
